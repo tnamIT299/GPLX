@@ -468,7 +468,7 @@ const BienBaoCam = () => {
 
       <Portal>
         <Dialog visible={visible} onDismiss={hideDialog} style={styles.dialog}>
-          <Dialog.Title>{selectedSign?.type} : {selectedSign?.name}</Dialog.Title>
+          <Dialog.Title style={styles.dialogTitle}>{selectedSign?.type} : {selectedSign?.name}</Dialog.Title>
           <Dialog.Content style={styles.dialogContent}>
             <Image source={selectedSign?.image} style={styles.dialogImage} />
             <Paragraph>{selectedSign?.content}</Paragraph>
@@ -513,6 +513,12 @@ const styles = StyleSheet.create({
   },
   dialogContent: {
     alignItems: 'center',
+  },
+  dialogTitle: {
+    marginTop:10,
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontSize:17,
   },
   dialogImage: {
     width: 120,

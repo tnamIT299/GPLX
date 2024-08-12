@@ -1,6 +1,7 @@
 import React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { View, Text } from 'react-native';
 import BienBaoCam from '../BienBao/BienBaoCam';
 import BienBaoHieuLenh from '../BienBao/BienBaoHieuLenh';
@@ -42,16 +43,18 @@ const BienBaoStack = () => {
         component={BienBaoTab}
         options={({ navigation }) => ({
           title: 'Biển báo đường bộ',
+          headerTitleAlign: 'center',
           headerStyle: { backgroundColor: '#2F95DC' },
           headerTintColor: '#FFFFFF',
           headerTitleStyle: { fontWeight: 'bold' },
           headerLeft: () => (
-            <Text
+            <Icon name="chevron-left"
+            size={15}
               onPress={() => navigation.goBack()}
               style={{ color: '#FFFFFF', marginLeft: 10 }}
             >
               Back
-            </Text>
+            </Icon>
           ),
         })}
       />

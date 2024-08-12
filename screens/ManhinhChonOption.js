@@ -23,7 +23,14 @@ const ManhinhChonOption = ({ navigation, route }) => {
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.title_bar}> {question_count} câu GPLX {licenseName}</Text>
+                <Icon style={{ marginLeft:40, marginTop:10, color:"#fff"}} 
+                onPress ={() =>{
+                    navigation.navigate('ManhinhChinh');
+                }}
+                size={30} name='gear'/>
             </View>
+
+            
             <ScrollView>
             <View style={styles.content}>
                 {items.map((item) => (
@@ -52,7 +59,9 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     header: {
+        flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
         paddingVertical: 10,
         backgroundColor: '#2F95DC',
         marginBottom: 10,

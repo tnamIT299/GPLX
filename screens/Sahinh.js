@@ -37,7 +37,7 @@ const Sahinh = ({ navigation }) => {
                 />
 
                 <View style={styles.section}>
-                    <Text style={styles.sectionHeader}> – Hình 01: xuất phát đi hình số 8</Text>
+                    <Text style={styles.sectionHeader}> – Hình 01: Xuất phát đi hình số 8</Text>
                     <Text style={styles.contentText}>Trên hình bạn cũng thấy rất rõ ràng điểm xuất phát và hướng mui tên hướng
                         dẫn bạn đi đủ thành hình số 08. Phần bài thi này yêu cầu bạn đi tốc độ vừa
                         phải, vòng tay lái dẻo, cà phanh cho tốt để không đi ra ngoài vạch.</Text>

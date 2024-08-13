@@ -36,8 +36,16 @@ const ManhinhChinh = ({ navigation }) => {
         const backgroundColor = item.id === selectedId ? '#E0E0E0' : '#FFFFFF';
         const checkmark = item.id === selectedId ? '🎯' : '';
 
+        const handlePress = () => {
+            if (['A2', 'A3', 'A4', 'B1','B2','C','D','E','F'].includes(item.id)) {
+                Alert.alert('Thông báo', 'Tính năng này đang được phát triển!');
+            } else {
+                setSelectedId(item.id);
+            }
+        };
+
         return (
-            <TouchableOpacity onPress={() => setSelectedId(item.id)} style={[styles.item, { backgroundColor }]}>
+            <TouchableOpacity onPress={handlePress} style={[styles.item, { backgroundColor }]}>
                 <Text style={styles.name}>{item.name} <Text style={styles.checkmark}>{checkmark}</Text></Text>
                 <Text style={styles.description}>{item.description}</Text>
             </TouchableOpacity>
@@ -54,6 +62,16 @@ const ManhinhChinh = ({ navigation }) => {
             navigation.navigate('ManhinhChonOption', { licenseName: selectedLicense.name, question_count: selectedLicense.question_count });
         } else {
             Alert.alert('Chưa chọn loại bằng', 'Vui lòng chọn một loại bằng để tiếp tục.');
+        }
+    };
+
+    const handleOption = (item) => {
+        switch (item.id) {
+            case '8':
+                navigation.navigate('Tracuu');
+                break;
+            default:
+                Alert.alert('Thông báo', 'Tính năng này đang được phát triển!');
         }
     };
 

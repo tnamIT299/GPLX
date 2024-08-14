@@ -3,12 +3,12 @@ import { View, Text, TouchableOpacity, TextInput, ScrollView, StyleSheet } from 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { fullViolations } from '../../../data/full-laws'
 
-const ChuyenhuongXM = ({navigation}) => {
+const TocdoOT = ({navigation}) => {
   const [searchText, setSearchText] = useState('');
 
   const filteredViolations = fullViolations.filter(item =>
-    item.topicCode === 2 &&
-    item.entities.includes('xe mô tô')
+    item.topicCode === 5 &&
+    item.entities.includes('xe ô tô')
   );
 
   const filterData = () => {
@@ -27,7 +27,7 @@ const ChuyenhuongXM = ({navigation}) => {
         >
           Back
         </Icon>
-        <Text style={styles.header}>Chuyển hướng, nhường đường</Text>
+        <Text style={styles.header}>Tốc độ, khoảng cách an toàn</Text>
       </View>
       <View style={styles.searchContainer}>
         <Icon style={styles.icon} size={30} name='search' />
@@ -76,8 +76,8 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 1,
-    marginRight: 40,
-    fontSize: 13,
+    marginRight: 20,
+    fontSize: 15,
     marginTop: 5,
     fontWeight: 'bold',
     justifyContent: 'center',
@@ -140,4 +140,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChuyenhuongXM;
+export default TocdoOT;

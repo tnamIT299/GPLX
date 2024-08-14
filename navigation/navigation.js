@@ -8,17 +8,10 @@ import LuatGiaoThongTab from '../screens/LuatGiaoThong/LuatGiaoThongTab';
 import Meoghinho from '../screens/Meoghinho';
 import Tracuu from '../screens/Tracuu';
 import Sahinh from '../screens/Sahinh';
-import HieulenhchidanXM from '../screens/LuatGiaoThong/LuatXeMay/Hieulenhchidan';
-import ChuyenhuongXM from '../screens/LuatGiaoThong/LuatXeMay/Chuyenhuong';
-import DungxeXM from '../screens/LuatGiaoThong/LuatXeMay/Dungxe';
-import ThietbiuutienXM from '../screens/LuatGiaoThong/LuatXeMay/Thietbiuutien';
-import TocdoXM from '../screens/LuatGiaoThong/LuatXeMay/Tocdo';
-import VanchuyenXM from '../screens/LuatGiaoThong/LuatXeMay/Vanchuyen';
-import TrangthietbiXM from '../screens/LuatGiaoThong/LuatXeMay/Trangthietbi';
-import DuongcamXM from '../screens/LuatGiaoThong/LuatXeMay/Duongcam';
-import NongdoconXM from '../screens/LuatGiaoThong/LuatXeMay/Nongdocon';
-import GiaytoxeXM from '../screens/LuatGiaoThong/LuatXeMay/Giaytoxe';
-import KhacXM from '../screens/LuatGiaoThong/LuatXeMay/Khac';
+import {HieulenhchidanXM,ChuyenhuongXM,DungxeXM,ThietbiuutienXM,TocdoXM,VanchuyenXM,TrangthietbiXM,DuongcamXM,NongdoconXM,GiaytoxeXM,KhacXM,} 
+from '../screens/LuatGiaoThong/LuatXeMay/index';
+import {HieulenhchidanOT,ChuyenhuongOT,DungxeOT,ThietbiuutienOT,TocdoOT,VanchuyenOT,TrangthietbiOT,DuongcamOT,NongdoconOT,GiaytoxeOT,KhacOT,} 
+from '../screens/LuatGiaoThong/LuatOto/index';
 
 const Stack = createStackNavigator();
 
@@ -33,17 +26,30 @@ function Navigation() {
         <Stack.Screen name="Meoghinho" component={Meoghinho} />
         <Stack.Screen name="Sahinh" component={Sahinh} />
         <Stack.Screen name="Tracuu" component={Tracuu} />
-        <Stack.Screen name="Hieulenhchidan" component={HieulenhchidanXM} />
-        <Stack.Screen name="Chuyenhuong" component={ChuyenhuongXM} />
-        <Stack.Screen name="Dungxe" component={DungxeXM} />
-        <Stack.Screen name="Thietbiuutien" component={ThietbiuutienXM} />
-        <Stack.Screen name="Tocdo" component={TocdoXM} />
-        <Stack.Screen name="Vanchuyen" component={VanchuyenXM} />
-        <Stack.Screen name="Trangthietbi" component={TrangthietbiXM} />
-        <Stack.Screen name="Duongcam" component={DuongcamXM} />
-        <Stack.Screen name="Nongdocon" component={NongdoconXM} />
-        <Stack.Screen name="Giaytoxe" component={GiaytoxeXM} />
-        <Stack.Screen name="Khac" component={KhacXM} />
+
+        <Stack.Screen name="HieulenhchidanXM" component={HieulenhchidanXM} />
+        <Stack.Screen name="ChuyenhuongXM" component={ChuyenhuongXM} />
+        <Stack.Screen name="DungxeXM" component={DungxeXM} />
+        <Stack.Screen name="ThietbiuutienXM" component={ThietbiuutienXM} />
+        <Stack.Screen name="TocdoXM" component={TocdoXM} />
+        <Stack.Screen name="VanchuyenXM" component={VanchuyenXM} />
+        <Stack.Screen name="TrangthietbiXM" component={TrangthietbiXM} />
+        <Stack.Screen name="DuongcamXM" component={DuongcamXM} />
+        <Stack.Screen name="NongdoconXM" component={NongdoconXM} />
+        <Stack.Screen name="GiaytoxeXM" component={GiaytoxeXM} />
+        <Stack.Screen name="KhacXM" component={KhacXM} />
+        
+        <Stack.Screen name="HieulenhchidanOT" component={HieulenhchidanOT} />
+        <Stack.Screen name="ChuyenhuongOT" component={ChuyenhuongOT} />
+        <Stack.Screen name="DungxeOT" component={DungxeOT} />
+        <Stack.Screen name="ThietbiuutienOT" component={ThietbiuutienOT} />
+        <Stack.Screen name="TocdoOT" component={TocdoOT} />
+        <Stack.Screen name="VanchuyenOT" component={VanchuyenOT} />
+        <Stack.Screen name="TrangthietbiOT" component={TrangthietbiOT} />
+        <Stack.Screen name="DuongcamOT" component={DuongcamOT} />
+        <Stack.Screen name="NongdoconOT" component={NongdoconOT} />
+        <Stack.Screen name="GiaytoxeOT" component={GiaytoxeOT} />
+        <Stack.Screen name="KhacOT" component={KhacOT} />
       </Stack.Navigator>
     </NavigationContainer>
   );

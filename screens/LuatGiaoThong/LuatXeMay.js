@@ -25,38 +25,38 @@ const LuatXeMay = ({ navigation }) => {
   const handleOption = (item) => {
     switch (item.id) {
       case '1':
-        navigation.navigate('Hieulenhchidan');
+        navigation.navigate('HieulenhchidanXM');
         break;
       case '2':
-        navigation.navigate('Chuyenhuong');
+        navigation.navigate('ChuyenhuongXM');
         break;
       case '3':
-        navigation.navigate('Dungxe');
+        navigation.navigate('DungxeXM');
         break;
       case '4':
-        navigation.navigate('Thietbiuutien');
+        navigation.navigate('ThietbiuutienXM');
         break
       case '5':
-        navigation.navigate('Tocdo');
+        navigation.navigate('TocdoXM');
         break
       case '6':
-        navigation.navigate('Vanchuyen');
+        navigation.navigate('VanchuyenXM');
         break
       case '7':
-        navigation.navigate('Trangthietbi');
+        navigation.navigate('TrangthietbiXM');
         break
-        case '8':
-          navigation.navigate('Duongcam');
-          break
-          case '9':
-          navigation.navigate('Nongdocon');
-          break
-          case '10':
-          navigation.navigate('Giaytoxe');
-          break
-          case '11':
-          navigation.navigate('Khac');
-          break
+      case '8':
+        navigation.navigate('DuongcamXM');
+        break
+      case '9':
+        navigation.navigate('NongdoconXM');
+        break
+      case '10':
+        navigation.navigate('GiaytoxeXM');
+        break
+      case '11':
+        navigation.navigate('KhacXM');
+        break
       default:
         Alert.alert('Thông báo', 'Tính năng này đang được phát triển!');
     }

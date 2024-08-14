@@ -2,46 +2,56 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const Tracuu = ({navigation}) => {
+const Tracuu = ({ navigation }) => {
   return (
     <View style={styles.container}>
-        <View style={styles.headerContainer}>
-      <Icon name="chevron-left"
-            size={18}
-              onPress={() => navigation.goBack()}
-              style={{ color: '#FFFFFF', marginRight: 20, marginTop:6 }}
-            >
-              Back
-            </Icon>
+      <View style={styles.headerContainer}>
+        <Icon name="chevron-left"
+          size={18}
+          onPress={() => navigation.goBack()}
+          style={{ color: '#FFFFFF', marginRight: 20, marginTop: 6 }}
+        >
+          Back
+        </Icon>
         <Text style={styles.header}>Tra cứu</Text>
       </View>
-        <ScrollView>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Sahinh')}>
-        <Image 
-          source={require('../assets/icon/icons8-road1.png')}
-          style={styles.icon}
-        />
-        <Text style={styles.buttonText}>Thực hành Sa hình A1</Text>
-      </TouchableOpacity>
+      <ScrollView>
 
-      <TouchableOpacity style={styles.button}  onPress={() => navigation.navigate('BienBaoTab')}>
-        <Image 
-          source={require('../assets/icon/icons8-traffic.png')}
-          style={styles.icon}
-        />
-        <Text style={styles.buttonText}>Biển báo</Text>
-      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('LuatGiaoThongTab')}>
+          <Image
+            source={require('../assets/icon/law.png')}
+            style={styles.icon}
+          />
+          <Text style={styles.buttonText}>Luật giao thông</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Meoghinho')}>
-        <Image 
-          source={require('../assets/icon/idea.png')}
-          style={styles.icon}
-        />
-        <Text style={styles.buttonText}>Mẹo 600 câu thi GPLX</Text>
-      </TouchableOpacity>
-
-        </ScrollView>
       
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('BienBaoTab')}>
+          <Image
+            source={require('../assets/icon/icons8-traffic.png')}
+            style={styles.icon}
+          />
+          <Text style={styles.buttonText}>Biển báo</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Sahinh')}>
+          <Image
+            source={require('../assets/icon/icons8-road1.png')}
+            style={styles.icon}
+          />
+          <Text style={styles.buttonText}>Thực hành Sa hình A1</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Meoghinho')}>
+          <Image
+            source={require('../assets/icon/idea.png')}
+            style={styles.icon}
+          />
+          <Text style={styles.buttonText}>Mẹo 600 câu thi GPLX</Text>
+        </TouchableOpacity>
+
+      </ScrollView>
+
     </View>
   );
 };
@@ -52,8 +62,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
   },
   headerContainer: {
-    flexDirection:'row',
-    justifyContent:'space-between',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     padding: 16,
     backgroundColor: '#2F95DC',
     alignItems: 'center',

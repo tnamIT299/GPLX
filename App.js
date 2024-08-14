@@ -7,6 +7,7 @@ import BienBaoTab from './screens/BienBao/BienBaoTab';
 import Meoghinho from './screens/Meoghinho';
 import Tracuu from './screens/Tracuu';
 import Sahinh from './screens/Sahinh';
+import Hieulenhchidan from './screens/LuatGiaoThong/LuatXeMay/Hieulenhchidan'
 export default function App() {
   return (
     <View style={styles.container}>

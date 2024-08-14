@@ -12,6 +12,8 @@ import {HieulenhchidanXM,ChuyenhuongXM,DungxeXM,ThietbiuutienXM,TocdoXM,Vanchuye
 from '../screens/LuatGiaoThong/LuatXeMay/index';
 import {HieulenhchidanOT,ChuyenhuongOT,DungxeOT,ThietbiuutienOT,TocdoOT,VanchuyenOT,TrangthietbiOT,DuongcamOT,NongdoconOT,GiaytoxeOT,KhacOT,} 
 from '../screens/LuatGiaoThong/LuatOto/index';
+import {HieulenhchidanK,ChuyenhuongK,DungxeK,ThietbiuutienK,TocdoK,VanchuyenK,TrangthietbiK,DuongcamK,NongdoconK,GiaytoxeK,KhacK,} 
+from '../screens/LuatGiaoThong/LuatKhac/index';
 
 const Stack = createStackNavigator();
 
@@ -38,7 +40,7 @@ function Navigation() {
         <Stack.Screen name="NongdoconXM" component={NongdoconXM} />
         <Stack.Screen name="GiaytoxeXM" component={GiaytoxeXM} />
         <Stack.Screen name="KhacXM" component={KhacXM} />
-        
+
         <Stack.Screen name="HieulenhchidanOT" component={HieulenhchidanOT} />
         <Stack.Screen name="ChuyenhuongOT" component={ChuyenhuongOT} />
         <Stack.Screen name="DungxeOT" component={DungxeOT} />
@@ -50,6 +52,20 @@ function Navigation() {
         <Stack.Screen name="NongdoconOT" component={NongdoconOT} />
         <Stack.Screen name="GiaytoxeOT" component={GiaytoxeOT} />
         <Stack.Screen name="KhacOT" component={KhacOT} />
+
+        <Stack.Screen name="HieulenhchidanK" component={HieulenhchidanK} />
+        <Stack.Screen name="ChuyenhuongK" component={ChuyenhuongK} />
+        <Stack.Screen name="DungxeK" component={DungxeK} />
+        <Stack.Screen name="ThietbiuutienK" component={ThietbiuutienK} />
+        <Stack.Screen name="TocdoK" component={TocdoK} />
+        <Stack.Screen name="VanchuyenK" component={VanchuyenK} />
+        <Stack.Screen name="TrangthietbiK" component={TrangthietbiK} />
+        <Stack.Screen name="DuongcamK" component={DuongcamK} />
+        <Stack.Screen name="NongdoconK" component={NongdoconK} />
+        <Stack.Screen name="GiaytoxeK" component={GiaytoxeK} />
+        <Stack.Screen name="KhacK" component={KhacK} />
+        
+
       </Stack.Navigator>
     </NavigationContainer>
   );

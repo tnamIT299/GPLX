@@ -1,26 +1,67 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet,Alert } from 'react-native';
 import React from 'react';
 import IconCard from '../../component/IconCard';
 
-const LuatKhac = () => {
+const LuatKhac = ({navigation}) => {
   const data = [
-    { iconName: 'traffic-light', label: 'Hiệu lệnh, chỉ dẫn', color: '#4CAF50' },
-    { iconName: 'map-signs', label: 'Chuyển hướng', color: '#2196F3' },
-    { iconName: 'parking', label: 'Dừng xe, đỗ xe', color: '#FFB74D' },
-    { iconName: 'ambulance', label: 'Thiết bị ưu tiên, còi', color: '#FF3333' },
-    { iconName: 'tachometer-alt', label: 'Tốc độ khoảng cách', color: '#FF6699' },
-    { iconName: 'motorcycle', label: 'Vận chuyển người, hàng', color: '#4FC3F7' },
-    { iconName: 'tools', label: 'Trang thiết bị phương tiện', color: '#8D6E63' },
-    { iconName: 'ban', label: 'Đường cấm, đường một', color: '#90A4AE' },
-    { iconName: 'wine-bottle', label: 'Nồng độ cồn, chất kích thích', color: '#00C5CD' },
-    { iconName: 'id-card', label: 'Giấy tờ xe', color: '#FF6633' },
-    { iconName: 'exclamation', label: 'Khác', color: '#FF9900' },
+    { id: '1', iconName: 'traffic-light', label: 'Hiệu lệnh, chỉ dẫn', color: '#4CAF50' },
+    { id: '2', iconName: 'map-signs', label: 'Chuyển hướng', color: '#2196F3' },
+    { id: '3', iconName: 'parking', label: 'Dừng xe, đỗ xe', color: '#FFB74D' },
+    { id: '4', iconName: 'ambulance', label: 'Thiết bị ưu tiên, còi', color: '#FF3333' },
+    { id: '5', iconName: 'tachometer-alt', label: 'Tốc độ khoảng cách', color: '#FF6699' },
+    { id: '6', iconName: 'motorcycle', label: 'Vận chuyển người, hàng', color: '#4FC3F7' },
+    { id: '7', iconName: 'tools', label: 'Trang thiết bị phương tiện', color: '#8D6E63' },
+    { id: '8', iconName: 'ban', label: 'Đường cấm, đường một', color: '#90A4AE' },
+    { id: '9', iconName: 'wine-bottle', label: 'Nồng độ cồn, chất kích thích', color: '#00C5CD' },
+    { id: '10', iconName: 'id-card', label: 'Giấy tờ xe', color: '#FF6633' },
+    { id: '11', iconName: 'exclamation', label: 'Khác', color: '#FF9900' },
   ];
 
   const rows = [];  
   for (let i = 0; i < data.length; i += 3) {
     rows.push(data.slice(i, i + 3));
   }
+
+  const handleOption = (item) => {
+    switch (item.id) {
+      case '1':
+        navigation.navigate('HieulenhchidanK');
+        break;
+      case '2':
+        navigation.navigate('ChuyenhuongK');
+        break;
+      case '3':
+        navigation.navigate('DungxeK');
+        break;
+      case '4':
+        navigation.navigate('ThietbiuutienK');
+        break
+      case '5':
+        navigation.navigate('TocdoK');
+        break
+      case '6':
+        navigation.navigate('VanchuyenK');
+        break
+      case '7':
+        navigation.navigate('TrangthietbiK');
+        break
+      case '8':
+        navigation.navigate('DuongcamK');
+        break
+      case '9':
+        navigation.navigate('NongdoconK');
+        break
+      case '10':
+        navigation.navigate('GiaytoxeK');
+        break
+      case '11':
+        navigation.navigate('KhacK');
+        break
+      default:
+        Alert.alert('Thông báo', 'Tính năng này đang được phát triển!');
+    }
+  };
+
 
   return (
     <View style={styles.container}>
@@ -32,6 +73,7 @@ const LuatKhac = () => {
               iconName={item.iconName}
               label={item.label}
               color={item.color}
+              onPress={() => handleOption(item)}
             />
           ))}
         </View>

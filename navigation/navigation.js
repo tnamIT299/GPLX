@@ -14,13 +14,17 @@ import {HieulenhchidanOT,ChuyenhuongOT,DungxeOT,ThietbiuutienOT,TocdoOT,Vanchuye
 from '../screens/LuatGiaoThong/LuatOto/index';
 import {HieulenhchidanK,ChuyenhuongK,DungxeK,ThietbiuutienK,TocdoK,VanchuyenK,TrangthietbiK,DuongcamK,NongdoconK,GiaytoxeK,KhacK,} 
 from '../screens/LuatGiaoThong/LuatKhac/index';
+import { Splash1, Splash2, Splash3 } from '../screens/SplashScreen/index';
 
 const Stack = createStackNavigator();
 
 function Navigation() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="ManhinhChinh" screenOptions={{headerShown:false}}>
+      <Stack.Navigator initialRouteName="Splash1" screenOptions={{headerShown:false}}>
+        <Stack.Screen name="Splash1" component={Splash1} />
+        <Stack.Screen name="Splash2" component={Splash2} />
+        <Stack.Screen name="Splash3" component={Splash3} />
         <Stack.Screen name="ManhinhChinh" component={ManhinhChinh} />
         <Stack.Screen name="ManhinhChonOption" component={ManhinhChonOption} />
         <Stack.Screen name="BienBaoTab" component={BienBaoTab} />

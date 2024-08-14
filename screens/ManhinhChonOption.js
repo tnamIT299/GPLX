@@ -1,16 +1,16 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const items = [
     { id: '1', name: 'Đề ngẫu nhiên', icon: 'random', color: '#FFB74D' },
-    { id: '2', name: 'Thi theo bộ đề', icon: 'file-text', color: '#FF3333' },
+    { id: '2', name: 'Thi theo bộ đề', icon: 'book', color: '#FF3333' },
     { id: '3', name: 'Các câu bị sai', icon: 'times-circle', color: '#81C784' },
-    { id: '4', name: 'Ôn tập câu hỏi', icon: 'book', color: '#4FC3F7' },
+    { id: '4', name: 'Ôn tập câu hỏi', icon: 'book-reader', color: '#4FC3F7' },
     { id: '5', name: '20 câu điểm liệt', icon: 'exclamation-triangle', color: '#8D6E63' },
-    { id: '6', name: 'Top 50 câu sai', icon: 'bar-chart', color: '#90A4AE' },
-    { id: '7', name: 'Lịch sử thi', icon: 'history', color: '#00C5CD' },
-    { id: '8', name: 'Tra cứu', icon: 'search', color: '#FF6633' },
+    { id: '6', name: 'Lịch sử thi', icon: 'history', color: '#00C5CD' },
+    { id: '7', name: 'Tra cứu', icon: 'search', color: '#FF6633' },
+    { id: '8', name: 'Địa điểm thi', icon: 'map-marked-alt', color: '#FF6633' },
 ];
 
 const ManhinhChonOption = ({ navigation, route }) => {
@@ -19,7 +19,7 @@ const ManhinhChonOption = ({ navigation, route }) => {
 
     const handleOption = (item) => {
         switch (item.id) {
-            case '8':
+            case '7':
                 navigation.navigate('Tracuu');
                 break;
             default:
@@ -36,7 +36,7 @@ const ManhinhChonOption = ({ navigation, route }) => {
                     onPress={() => {
                         navigation.navigate('ManhinhChinh');
                     }}
-                    size={30} name='gear' />
+                    size={30} name='cog' />
             </View>
 
 

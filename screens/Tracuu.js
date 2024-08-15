@@ -62,7 +62,7 @@ const TracuuStack = () => {
   return (
     <Stack.Navigator>
     <Stack.Screen
-      name="Tracuu"
+      name="TracuuTab"
       component={TracuuTab}
       options={({ navigation }) => ({
         title: 'Tra cứu',
@@ -100,11 +100,12 @@ const styles = {
   button: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 20,
-    marginVertical: 8,
+    padding: 25,
+    top:10,
+    marginVertical: 10,
     marginHorizontal: 16,
     backgroundColor: '#FFFFFF',
-    borderRadius: 15,
+    borderRadius: 20,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

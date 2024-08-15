@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 
-const Meo = ({navigation}) => {
+const MeoghinhoTab = ({navigation}) => {
   return (
     <View style={styles.container}>
 
@@ -257,14 +257,14 @@ const Meo = ({navigation}) => {
   );
 };
 
-const MeoghinhoTab = () => {
+const MeoghinhoStack = () => {
   return (
     <Stack.Navigator>
     <Stack.Screen
-      name="Sahinh"
-      component={Meo}
+      name="MeoghinhoTab"
+      component={MeoghinhoTab}
       options={({ navigation }) => ({
-        title: 'Mẹo 600 câu hỏi ôn thi GPLX',
+        title: 'Mẹo ôn thi GPLX',
         headerTitleAlign: 'center',
         headerStyle: { backgroundColor: '#2F95DC' },
         headerTintColor: '#FFFFFF',
@@ -274,8 +274,7 @@ const MeoghinhoTab = () => {
           size={15}
             onPress={() => navigation.goBack()}
             style={{ color: '#FFFFFF', marginLeft: 10 }}
-          >
-          </Icon>
+          >Back</Icon>
         ),
       })}
     />
@@ -318,4 +317,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default MeoghinhoTab;
+export default MeoghinhoStack;

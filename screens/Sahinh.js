@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
 const Stack = createStackNavigator();
 
-const Sahinh = ({ navigation }) => {
+const SahinhTab = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -60,12 +60,12 @@ const Sahinh = ({ navigation }) => {
     );
 };
 
-const SahinhTab = () => {
+const SahinhStack = () => {
     return (
       <Stack.Navigator>
       <Stack.Screen
-        name="Sahinh"
-        component={Sahinh}
+        name="SahinhTab"
+        component={SahinhTab}
         options={({ navigation }) => ({
           title: 'Sa hình',
           headerTitleAlign: 'center',
@@ -125,4 +125,4 @@ const styles = StyleSheet.create({
         padding: 5,
     }
 });
-export default SahinhTab
+export default SahinhStack

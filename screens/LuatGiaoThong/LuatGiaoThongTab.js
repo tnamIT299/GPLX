@@ -45,9 +45,7 @@ const LuatGiaoThongStack = () => {
             size={15}
               onPress={() => navigation.goBack()}
               style={{ color: '#FFFFFF', marginLeft: 10 }}
-            >
-              Back
-            </Icon>
+            ></Icon>
           ),
         })}
       />

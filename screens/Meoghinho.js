@@ -1,20 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { createStackNavigator } from '@react-navigation/stack';
+const Stack = createStackNavigator();
 
 const Meo = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-      <Icon name="chevron-left"
-            size={18}
-              onPress={() => navigation.goBack()}
-              style={{ color: '#FFFFFF', marginRight: 20, marginTop:6 }}
-            >
-              Back
-            </Icon>
-        <Text style={styles.header}>Mẹo 600 câu hỏi ôn thi GPLX</Text>
-      </View>
 
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.section}>
@@ -265,17 +257,36 @@ const Meo = ({navigation}) => {
   );
 };
 
+const MeoghinhoTab = () => {
+  return (
+    <Stack.Navigator>
+    <Stack.Screen
+      name="Sahinh"
+      component={Meo}
+      options={({ navigation }) => ({
+        title: 'Mẹo 600 câu hỏi ôn thi GPLX',
+        headerTitleAlign: 'center',
+        headerStyle: { backgroundColor: '#2F95DC' },
+        headerTintColor: '#FFFFFF',
+        headerTitleStyle: { fontWeight: 'bold' },
+        headerLeft: () => (
+          <Icon name="chevron-left"
+          size={15}
+            onPress={() => navigation.goBack()}
+            style={{ color: '#FFFFFF', marginLeft: 10 }}
+          >
+          </Icon>
+        ),
+      })}
+    />
+  </Stack.Navigator>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  headerContainer: {
-    flexDirection:'row',
-    justifyContent:'space-between',
-    padding: 16,
-    backgroundColor: '#2F95DC',
-    alignItems: 'center',
   },
   header: {
     flex: 1,
@@ -307,4 +318,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Meo;
+export default MeoghinhoTab;

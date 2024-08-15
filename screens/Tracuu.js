@@ -1,23 +1,19 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const Tracuu = ({ navigation }) => {
+const Stack = createStackNavigator();
+
+const TracuuTab = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Icon name="chevron-left"
-          size={18}
-          onPress={() => navigation.goBack()}
-          style={{ color: '#FFFFFF', marginRight: 20, marginTop: 6 }}
-        >
-          Back
-        </Icon>
-        <Text style={styles.header}>Tra cứu</Text>
-      </View>
+      
       <ScrollView>
-
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('LuatGiaoThongTab')}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('LuatGiaoThongTab')}
+        >
           <Image
             source={require('../assets/icon/law.png')}
             style={styles.icon}
@@ -25,8 +21,10 @@ const Tracuu = ({ navigation }) => {
           <Text style={styles.buttonText}>Luật giao thông</Text>
         </TouchableOpacity>
 
-      
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('BienBaoTab')}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('BienBaoTab')}
+        >
           <Image
             source={require('../assets/icon/icons8-traffic.png')}
             style={styles.icon}
@@ -34,7 +32,10 @@ const Tracuu = ({ navigation }) => {
           <Text style={styles.buttonText}>Biển báo</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Sahinh')}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('Sahinh')}
+        >
           <Image
             source={require('../assets/icon/icons8-road1.png')}
             style={styles.icon}
@@ -42,69 +43,84 @@ const Tracuu = ({ navigation }) => {
           <Text style={styles.buttonText}>Thực hành Sa hình A1</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Meoghinho')}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('Meoghinho')}
+        >
           <Image
             source={require('../assets/icon/idea.png')}
             style={styles.icon}
           />
           <Text style={styles.buttonText}>Mẹo 600 câu thi GPLX</Text>
         </TouchableOpacity>
-
       </ScrollView>
-
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const TracuuStack = () => {
+  return (
+    <Stack.Navigator>
+    <Stack.Screen
+      name="Tracuu"
+      component={TracuuTab}
+      options={({ navigation }) => ({
+        title: 'Tra cứu',
+        headerTitleAlign: 'center',
+        headerStyle: { backgroundColor: '#2F95DC' },
+        headerTintColor: '#FFFFFF',
+        headerTitleStyle: { fontWeight: 'bold' },
+        headerLeft: () => (
+          <Icon name="chevron-left"
+          size={15}
+            onPress={() => navigation.goBack()}
+            style={{ color: '#FFFFFF', marginLeft: 10 }}
+          >
+            Back
+          </Icon>
+        ),
+      })}
+    />
+  </Stack.Navigator>
+  );
+};
+
+export default TracuuStack;
+
+const styles = {
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
   },
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 16,
-    backgroundColor: '#2F95DC',
-    alignItems: 'center',
-  },
   header: {
-    flex: 1,
-    marginRight: 70,
-    fontSize: 18,
-    marginTop: 5,
+    color: '#FFFFFF',
+    fontSize: 20,
     fontWeight: 'bold',
-    justifyContent: 'center',
-    textAlign: 'center',
-    color: '#fff',
   },
   button: {
-    marginTop: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#ffffff',
-    borderColor: '#e0e0e0',
-    borderWidth: 1,
-    borderRadius: 120,
-    paddingVertical: 20,
-    paddingHorizontal: 20,
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 15,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
     shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 3,
+    shadowRadius: 4,
   },
   icon: {
-    width: 50,
-    height: 50,
-    marginRight: 10,
+    width: 30,
+    height: 30,
+    marginRight: 16,
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#333333',
-    marginLeft: 10,
   },
-});
-
-export default Tracuu;
+};

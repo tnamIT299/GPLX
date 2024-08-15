@@ -1,21 +1,12 @@
 import { View, Text, StyleSheet, ScrollView, Image, Dimensions } from 'react-native'
 import React from 'react'
+import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
+const Stack = createStackNavigator();
 
 const Sahinh = ({ navigation }) => {
     return (
         <View style={styles.container}>
-            <View style={styles.headerContainer}>
-                <Icon name="chevron-left"
-                    size={18}
-                    onPress={() => navigation.goBack()}
-                    style={{ color: '#FFFFFF', marginRight: 20, marginTop: 6 }}
-                >
-                    Back
-                </Icon>
-                <Text style={styles.header}>Sa hình</Text>
-            </View>
-
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 <View style={styles.section}>
                     <Text style={styles.sectionHeader}>Các bước thi thực hành lái xe máy A1</Text>
@@ -69,18 +60,38 @@ const Sahinh = ({ navigation }) => {
     );
 };
 
+const SahinhTab = () => {
+    return (
+      <Stack.Navigator>
+      <Stack.Screen
+        name="Sahinh"
+        component={Sahinh}
+        options={({ navigation }) => ({
+          title: 'Sa hình',
+          headerTitleAlign: 'center',
+          headerStyle: { backgroundColor: '#2F95DC' },
+          headerTintColor: '#FFFFFF',
+          headerTitleStyle: { fontWeight: 'bold' },
+          headerLeft: () => (
+            <Icon name="chevron-left"
+            size={15}
+              onPress={() => navigation.goBack()}
+              style={{ color: '#FFFFFF', marginLeft: 10 }}
+            >
+              Back
+            </Icon>
+          ),
+        })}
+      />
+    </Stack.Navigator>
+    );
+  };
+
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-    },
-    headerContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        padding: 16,
-        backgroundColor: '#2F95DC',
-        alignItems: 'center',
     },
     header: {
         flex: 1,
@@ -114,4 +125,4 @@ const styles = StyleSheet.create({
         padding: 5,
     }
 });
-export default Sahinh
+export default SahinhTab

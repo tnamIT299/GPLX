@@ -1,6 +1,10 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+
+const Stack = createStackNavigator();
 
 const items = [
     { id: '1', name: 'Đề ngẫu nhiên', icon: 'random', color: '#FFB74D' },
@@ -13,10 +17,7 @@ const items = [
     { id: '8', name: 'Địa điểm thi', icon: 'map-marked-alt', color: '#FF6633' },
 ];
 
-const ManhinhChonOption = ({ navigation, route }) => {
-    const { licenseName } = route.params;
-    const { question_count } = route.params;
-
+const ManhinhChonOptionTab = ({navigation}) => {
     const handleOption = (item) => {
         switch (item.id) {
             case '7':
@@ -27,34 +28,46 @@ const ManhinhChonOption = ({ navigation, route }) => {
         }
     };
 
-
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.title_bar}> {question_count} câu GPLX {licenseName}</Text>
-                <Icon style={styles.icon}
-                    onPress={() => {
-                        navigation.navigate('ManhinhChinh');
-                    }}
-                    size={30} name='cog' />
+            <View style={styles.content}>
+                {items.map((item) => (
+                    <TouchableOpacity
+                        key={item.id}
+                        style={[styles.item, { backgroundColor: item.color }]}
+                        onPress={() => handleOption(item)}>
+                        <Icon name={item.icon} size={30} color="#FFF" />
+                        <Text style={styles.itemText}>{item.name}</Text>
+                    </TouchableOpacity>
+                ))}
             </View>
-
-
-            <ScrollView>
-                <View style={styles.content}>
-                    {items.map((item) => (
-                        <TouchableOpacity
-                            key={item.id}
-                            style={[styles.item, { backgroundColor: item.color }]}
-                            onPress={() => handleOption(item)}>
-                            <Icon name={item.icon} size={30} color="#FFF" />
-                            <Text style={styles.itemText}>{item.name}</Text>
-                        </TouchableOpacity>
-                    ))}
-                </View>
-            </ScrollView>
-
         </View>
+    );
+};
+
+const ManhinhChonOptionStack = ({ navigation, route }) => {
+    const { licenseName = 'N/A', question_count = 0 } = route.params || {};
+    return (
+            <Stack.Navigator initialRouteName="ManhinhChonOption">
+                <Stack.Screen
+                    name="ManhinhChonOptionTab"
+                    component={ManhinhChonOptionTab}
+                    options={{ 
+                        title: `${question_count} câu hỏi ${licenseName}` ,
+                        headerTitleAlign: 'center',
+                        headerStyle: { backgroundColor: '#2F95DC' },
+                        headerTintColor: '#FFFFFF',
+                        headerRight: () => (
+                            <Icon name="cog"
+                            size={30}
+                              onPress={() => navigation.goBack()}
+                              style={{ color: '#FFFFFF', marginRight: 10 }}
+                            ></Icon>
+                          ),
+                
+                }}
+                />
+            </Stack.Navigator>
     );
 };
 
@@ -109,4 +122,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ManhinhChonOption;
+export default ManhinhChonOptionStack;

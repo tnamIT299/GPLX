@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, SectionList, TouchableOpacity, StyleSheet, Button, Alert } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 const licenseTypes = [
     {
@@ -29,7 +32,7 @@ const licenseTypes = [
     }
 ];
 
-const ManhinhChinh = ({ navigation }) => {
+const ManhinhChinhTab = ({ navigation }) => {
     const [selectedId, setSelectedId] = useState(null);
 
     const renderItem = ({ item }) => {
@@ -52,40 +55,21 @@ const ManhinhChinh = ({ navigation }) => {
         );
     };
 
-    const handleBackPress = () => {
-        Alert.alert('Back Pressed', 'back');
-    };
-
     const handleDonePress = () => {
         if (selectedId) {
             const selectedLicense = licenseTypes.flatMap(section => section.data).find(item => item.id === selectedId);
-            navigation.navigate('ManhinhChonOption', { licenseName: selectedLicense.name, question_count: selectedLicense.question_count });
+            if (selectedLicense) {
+                navigation.navigate('ManhinhChonOption', { licenseName: selectedLicense.name, question_count: selectedLicense.question_count });
+            } else {
+                Alert.alert('Không tìm thấy loại bằng', 'Loại bằng bạn chọn không tồn tại.');
+            }
         } else {
             Alert.alert('Chưa chọn loại bằng', 'Vui lòng chọn một loại bằng để tiếp tục.');
         }
     };
 
-    const handleOption = (item) => {
-        switch (item.id) {
-            case '8':
-                navigation.navigate('Tracuu');
-                break;
-            default:
-                Alert.alert('Thông báo', 'Tính năng này đang được phát triển!');
-        }
-    };
-
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity onPress={handleBackPress}>
-                    <Text style={styles.backButton}>{'Back'}</Text>
-                </TouchableOpacity>
-                <Text style={styles.title_bar}>Thiết lập</Text>
-                <TouchableOpacity onPress={handleDonePress}>
-                    <Text style={styles.doneButton}>Done</Text>
-                </TouchableOpacity>
-            </View>
             <SectionList
                 sections={licenseTypes}
                 keyExtractor={(item) => item.id}
@@ -95,46 +79,46 @@ const ManhinhChinh = ({ navigation }) => {
                     <Text style={styles.sectionHeader}>{title}</Text>
                 )}
             />
+           <TouchableOpacity onPress={handleDonePress} style={styles.doneButton}>
+                <Text style={styles.doneButtonText}>Done</Text>
+            </TouchableOpacity>
         </View>
     );
 };
+
+const Stack = createStackNavigator();
+
+const ManhinhChinhStack = () => {
+    return (
+            <Stack.Navigator>
+                <Stack.Screen
+                    name="ManhinhChinhTab"
+                    component={ManhinhChinhTab}
+                    options={({ navigation }) => ({
+                        title: 'Thiết lập',
+                        headerTitleAlign: 'center',
+                        headerStyle: { backgroundColor: '#2F95DC' },
+                        headerTintColor: '#FFFFFF',
+                        headerTitleStyle: { fontWeight: 'bold' },
+                        headerLeft: () => (
+                          <Icon name="chevron-left"
+                          size={15}
+                            onPress={() => navigation.goBack()}
+                            style={{ color: '#FFFFFF', marginLeft: 10 }}
+                          >Back</Icon>
+                        ),
+                      })}
+                />
+            </Stack.Navigator>
+    );
+};
+
+export default ManhinhChinhStack;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F5F5F5',
-    },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: 10,
-        paddingVertical: 15,
-        backgroundColor: '#2F95DC',
-    },
-
-    backButton: {
-        paddingTop: 10,
-        fontSize: 16,
-        color: '#FFFFFF',
-    },
-
-    doneButton: {
-        fontSize: 16,
-        paddingTop: 10,
-        color: '#FFFFFF',
-    },
-    title: {
-        marginTop: 20,
-        fontSize: 20,
-        marginBottom: 10,
-        fontWeight: 'bold',
-    },
-
-    title_bar: {
-        paddingTop: 5,
-        fontSize: 20,
-        color: '#FFFFFF',
     },
     item: {
         padding: 16,
@@ -178,6 +162,14 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#999',
     },
+    doneButton: {
+        backgroundColor: '#2F95DC',
+        padding: 10,
+        alignItems: 'center',
+    },
+    doneButtonText: {
+        color: '#FFFFFF',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
 });
-
-export default ManhinhChinh;

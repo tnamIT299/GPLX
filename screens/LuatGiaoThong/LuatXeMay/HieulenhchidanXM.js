@@ -5,7 +5,7 @@ import { fullViolations } from '../../../data/full-laws'
 import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 
-const HieulenhchidanXM = ({navigation}) => {
+const HieulenhchidanXMTab = ({navigation}) => {
   const [searchText, setSearchText] = useState('');
 
   const filteredViolations = fullViolations.filter(item =>
@@ -53,12 +53,12 @@ const HieulenhchidanXM = ({navigation}) => {
   );
 };
 
-const HieulenhchidanXMTab = () => {
+const HieulenhchidanXMStack = () => {
   return (
     <Stack.Navigator>
     <Stack.Screen
       name="HieulenhchidanXMTab"
-      component={HieulenhchidanXM}
+      component={HieulenhchidanXMTab}
       options={({ navigation }) => ({
         title: 'Hiệu lệnh, chỉ dẫn',
         headerTitleAlign: 'center',
@@ -84,16 +84,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  header: {
-    flex: 1,
-    marginRight: 70,
-    fontSize: 15,
-    marginTop: 5,
-    fontWeight: 'bold',
-    justifyContent: 'center',
-    textAlign: 'center',
-    color: '#fff',
   },
   searchContainer: {
     height: 60,
@@ -128,7 +118,7 @@ const styles = StyleSheet.create({
     left: 40,
     flex: 1,
     borderRadius: 20,
-    paddingStart: 30,
+    paddingStart: 20,
     justifyContent: 'center',
     backgroundColor: '#DDDDDD',
   },
@@ -151,4 +141,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HieulenhchidanXMTab;
+export default HieulenhchidanXMStack;

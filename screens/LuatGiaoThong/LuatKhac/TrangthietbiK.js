@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, ScrollView, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { fullViolations } from '../../../data/full-laws'
+import { createStackNavigator } from '@react-navigation/stack';
+const Stack = createStackNavigator();
 
-const TrangthietbiK = ({navigation}) => {
+const TrangthietbiKTab = ({navigation}) => {
   const [searchText, setSearchText] = useState('');
 
   const filteredViolations = fullViolations.filter(item =>
@@ -18,16 +20,6 @@ const TrangthietbiK = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Icon name="chevron-left"
-          size={18}
-          onPress={() => navigation.goBack()}
-          style={{ color: '#FFFFFF', marginRight: 20, marginTop: 6 }}
-        >
-          Back
-        </Icon>
-        <Text style={styles.header}>Trang thiết bị phương tiện</Text>
-      </View>
       <View style={styles.searchContainer}>
         <Icon style={styles.icon} size={30} name='search' />
         <TextInput
@@ -38,7 +30,7 @@ const TrangthietbiK = ({navigation}) => {
           value={searchText}
         />
       </View>
-      <View  style={{ marginBottom:120}}>
+      <View  style={{ marginBottom:90}}>
         {filterData().length > 0 ? (
           <ScrollView>
             {filterData().map((item, index) => (
@@ -61,27 +53,36 @@ const TrangthietbiK = ({navigation}) => {
   );
 };
 
+const TrangthietbiKStack = () => {
+  return (
+    <Stack.Navigator>
+    <Stack.Screen
+      name="TrangthietbiKTab"
+      component={TrangthietbiKTab}
+      options={({ navigation }) => ({
+        title: 'Trang thiết bị phương tiện',
+        headerTitleAlign: 'center',
+        headerStyle: { backgroundColor: '#2F95DC' },
+        headerTintColor: '#FFFFFF',
+        headerTitleStyle: { fontWeight: 'bold' },
+        headerLeft: () => (
+          <Icon name="chevron-left"
+          size={15}
+            onPress={() => navigation.goBack()}
+            style={{ color: '#FFFFFF', marginLeft: 10 }}
+          >
+          </Icon>
+        ),
+      })}
+    />
+  </Stack.Navigator>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 16,
-    backgroundColor: '#2F95DC',
-    alignItems: 'center',
-  },
-  header: {
-    flex: 1,
-    marginRight: 20,
-    fontSize: 15,
-    marginTop: 5,
-    fontWeight: 'bold',
-    justifyContent: 'center',
-    textAlign: 'center',
-    color: '#fff',
   },
   searchContainer: {
     height: 60,
@@ -139,4 +140,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TrangthietbiK;
+export default TrangthietbiKStack;

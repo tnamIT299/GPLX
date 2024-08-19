@@ -30,7 +30,7 @@ const ChuyenhuongOTTab = ({navigation}) => {
           value={searchText}
         />
       </View>
-      <View  style={{ marginBottom:120}}>
+      <View  style={{ marginBottom:90}}>
         {filterData().length > 0 ? (
           <ScrollView>
             {filterData().map((item, index) => (

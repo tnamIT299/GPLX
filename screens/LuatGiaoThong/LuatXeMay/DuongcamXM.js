@@ -31,7 +31,7 @@ const DuongcamXMTab = ({navigation}) => {
           value={searchText}
         />
       </View>
-      <View  style={{ marginBottom:120}}>
+      <View  style={{ marginBottom:90}}>
         {filterData().length > 0 ? (
           <ScrollView>
             {filterData().map((item, index) => (
@@ -61,7 +61,7 @@ const DuongcamXMStack = () => {
       name="DuongcamXMTab"
       component={DuongcamXMTab}
       options={({ navigation }) => ({
-        title: 'Đường cấm, đường một chiều',
+        title: 'Đường cấm,đường một chiều',
         headerTitleAlign: 'center',
         headerStyle: { backgroundColor: '#2F95DC' },
         headerTintColor: '#FFFFFF',

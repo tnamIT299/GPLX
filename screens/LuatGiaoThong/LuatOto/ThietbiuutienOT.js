@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, ScrollView, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { fullViolations } from '../../../data/full-laws'
+import { createStackNavigator } from '@react-navigation/stack';
+const Stack = createStackNavigator();
 
-const ThietbiuutienOT = ({navigation}) => {
+const ThietbiuutienOTTab = ({navigation}) => {
   const [searchText, setSearchText] = useState('');
 
   const filteredViolations = fullViolations.filter(item =>
@@ -19,16 +21,6 @@ const ThietbiuutienOT = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Icon name="chevron-left"
-          size={18}
-          onPress={() => navigation.goBack()}
-          style={{ color: '#FFFFFF', marginRight: 20, marginTop: 6 }}
-        >
-          Back
-        </Icon>
-        <Text style={styles.header}>Thiết bị ưu tiên, còi</Text>
-      </View>
       <View style={styles.searchContainer}>
         <Icon style={styles.icon} size={30} name='search' />
         <TextInput
@@ -62,27 +54,37 @@ const ThietbiuutienOT = ({navigation}) => {
   );
 };
 
+const ThietbiuutienOTStack = () => {
+  return (
+    <Stack.Navigator>
+    <Stack.Screen
+      name="ThietbiuutienOTTab"
+      component={ThietbiuutienOTTab}
+      options={({ navigation }) => ({
+        title: 'Thiết bị ưu tiên, còi',
+        headerTitleAlign: 'center',
+        headerStyle: { backgroundColor: '#2F95DC' },
+        headerTintColor: '#FFFFFF',
+        headerTitleStyle: { fontWeight: 'bold' },
+        headerLeft: () => (
+          <Icon name="chevron-left"
+          size={15}
+            onPress={() => navigation.goBack()}
+            style={{ color: '#FFFFFF', marginLeft: 10 }}
+          >
+            Back
+          </Icon>
+        ),
+      })}
+    />
+  </Stack.Navigator>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 16,
-    backgroundColor: '#2F95DC',
-    alignItems: 'center',
-  },
-  header: {
-    flex: 1,
-    marginRight: 70,
-    fontSize: 15,
-    marginTop: 5,
-    fontWeight: 'bold',
-    justifyContent: 'center',
-    textAlign: 'center',
-    color: '#fff',
   },
   searchContainer: {
     height: 60,
@@ -140,4 +142,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ThietbiuutienOT;
+export default ThietbiuutienOTStack;

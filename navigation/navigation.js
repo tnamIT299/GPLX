@@ -33,6 +33,7 @@ function Navigation() {
         <Stack.Screen name="Sahinh" component={Sahinh} />
         <Stack.Screen name="Tracuu" component={Tracuu} />
 
+        {/*Screen Luật giao thông cho Xe máy*/}
         <Stack.Screen name="HieulenhchidanXM" component={HieulenhchidanXM} />
         <Stack.Screen name="ChuyenhuongXM" component={ChuyenhuongXM} />
         <Stack.Screen name="DungxeXM" component={DungxeXM} />
@@ -45,6 +46,8 @@ function Navigation() {
         <Stack.Screen name="GiaytoxeXM" component={GiaytoxeXM} />
         <Stack.Screen name="KhacXM" component={KhacXM} />
 
+
+        {/*Screen Luật giao thông cho Ô tô*/}
         <Stack.Screen name="HieulenhchidanOT" component={HieulenhchidanOT} />
         <Stack.Screen name="ChuyenhuongOT" component={ChuyenhuongOT} />
         <Stack.Screen name="DungxeOT" component={DungxeOT} />
@@ -57,6 +60,7 @@ function Navigation() {
         <Stack.Screen name="GiaytoxeOT" component={GiaytoxeOT} />
         <Stack.Screen name="KhacOT" component={KhacOT} />
 
+        {/*Screen Luật giao thông cho Khác*/}
         <Stack.Screen name="HieulenhchidanK" component={HieulenhchidanK} />
         <Stack.Screen name="ChuyenhuongK" component={ChuyenhuongK} />
         <Stack.Screen name="DungxeK" component={DungxeK} />

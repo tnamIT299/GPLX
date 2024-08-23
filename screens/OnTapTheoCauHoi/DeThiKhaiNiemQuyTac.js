@@ -19,7 +19,7 @@ const DeThiKhaiNiemQuyTacTab = ({ navigation }) => {
   const [questionStates, setQuestionStates] = useState([]);
   const [isTimeUp, setIsTimeUp] = useState(false);
   const [isAnswered, setIsAnswered] = useState(false);
-  const [explanation, setExplanation] = useState('');
+  const [explanations, setExplanations] = useState([]);
 
   const imageMap = {
     '39.png': require('../../assets/Question/39.png'),
@@ -50,7 +50,8 @@ const DeThiKhaiNiemQuyTacTab = ({ navigation }) => {
       setQuestionStates(fetchedData.map(() => ({
         selectedOption: null,
         isChecked: false,
-        isCorrect: null
+        isCorrect: null,
+        explanations: ''
       })));
     };
 
@@ -72,41 +73,114 @@ const DeThiKhaiNiemQuyTacTab = ({ navigation }) => {
     setQuestionStates(prevStates => {
       const updatedStates = [...prevStates];
       const currentState = updatedStates[currentIndex];
+      
       if (currentState.selectedOption && currentState.selectedOption.correct === "1") {
         setScore(prevScore => prevScore + 1);
         currentState.isCorrect = true;
       } else {
         currentState.isCorrect = false;
       }
-
+      
       currentState.isChecked = true;
+      currentState.isAnswered = true;
+      currentState.explanations = data[currentIndex]?.tip || '';  // Lưu giải thích vào trạng thái
       setIsAnswered(true);
-      setExplanation(data[currentIndex]?.tip || '');
+      setExplanations(currentState.explanations);
+      
       return updatedStates;
     });
     setIsChecked(true);
-  }, [currentIndex, data]);
+}, [currentIndex, data]);
 
-  const handleNext = useCallback(() => {
-    setCurrentIndex(prevIndex => {
+
+
+const handleNext = useCallback(() => {
+  setCurrentIndex(prevIndex => {
       const newIndex = Math.min(prevIndex + 1, data.length - 1);
-      setSelectedOption(questionStates[newIndex]?.selectedOption);
-      setIsChecked(questionStates[newIndex]?.isChecked);
+      const nextState = questionStates[newIndex];
+      setSelectedOption(nextState?.selectedOption);
+      setIsChecked(nextState?.isChecked);
+      setIsAnswered(nextState?.isAnswered);
+      setExplanations(nextState?.explanations || '');
+      
       if (newIndex === data.length - 1) {
-        setIsQuizFinished(true);
+          setIsQuizFinished(true);
       }
       return newIndex;
-    });
-  }, [data.length, questionStates]);
+  });
+}, [data.length, questionStates]);
 
-  const handlePrev = useCallback(() => {
-    setCurrentIndex(prevIndex => {
+const handlePrev = useCallback(() => {
+  setCurrentIndex(prevIndex => {
       const newIndex = Math.max(prevIndex - 1, 0);
-      setSelectedOption(questionStates[newIndex]?.selectedOption);
-      setIsChecked(questionStates[newIndex]?.isChecked);
+      const prevState = questionStates[newIndex];
+      setSelectedOption(prevState?.selectedOption);
+      setIsChecked(prevState?.isChecked);
+      setIsAnswered(prevState?.isAnswered);
+      setExplanations(prevState?.explanations || '');
       return newIndex;
-    });
-  }, [questionStates]);
+  });
+}, [questionStates]);
+
+const deleteProgress = useCallback(() => {
+  Alert.alert(
+    'Xoá tiến trình',
+    'Bạn có chắc chắn muốn xoá tất cả tiến trình và làm lại?',
+    [
+      {
+        text: 'Huỷ',
+        style: 'cancel'
+      },
+      {
+        text: 'Xoá',
+        onPress: () => {
+          setCurrentIndex(0);
+          setScore(0);
+          setSelectedOption(null);
+          setIsQuizFinished(false);
+          setIsChecked(false);
+          setIsTimeUp(false);
+          setQuestionStates(data.map(() => ({
+            selectedOption: null,
+            isChecked: false,
+            isCorrect: null,
+            explanation: '',
+            isAnswered: false,
+          })));
+        }
+      }
+    ]
+  );
+}, [data]);
+
+const handleChamdiem = useCallback(() => {
+  let totalScore = 0;
+  
+  questionStates.forEach((questionState, index) => {
+    const question = data[index];
+    
+    if (questionState.selectedOption) {
+      const isCorrect = questionState.selectedOption.correct === "1";
+      if (isCorrect) {
+        totalScore += 1;  // Thay đổi điểm số nếu cần
+        questionState.isCorrect = true;
+      } else {
+        questionState.isCorrect = false;
+      }
+    } else {
+      questionState.isCorrect = false; // Đánh dấu câu hỏi chưa được trả lời
+    }
+    
+    questionState.isChecked = true;
+    questionState.isAnswered = true;
+    questionState.explanation = question.tip || '';  // Thêm giải thích nếu có
+  });
+  
+  setScore(totalScore);
+  setIsQuizFinished(true);
+}, [questionStates, data]);
+
+
 
   const handleRestart = useCallback(() => {
     setCurrentIndex(0);
@@ -121,6 +195,14 @@ const DeThiKhaiNiemQuyTacTab = ({ navigation }) => {
       isCorrect: null
     })));
   }, [data]);
+
+  const getScoreLevel = (score, total) => {
+    const percentage = (score / total) * 100;
+    if (percentage >= 90) return 'excellent';
+    if (percentage >= 50) return 'good';
+    if (0<= percentage < 50 ) return 'bad';
+    return 'poor';
+  };
 
   const renderOption = ({ item }) => {
     const currentState = questionStates[currentIndex];
@@ -154,14 +236,35 @@ const DeThiKhaiNiemQuyTacTab = ({ navigation }) => {
   }, [isTimeUp]);
 
   if (isQuizFinished) {
+    const scoreLevel = getScoreLevel(score, data.length);
     return (
       <View style={styles.container}>
         <Text style={styles.finalScore}>
-          {isTimeUp ? 'Hết giờ! ' : 'Quiz Completed!'}
+          {isTimeUp ? 'Hết giờ! ' : 'Hoàn Thành Bài Kiểm Tra'}
         </Text>
-        <Text style={styles.finalScore}>Your Score: {score} / {data.length}</Text>
+        {scoreLevel === 'excellent' && (
+          <>
+            <Image source={require('../../assets/splash/doneExam.webp')} style={styles.image} />
+            <Text style={styles.finalScore}>Xuất sắc! Bạn đã làm rất tốt!</Text>
+          </>
+        )}
+        {scoreLevel === 'good' && (
+          <>
+            <Image source={require('../../assets/splash/tryagain.webp')} style={styles.image} />
+            <Text style={styles.finalScore}>Tốt! Bạn có thể làm tốt hơn nữa!</Text>
+          </>
+        )}
+        {scoreLevel === 'bad' && (
+          <>
+            <Image source={require('../../assets/splash/sad.webp')} style={styles.image} />
+            <Text style={styles.finalScore}> Bạn cần ôn tập lại nhiều hơn!</Text>
+          </>
+        )}
+        
+        <Text style={styles.finalScore}>Điểm của bạn: {score} / {data.length}</Text>
+
         <TouchableOpacity style={styles.button} onPress={handleRestart}>
-          <Text style={styles.buttonText}>Again</Text>
+          <Text style={styles.buttonText}>Làm lại</Text>
         </TouchableOpacity>
       </View>
     );
@@ -177,6 +280,18 @@ const DeThiKhaiNiemQuyTacTab = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          backgroundColor: '#f9f9f9',
+        }}>
+          <TouchableOpacity style={styles.btnendExam} onPress={handleChamdiem}>
+            <Text style={{ fontSize: 15, fontWeight:'bold',color:'blue' }}>Chấm điểm</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navButton} onPress={deleteProgress}>
+            <Ionicons name="trash" size={25} color="red" />
+          </TouchableOpacity>
+        </View>
         <Text style={styles.titleQuestion}>{currentQuestion.content}</Text>
         {imageSource ? (
           <Image
@@ -191,20 +306,20 @@ const DeThiKhaiNiemQuyTacTab = ({ navigation }) => {
           keyExtractor={(optionItem, index) => index.toString()}
           scrollEnabled={false}
         />
-        {isChecked && explanation ? (
+        {isChecked && explanations ? (
           <View style={styles.explanationContainer}>
             <View style={{ flexDirection: 'row' }}>
               <Ionicons name="pricetags" size={20} color="#333" />
               <Text style={styles.explanationText}>Giải thích đáp án:</Text>
             </View>
-            <Text style={styles.explanationText}>{explanation}</Text>
+            <Text style={styles.explanationText}>{explanations}</Text>
           </View>
         ) : null}
       </ScrollView>
 
       <View style={styles.footer}>
         <TouchableOpacity style={styles.navButton} onPress={handlePrev}>
-          <Ionicons name="arrow-back" size={25} color="gray" />
+          <Ionicons name="arrow-back" size={25} color="#fff" />
         </TouchableOpacity>
 
         {selectedOption && (
@@ -214,7 +329,7 @@ const DeThiKhaiNiemQuyTacTab = ({ navigation }) => {
         )}
 
         <TouchableOpacity style={styles.navButton} onPress={handleNext}>
-          <Ionicons name="arrow-forward" size={25} color="gray" />
+          <Ionicons name="arrow-forward" size={25} color="#fff" />
         </TouchableOpacity>
       </View>
     </View>
@@ -228,7 +343,7 @@ const DeThiKhaiNiemQuyTacStack = ({ navigation }) => {
         name="DeThiKhaiNiemQuyTacTab"
         component={DeThiKhaiNiemQuyTacTab}
         options={({ navigation }) => ({
-          headerTitle: 'Đề thi Khái niệm Quy tắc',
+          headerTitle: 'Khái niệm Quy tắc',
           headerTitleAlign: 'center',
           headerStyle: { backgroundColor: '#2F95DC' },
           headerTintColor: '#FFFFFF',
@@ -239,7 +354,7 @@ const DeThiKhaiNiemQuyTacStack = ({ navigation }) => {
               size={15}
               onPress={() => navigation.goBack()}
               style={{ color: '#FFFFFF', marginLeft: 10 }}
-            />
+            >Back</Icon>
           ),
         })}
       />
@@ -311,7 +426,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   finalScore: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
@@ -328,4 +443,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  btnendExam: {
+    backgroundColor:'#ddd',
+    borderRadius: 10,
+    padding: 10,
+    justifyContent: 'center',
+  },
+  image:{
+    resizeMode:'contain',
+    width:150,
+    height:150,
+    alignSelf:'center',
+  }
 });

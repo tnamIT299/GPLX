@@ -8,7 +8,7 @@ const Stack = createStackNavigator();
 
 const items = [
     { id: '1', name: 'Toàn bộ câu hỏi', title: '200 câu hỏi bao gồm 20 câu điểm liệt', progress: 200 },
-    { id: '2', name: 'Khái niệm và quy tắc giao thông', title: '83 câu: Từ câu 1 đến câu 83, có 18 câu điểm liệt', progress: 83 },
+    { id: '2', name: 'Khái niệm và quy tắc giao thông', title: '83 câu: Từ câu 1 đến câu 83, có 18 câu điểm liệt', progress: 65 },
     { id: '3', name: 'Văn hoá và đạo đức', title: '5 câu: Từ câu 84 đến câu 88', progress: 5 },
     { id: '4', name: 'Kỹ thuật lái xe', title: '12 câu: Từ câu 89 đến câu 100, có 2 câu điểm liệt', progress: 12 },
     { id: '5', name: 'Biển báo đường bộ', title: '65 câu: Từ câu 101 đến câu 165', progress: 65 },
@@ -53,7 +53,7 @@ const OnTapTheoCauHoiTab = ({ navigation }) => {
                                 <Progress.Bar 
                                     progress={item.progress / 200}
                                     width={250}
-                                    height={7}
+                                    height={9}
                                     color="#3b5998" 
                                     borderRadius={5} 
                                     borderWidth={2} 
@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
     },
     progressBar:{
         flexDirection:'row',
+        justifyContent:'space-between',
     }
 });
 

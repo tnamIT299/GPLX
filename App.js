@@ -8,6 +8,7 @@ import Meoghinho from './screens/Meoghinho';
 import Tracuu from './screens/Tracuu';
 import Sahinh from './screens/Sahinh';
 import Hieulenhchidan from './screens/LuatGiaoThong/LuatXeMay/HieulenhchidanXM'
+import BoDeThi from './screens/BoDe/BoDeThi';
 export default function App() {
   return (
     <View style={styles.container}>

@@ -15,6 +15,9 @@ from '../screens/LuatGiaoThong/LuatOto/index';
 import {HieulenhchidanK,ChuyenhuongK,DungxeK,ThietbiuutienK,TocdoK,VanchuyenK,TrangthietbiK,DuongcamK,NongdoconK,GiaytoxeK,KhacK,} 
 from '../screens/LuatGiaoThong/LuatKhac/index';
 import { Splash1, Splash2, Splash3 } from '../screens/SplashScreen/index';
+import BoDeThi from '../screens/BoDe/BoDeThi';
+import OnTapTheoCauHoi from '../screens/OnTapTheoCauHoi/OnTapTheoCauHoi';
+import DeThiKhaiNiemQuyTac from '../screens/OnTapTheoCauHoi/DeThiKhaiNiemQuyTac';
 
 const Stack = createStackNavigator();
 
@@ -27,6 +30,8 @@ function Navigation() {
         <Stack.Screen name="Splash3" component={Splash3} />
         <Stack.Screen name="ManhinhChinh" component={ManhinhChinh} />
         <Stack.Screen name="ManhinhChonOption" component={ManhinhChonOption} />
+        <Stack.Screen name="BoDeThi" component={BoDeThi} />
+        <Stack.Screen name="OnTapTheoCauHoi" component={OnTapTheoCauHoi} />
         <Stack.Screen name="BienBaoTab" component={BienBaoTab} />
         <Stack.Screen name="LuatGiaoThongTab" component={LuatGiaoThongTab} />
         <Stack.Screen name="Meoghinho" component={Meoghinho} />
@@ -72,7 +77,9 @@ function Navigation() {
         <Stack.Screen name="NongdoconK" component={NongdoconK} />
         <Stack.Screen name="GiaytoxeK" component={GiaytoxeK} />
         <Stack.Screen name="KhacK" component={KhacK} />
-        
+
+         {/*Screen Ôn Tập câu hỏi*/}
+         <Stack.Screen name="DeThiKhaiNiemQuyTac" component={DeThiKhaiNiemQuyTac} />
 
       </Stack.Navigator>
     </NavigationContainer>

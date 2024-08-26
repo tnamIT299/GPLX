@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Stack = createStackNavigator();
 
-const DeThiKhaiNiemQuyTacTab = ({ navigation }) => {
+const VanHoaDaoDucTab = ({ navigation }) => {
   const [data, setData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -21,20 +21,11 @@ const DeThiKhaiNiemQuyTacTab = ({ navigation }) => {
   const [isAnswered, setIsAnswered] = useState(false);
   const [explanations, setExplanations] = useState([]);
 
-  const imageMap = {
-    '39.png': require('../../assets/Question/39.png'),
-    '40.png': require('../../assets/Question/40.png'),
-    '41.png': require('../../assets/Question/41.png'),
-    '42.png': require('../../assets/Question/42.png'),
-    '44.png': require('../../assets/Question/44.png'),
-    '45.png': require('../../assets/Question/45.png'),
-  };
-
   const fetchData = useCallback(async () => {
     const { data, error } = await supabase
       .from('question')
-      .select('content, option, image, tip')
-      .eq('typeQuestion', 1);
+      .select('content, option')
+      .eq('typeQuestion', 2);
 
     if (error) {
       console.error('Error fetching data:', error);
@@ -97,7 +88,7 @@ const DeThiKhaiNiemQuyTacTab = ({ navigation }) => {
 
 const handleNext = useCallback(() => {
   setCurrentIndex(prevIndex => {
-      const newIndex = Math.min(prevIndex + 1, data.length);
+      const newIndex = Math.min(prevIndex+1, data.length);
       const nextState = questionStates[newIndex];
       setSelectedOption(nextState?.selectedOption);
       setIsChecked(nextState?.isChecked);
@@ -276,7 +267,6 @@ const handleChamdiem = useCallback(() => {
     return <Text style={{ textAlign: 'center' }}>Loading...</Text>;
   }
 
-  const imageSource = currentQuestion.image ? imageMap[currentQuestion.image] : null;
 
   return (
     <View style={styles.container}>
@@ -294,13 +284,6 @@ const handleChamdiem = useCallback(() => {
           </TouchableOpacity>
         </View>
         <Text style={styles.titleQuestion}>{currentQuestion.content}</Text>
-        {imageSource ? (
-          <Image
-            source={imageSource}
-            style={{ width: 150, height: 150, marginBottom: 5, alignSelf: 'center' }}
-            resizeMode="contain"
-          />
-        ) : null}
         <FlatList
           data={currentQuestion.option.options}
           renderItem={renderOption}
@@ -337,14 +320,14 @@ const handleChamdiem = useCallback(() => {
   );
 };
 
-const DeThiKhaiNiemQuyTacStack = ({ navigation }) => {
+const VanHoaDaoDucStack = ({ navigation }) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="DeThiKhaiNiemQuyTacTab"
-        component={DeThiKhaiNiemQuyTacTab}
+        name="VanHoaDaoDucTab"
+        component={VanHoaDaoDucTab}
         options={({ navigation }) => ({
-          headerTitle: 'Khái niệm Quy tắc',
+          headerTitle: 'Văn Hóa và Đạo Đức',
           headerTitleAlign: 'center',
           headerStyle: { backgroundColor: '#2F95DC' },
           headerTintColor: '#FFFFFF',
@@ -363,7 +346,7 @@ const DeThiKhaiNiemQuyTacStack = ({ navigation }) => {
   );
 };
 
-export default DeThiKhaiNiemQuyTacStack;
+export default VanHoaDaoDucStack;
 
 const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({

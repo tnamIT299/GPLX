@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, ScrollView, StyleSheet,Alert } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, ScrollView, StyleSheet, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Progress from 'react-native-progress';
@@ -8,9 +8,9 @@ const Stack = createStackNavigator();
 
 const items = [
     { id: '1', name: 'Toàn bộ câu hỏi', title: '200 câu hỏi bao gồm 20 câu điểm liệt', progress: 200 },
-    { id: '2', name: 'Khái niệm và quy tắc giao thông', title: '83 câu: Từ câu 1 đến câu 83, có 18 câu điểm liệt', progress: 65 },
-    { id: '3', name: 'Văn hoá và đạo đức', title: '5 câu: Từ câu 84 đến câu 88', progress: 5 },
-    { id: '4', name: 'Kỹ thuật lái xe', title: '12 câu: Từ câu 89 đến câu 100, có 2 câu điểm liệt', progress: 12 },
+    { id: '2', name: 'Khái niệm và quy tắc giao thông', title: '65 câu', progress: 65 },
+    { id: '3', name: 'Văn hoá và đạo đức', title: '5 câu', progress: 5 },
+    { id: '4', name: 'Kỹ thuật lái xe', title: '10 câu', progress: 10 },
     { id: '5', name: 'Biển báo đường bộ', title: '65 câu: Từ câu 101 đến câu 165', progress: 65 },
     { id: '6', name: 'Sa hình', title: '35 câu: Từ câu 166 đến câu 200', progress: 35 },
 ];
@@ -23,6 +23,13 @@ const OnTapTheoCauHoiTab = ({ navigation }) => {
             case '2':
                 navigation.navigate('DeThiKhaiNiemQuyTac');
                 break;
+            case '3':
+                navigation.navigate('VanHoaDaoDuc');
+                break;
+            case '4':
+                navigation.navigate('KyThuatLaiXe');
+                break;
+
             default:
                 Alert.alert('Thông báo', 'Tính năng này đang được phát triển!');
         }
@@ -45,23 +52,23 @@ const OnTapTheoCauHoiTab = ({ navigation }) => {
                     {items.map((item, index) => (
                         <View key={index} style={styles.violationContainer}>
                             <TouchableOpacity
-                             onPress={() => handleOption(item)}>
+                                onPress={() => handleOption(item)}>
                                 <Text style={styles.violationText}>{item.name}</Text>
                                 <Text style={styles.finesText}>{item.title}</Text>
-                                
+
                                 <View style={styles.progressBar}>
-                                <Progress.Bar 
-                                    progress={item.progress / 200}
-                                    width={250}
-                                    height={9}
-                                    color="#3b5998" 
-                                    borderRadius={5} 
-                                    borderWidth={2} 
-                                    style={{ marginTop: 10 }}
-                                />
-                                <Text style={{marginLeft:20, color:'#0099FF'}}>{item.progress}/200</Text>
+                                    <Progress.Bar
+                                        progress={item.progress / 200}
+                                        width={250}
+                                        height={9}
+                                        color="#3b5998"
+                                        borderRadius={5}
+                                        borderWidth={2}
+                                        style={{ marginTop: 10 }}
+                                    />
+                                    <Text style={{ marginLeft: 20, color: '#0099FF' }}>{item.progress}/200</Text>
                                 </View>
-                                
+
                             </TouchableOpacity>
                         </View>
                     ))}
@@ -152,9 +159,9 @@ const styles = StyleSheet.create({
         fontSize: 15,
         width: '80%',
     },
-    progressBar:{
-        flexDirection:'row',
-        justifyContent:'space-between',
+    progressBar: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     }
 });
 

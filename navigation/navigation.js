@@ -18,6 +18,8 @@ import { Splash1, Splash2, Splash3 } from '../screens/SplashScreen/index';
 import BoDeThi from '../screens/BoDe/BoDeThi';
 import OnTapTheoCauHoi from '../screens/OnTapTheoCauHoi/OnTapTheoCauHoi';
 import DeThiKhaiNiemQuyTac from '../screens/OnTapTheoCauHoi/DeThiKhaiNiemQuyTac';
+import VanHoaDaoDuc from '../screens/OnTapTheoCauHoi/VanHoaDaoDuc';
+import KyThuatLaiXe from '../screens/OnTapTheoCauHoi/KyThuatLaiXe';
 
 const Stack = createStackNavigator();
 
@@ -80,6 +82,8 @@ function Navigation() {
 
          {/*Screen Ôn Tập câu hỏi*/}
          <Stack.Screen name="DeThiKhaiNiemQuyTac" component={DeThiKhaiNiemQuyTac} />
+         <Stack.Screen name="VanHoaDaoDuc" component={VanHoaDaoDuc} />
+         <Stack.Screen name="KyThuatLaiXe" component={KyThuatLaiXe} />
 
       </Stack.Navigator>
     </NavigationContainer>

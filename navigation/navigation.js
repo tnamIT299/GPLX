@@ -20,6 +20,7 @@ import OnTapTheoCauHoi from '../screens/OnTapTheoCauHoi/OnTapTheoCauHoi';
 import DeThiKhaiNiemQuyTac from '../screens/OnTapTheoCauHoi/DeThiKhaiNiemQuyTac';
 import VanHoaDaoDuc from '../screens/OnTapTheoCauHoi/VanHoaDaoDuc';
 import KyThuatLaiXe from '../screens/OnTapTheoCauHoi/KyThuatLaiXe';
+import BienBaoDuongBo from '../screens/OnTapTheoCauHoi/BienBaoDuongBo';
 
 const Stack = createStackNavigator();
 
@@ -84,6 +85,7 @@ function Navigation() {
          <Stack.Screen name="DeThiKhaiNiemQuyTac" component={DeThiKhaiNiemQuyTac} />
          <Stack.Screen name="VanHoaDaoDuc" component={VanHoaDaoDuc} />
          <Stack.Screen name="KyThuatLaiXe" component={KyThuatLaiXe} />
+         <Stack.Screen name="BienBaoDuongBo" component={BienBaoDuongBo} />
 
       </Stack.Navigator>
     </NavigationContainer>

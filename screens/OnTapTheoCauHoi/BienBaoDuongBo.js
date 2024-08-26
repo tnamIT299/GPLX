@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Stack = createStackNavigator();
 
-const VanHoaDaoDucTab = ({ navigation }) => {
+const BienBaoDuongBoTab = ({ navigation }) => {
   const [data, setData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -21,11 +21,79 @@ const VanHoaDaoDucTab = ({ navigation }) => {
   const [isAnswered, setIsAnswered] = useState(false);
   const [explanations, setExplanations] = useState([]);
 
+  const imageMap = {
+    '101.png': require('../../assets/Question/101.png'),
+    '102.png': require('../../assets/Question/102.png'),
+    '103.png': require('../../assets/Question/103.png'),
+    '104.png': require('../../assets/Question/104.png'),
+    '105.png': require('../../assets/Question/105.png'),
+    '106.png': require('../../assets/Question/106.png'),
+    '107.png': require('../../assets/Question/107.png'),
+    '108.png': require('../../assets/Question/108.png'),
+    '109.png': require('../../assets/Question/109.png'),
+    '110.png': require('../../assets/Question/110.png'),
+    '111.png': require('../../assets/Question/111.png'),
+    '112.png': require('../../assets/Question/112.png'),
+    '113.png': require('../../assets/Question/113.png'),
+    '114.png': require('../../assets/Question/114.png'),
+    '115.png': require('../../assets/Question/115.png'),
+    '116.png': require('../../assets/Question/116.png'),
+    '117.png': require('../../assets/Question/117.png'),
+    '118.png': require('../../assets/Question/118.png'),
+    '119.png': require('../../assets/Question/119.png'),
+    '120.png': require('../../assets/Question/120.png'),
+    '121.png': require('../../assets/Question/121.png'),
+    '122.png': require('../../assets/Question/122.png'),
+    '123.png': require('../../assets/Question/123.png'),
+    '124.png': require('../../assets/Question/124.png'),
+    '125.png': require('../../assets/Question/125.png'),
+    '126.png': require('../../assets/Question/126.png'),
+    '127.png': require('../../assets/Question/127.png'),
+    '128.png': require('../../assets/Question/128.png'),
+    '129.png': require('../../assets/Question/129.png'),
+    '130.png': require('../../assets/Question/130.png'),
+    '131.png': require('../../assets/Question/131.png'),
+    '132.png': require('../../assets/Question/132.png'),
+    '133.png': require('../../assets/Question/133.png'),
+    '134.png': require('../../assets/Question/134.png'),
+    '135.png': require('../../assets/Question/135.png'),
+    '136.png': require('../../assets/Question/136.png'),
+    '137.png': require('../../assets/Question/137.png'),
+    '138.png': require('../../assets/Question/138.png'),
+    '139.png': require('../../assets/Question/139.png'),
+    '140.png': require('../../assets/Question/140.png'),
+    '141.png': require('../../assets/Question/141.png'),
+    '142.png': require('../../assets/Question/142.png'),
+    '143.png': require('../../assets/Question/143.png'),
+    '144.png': require('../../assets/Question/144.png'),
+    '145.png': require('../../assets/Question/145.png'),
+    '146.png': require('../../assets/Question/146.png'),
+    '147.png': require('../../assets/Question/147.png'),
+    '148.png': require('../../assets/Question/148.png'),
+    '149.png': require('../../assets/Question/149.png'),
+    '150.png': require('../../assets/Question/150.png'),
+    '151.png': require('../../assets/Question/151.png'),
+    '152.png': require('../../assets/Question/152.png'),
+    '153.png': require('../../assets/Question/153.png'),
+    '154.png': require('../../assets/Question/154.png'),
+    '155.png': require('../../assets/Question/155.png'),
+    '156.png': require('../../assets/Question/156.png'),
+    '157.png': require('../../assets/Question/157.png'),
+    '158.png': require('../../assets/Question/158.png'),
+    '159.png': require('../../assets/Question/159.png'),
+    '160.png': require('../../assets/Question/160.png'),
+    '161.png': require('../../assets/Question/161.png'),
+    '162.png': require('../../assets/Question/162.png'),
+    '163.png': require('../../assets/Question/163.png'),
+    '164.png': require('../../assets/Question/164.png'),
+    '165.png': require('../../assets/Question/165.png'),
+  };
+
   const fetchData = useCallback(async () => {
     const { data, error } = await supabase
       .from('question')
-      .select('content, option')
-      .eq('typeQuestion', 2);
+      .select('content, option, image, tip')
+      .eq('typeQuestion', 4);
 
     if (error) {
       console.error('Error fetching data:', error);
@@ -88,7 +156,7 @@ const VanHoaDaoDucTab = ({ navigation }) => {
 
 const handleNext = useCallback(() => {
   setCurrentIndex(prevIndex => {
-      const newIndex = Math.min(prevIndex+1, data.length);
+      const newIndex = Math.min(prevIndex + 1, data.length);
       const nextState = questionStates[newIndex];
       setSelectedOption(nextState?.selectedOption);
       setIsChecked(nextState?.isChecked);
@@ -267,6 +335,7 @@ const handleChamdiem = useCallback(() => {
     return <Text style={{ textAlign: 'center' }}>Loading...</Text>;
   }
 
+  const imageSource = currentQuestion.image ? imageMap[currentQuestion.image] : null;
 
   return (
     <View style={styles.container}>
@@ -285,6 +354,13 @@ const handleChamdiem = useCallback(() => {
         </View>
         <Text style={styles.numberQuestion}>Câu {currentIndex+1} :</Text>
         <Text style={styles.titleQuestion}>{currentQuestion.content}</Text>
+        {imageSource ? (
+          <Image
+            source={imageSource}
+            style={{ width: 250, height: 250, marginBottom: 5, alignSelf: 'center' }}
+            resizeMode="contain"
+          />
+        ) : null}
         <FlatList
           data={currentQuestion.option.options}
           renderItem={renderOption}
@@ -321,14 +397,14 @@ const handleChamdiem = useCallback(() => {
   );
 };
 
-const VanHoaDaoDucStack = ({ navigation }) => {
+const BienBaoDuongBoStack = ({ navigation }) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="VanHoaDaoDucTab"
-        component={VanHoaDaoDucTab}
+        name="BienBaoDuongBoTab"
+        component={BienBaoDuongBoTab}
         options={({ navigation }) => ({
-          headerTitle: 'Văn Hóa và Đạo Đức',
+          headerTitle: 'Biển báo đường bộ',
           headerTitleAlign: 'center',
           headerStyle: { backgroundColor: '#2F95DC' },
           headerTintColor: '#FFFFFF',
@@ -347,7 +423,7 @@ const VanHoaDaoDucStack = ({ navigation }) => {
   );
 };
 
-export default VanHoaDaoDucStack;
+export default BienBaoDuongBoStack;
 
 const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
@@ -361,21 +437,21 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
 
   },
+  titleQuestion: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    marginBottom: 15,
+  },
   numberQuestion: {
     marginTop:5,
     fontSize: 17,
     fontWeight: 'bold',
     marginBottom: 5,
   },
-  titleQuestion: {
-    fontSize: 17,
-    fontWeight: 'bold',
-    marginBottom: 15,
-  },
   explanationContainer: {
     backgroundColor: '#00FF99',
     padding: 10,
-    borderRadius: 8,
+    borderRadius: 8,    
     marginTop: 15,
   },
   explanationText: {

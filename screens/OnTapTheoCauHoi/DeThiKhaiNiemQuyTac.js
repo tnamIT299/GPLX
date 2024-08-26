@@ -284,7 +284,7 @@ const handleChamdiem = useCallback(() => {
         <View style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
-          backgroundColor: '#f9f9f9',
+          backgroundColor: '#fff',
         }}>
           <TouchableOpacity style={styles.btnendExam} onPress={handleChamdiem}>
             <Text style={{ fontSize: 15, fontWeight:'bold',color:'blue' }}>Chấm điểm</Text>
@@ -293,6 +293,7 @@ const handleChamdiem = useCallback(() => {
             <Ionicons name="trash" size={25} color="red" />
           </TouchableOpacity>
         </View>
+        <Text style={styles.numberQuestion}>Câu {currentIndex+1} :</Text>
         <Text style={styles.titleQuestion}>{currentQuestion.content}</Text>
         {imageSource ? (
           <Image
@@ -376,6 +377,12 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingBottom: 50,
 
+  },
+  numberQuestion: {
+    marginTop:5,
+    fontSize: 17,
+    fontWeight: 'bold',
+    marginBottom: 5,
   },
   titleQuestion: {
     fontSize: 17,

@@ -65,45 +65,45 @@ const VanHoaDaoDucTab = ({ navigation }) => {
     setQuestionStates(prevStates => {
       const updatedStates = [...prevStates];
       const currentState = updatedStates[currentIndex];
-      
+
       if (currentState.selectedOption && currentState.selectedOption.correct === "1") {
         setScore(prevScore => prevScore + 1);
         currentState.isCorrect = true;
       } else {
         currentState.isCorrect = false;
       }
-      
+
       currentState.isChecked = true;
       currentState.isAnswered = true;
       currentState.explanations = data[currentIndex]?.tip || '';  // Lưu giải thích vào trạng thái
       setIsAnswered(true);
       setExplanations(currentState.explanations);
-      
+
       return updatedStates;
     });
     setIsChecked(true);
-}, [currentIndex, data]);
+  }, [currentIndex, data]);
 
 
 
-const handleNext = useCallback(() => {
-  setCurrentIndex(prevIndex => {
-      const newIndex = Math.min(prevIndex+1, data.length);
+  const handleNext = useCallback(() => {
+    setCurrentIndex(prevIndex => {
+      const newIndex = Math.min(prevIndex + 1, data.length);
       const nextState = questionStates[newIndex];
       setSelectedOption(nextState?.selectedOption);
       setIsChecked(nextState?.isChecked);
       setIsAnswered(nextState?.isAnswered);
       setExplanations(nextState?.explanations || '');
-      
+
       if (newIndex === data.length) {
-          setIsQuizFinished(true);
+        setIsQuizFinished(true);
       }
       return newIndex;
-  });
-}, [data.length, questionStates]);
+    });
+  }, [data.length, questionStates]);
 
-const handlePrev = useCallback(() => {
-  setCurrentIndex(prevIndex => {
+  const handlePrev = useCallback(() => {
+    setCurrentIndex(prevIndex => {
       const newIndex = Math.max(prevIndex - 1, 0);
       const prevState = questionStates[newIndex];
       setSelectedOption(prevState?.selectedOption);
@@ -111,66 +111,75 @@ const handlePrev = useCallback(() => {
       setIsAnswered(prevState?.isAnswered);
       setExplanations(prevState?.explanations || '');
       return newIndex;
-  });
-}, [questionStates]);
+    });
+  }, [questionStates]);
 
-const deleteProgress = useCallback(() => {
-  Alert.alert(
-    'Xoá tiến trình',
-    'Bạn có chắc chắn muốn xoá tất cả tiến trình và làm lại?',
-    [
-      {
-        text: 'Huỷ',
-        style: 'cancel'
-      },
-      {
-        text: 'Xoá',
-        onPress: () => {
-          setCurrentIndex(0);
-          setScore(0);
-          setSelectedOption(null);
-          setIsQuizFinished(false);
-          setIsChecked(false);
-          setIsTimeUp(false);
-          setQuestionStates(data.map(() => ({
-            selectedOption: null,
-            isChecked: false,
-            isCorrect: null,
-            explanation: '',
-            isAnswered: false,
-          })));
+  const deleteProgress = useCallback(() => {
+    Alert.alert(
+      'Xoá tiến trình',
+      'Bạn có chắc chắn muốn xoá tất cả tiến trình và làm lại?',
+      [
+        {
+          text: 'Huỷ',
+          style: 'cancel'
+        },
+        {
+          text: 'Xoá',
+          onPress: () => {
+            setCurrentIndex(0);
+            setScore(0);
+            setSelectedOption(null);
+            setIsQuizFinished(false);
+            setIsChecked(false);
+            setIsTimeUp(false);
+            setQuestionStates(data.map(() => ({
+              selectedOption: null,
+              isChecked: false,
+              isCorrect: null,
+              explanation: '',
+              isAnswered: false,
+            })));
+          }
         }
-      }
-    ]
-  );
-}, [data]);
+      ]
+    );
+  }, [data]);
 
-const handleChamdiem = useCallback(() => {
-  let totalScore = 0;
-  
-  questionStates.forEach((questionState, index) => {
-    const question = data[index];
-    
-    if (questionState.selectedOption) {
-      const isCorrect = questionState.selectedOption.correct === "1";
-      if (isCorrect) {
-        totalScore += 1;  // Thay đổi điểm số nếu cần
-        questionState.isCorrect = true;
+  const handleChamdiem = useCallback(() => {
+    let totalScore = 0;
+
+    questionStates.forEach((questionState, index) => {
+      const question = data[index];
+
+      if (questionState.selectedOption) {
+        const isCorrect = questionState.selectedOption.correct === "1";
+        if (isCorrect) {
+          totalScore += 1;  // Thay đổi điểm số nếu cần
+          questionState.isCorrect = true;
+        } else {
+          questionState.isCorrect = false;
+        }
       } else {
-        questionState.isCorrect = false;
+        questionState.isCorrect = false; // Đánh dấu câu hỏi chưa được trả lời
       }
-    } else {
-      questionState.isCorrect = false; // Đánh dấu câu hỏi chưa được trả lời
-    }
-    
-    questionState.isChecked = true;
-    questionState.isAnswered = true;
-    questionState.explanation = question.tip || '';  // Thêm giải thích nếu có
-  });
-  
-  setScore(totalScore);
-  setIsQuizFinished(true);
-}, [questionStates, data]);
+
+      questionState.isChecked = true;
+      questionState.isAnswered = true;
+      questionState.explanation = question.tip || '';  // Thêm giải thích nếu có
+    });
+
+    setScore(totalScore);
+    setIsQuizFinished(true);
+  }, [questionStates, data]);
+
+  const handleTabPress = useCallback((index) => {
+    setCurrentIndex(index);
+    const selectedState = questionStates[index];
+    setSelectedOption(selectedState?.selectedOption);
+    setIsChecked(selectedState?.isChecked);
+    setIsAnswered(selectedState?.isAnswered);
+    setExplanations(selectedState?.explanations || '');
+  }, [questionStates]);
 
 
 
@@ -192,7 +201,7 @@ const handleChamdiem = useCallback(() => {
     const percentage = (score / total) * 100;
     if (percentage >= 90) return 'excellent';
     if (percentage >= 50) return 'good';
-    if (0<= percentage < 50 ) return 'bad';
+    if (0 <= percentage < 50) return 'bad';
     return 'poor';
   };
 
@@ -216,6 +225,29 @@ const handleChamdiem = useCallback(() => {
         <View style={styles.optionContent}>
           <Text style={styles.label}>{item.label}: {item.topic}</Text>
         </View>
+      </TouchableOpacity>
+    );
+  };
+
+  const renderTab = ({ item, index }) => {
+    const isActive = index === currentIndex;
+    const isCorrect = questionStates[index]?.isCorrect;
+
+    let backgroundColor = '#BBB'; // Màu mặc định
+    if (isCorrect === true) {
+      backgroundColor = '#00CD00';
+    } else if (isCorrect === false) {
+      backgroundColor = '#FF3030';
+    }
+
+    return (
+      <TouchableOpacity
+        style={[styles.tab, isActive && styles.activeTab, { backgroundColor }]}
+        onPress={() => handleTabPress(index)}
+      >
+        <Text style={[styles.tabText, isActive && styles.activeTabText]}>
+          Câu {index + 1}
+        </Text>
       </TouchableOpacity>
     );
   };
@@ -252,7 +284,7 @@ const handleChamdiem = useCallback(() => {
             <Text style={styles.finalScore}> Bạn cần ôn tập lại nhiều hơn!</Text>
           </>
         )}
-        
+
         <Text style={styles.finalScore}>Điểm của bạn: {score} / {data.length}</Text>
 
         <TouchableOpacity style={styles.button} onPress={handleRestart}>
@@ -270,6 +302,17 @@ const handleChamdiem = useCallback(() => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.tabSwitch}>
+        <FlatList
+          data={data}
+          horizontal
+          renderItem={renderTab}
+          keyExtractor={(item, index) => index.toString()}
+          style={styles.tabContainer}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={{
           flexDirection: 'row',
@@ -277,13 +320,13 @@ const handleChamdiem = useCallback(() => {
           backgroundColor: '#fff',
         }}>
           <TouchableOpacity style={styles.btnendExam} onPress={handleChamdiem}>
-            <Text style={{ fontSize: 15, fontWeight:'bold',color:'blue' }}>Chấm điểm</Text>
+            <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'blue' }}>Chấm điểm</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.navButton} onPress={deleteProgress}>
             <Ionicons name="trash" size={25} color="red" />
           </TouchableOpacity>
         </View>
-        <Text style={styles.numberQuestion}>Câu {currentIndex+1} :</Text>
+        <Text style={styles.numberQuestion}>Câu {currentIndex + 1} :</Text>
         <Text style={styles.titleQuestion}>{currentQuestion.content}</Text>
         <FlatList
           data={currentQuestion.option.options}
@@ -359,10 +402,9 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 10,
     paddingBottom: 50,
-
   },
   numberQuestion: {
-    marginTop:5,
+    marginTop: 5,
     fontSize: 17,
     fontWeight: 'bold',
     marginBottom: 5,
@@ -435,15 +477,39 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   btnendExam: {
-    backgroundColor:'#ddd',
+    backgroundColor: '#ddd',
     borderRadius: 10,
     padding: 10,
     justifyContent: 'center',
   },
-  image:{
-    resizeMode:'contain',
-    width:150,
-    height:150,
-    alignSelf:'center',
-  }
+  image: {
+    resizeMode: 'contain',
+    width: 150,
+    height: 150,
+    alignSelf: 'center',
+  },
+  tabContainer: {
+    backgroundColor: '#f2f2f2',
+    paddingVertical: 10,
+  },
+  tab: {
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+    marginHorizontal: 5,
+    backgroundColor: '#ddd',
+  },
+  activeTab: {
+    backgroundColor: '#2F95DC',
+  },
+  tabText: {
+    color: '#000',
+    fontSize: 15,
+  },
+  activeTabText: {
+    color: '#fff',
+  },
+  tabSwitch: {
+    padding: 3
+  },
 });

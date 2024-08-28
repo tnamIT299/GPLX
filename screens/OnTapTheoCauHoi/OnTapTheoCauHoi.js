@@ -12,7 +12,7 @@ const items = [
     { id: '3', name: 'Văn hoá và đạo đức', title: '5 câu', progress: 5 },
     { id: '4', name: 'Kỹ thuật lái xe', title: '10 câu', progress: 10 },
     { id: '5', name: 'Biển báo đường bộ', title: '65 câu', progress: 65 },
-    { id: '6', name: 'Sa hình', title: '35 câu: Từ câu 166 đến câu 200', progress: 35 },
+    { id: '6', name: 'Sa hình', title: '35 câu', progress: 35 },
 ];
 
 const OnTapTheoCauHoiTab = ({ navigation }) => {
@@ -20,6 +20,9 @@ const OnTapTheoCauHoiTab = ({ navigation }) => {
 
     const handleOption = (item) => {
         switch (item.id) {
+            case '1':
+                navigation.navigate('ToanBoCauHoi');
+                break;
             case '2':
                 navigation.navigate('DeThiKhaiNiemQuyTac');
                 break;
@@ -31,6 +34,9 @@ const OnTapTheoCauHoiTab = ({ navigation }) => {
                 break;
             case '5':
                 navigation.navigate('BienBaoDuongBo');
+                break;
+            case '6':
+                navigation.navigate('SaHinh');
                 break;
             default:
                 Alert.alert('Thông báo', 'Tính năng này đang được phát triển!');

@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Stack = createStackNavigator();
 
-const VanHoaDaoDucTab = ({ navigation }) => {
+const SaHinhTab = ({ navigation }) => {
   const [data, setData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -21,11 +21,49 @@ const VanHoaDaoDucTab = ({ navigation }) => {
   const [isAnswered, setIsAnswered] = useState(false);
   const [explanations, setExplanations] = useState([]);
 
+  const imageMap = {
+    '166.png': require('../../assets/Question/166.png'),
+    '167.png': require('../../assets/Question/167.png'),
+    '168.png': require('../../assets/Question/168.png'),
+    '169.png': require('../../assets/Question/169.png'),
+    '170.png': require('../../assets/Question/170.png'),
+    '171.png': require('../../assets/Question/171.png'),
+    '172.png': require('../../assets/Question/172.png'),
+    '173.png': require('../../assets/Question/173.png'),
+    '174.png': require('../../assets/Question/174.png'),
+    '175.png': require('../../assets/Question/175.png'),
+    '176.png': require('../../assets/Question/176.png'),
+    '177.png': require('../../assets/Question/177.png'),
+    '178.png': require('../../assets/Question/178.png'),
+    '179.png': require('../../assets/Question/179.png'),
+    '180.png': require('../../assets/Question/180.png'),
+    '181.png': require('../../assets/Question/181.png'),
+    '182.png': require('../../assets/Question/182.png'),
+    '183.png': require('../../assets/Question/183.png'),
+    '184.png': require('../../assets/Question/184.png'),
+    '185.png': require('../../assets/Question/185.png'),
+    '186.png': require('../../assets/Question/186.png'),
+    '187.png': require('../../assets/Question/187.png'),
+    '188.png': require('../../assets/Question/188.png'),
+    '189.png': require('../../assets/Question/189.png'),
+    '190.png': require('../../assets/Question/190.png'),
+    '191.png': require('../../assets/Question/191.png'),
+    '192.png': require('../../assets/Question/192.png'),
+    '193.png': require('../../assets/Question/193.png'),
+    '194.png': require('../../assets/Question/194.png'),
+    '195.png': require('../../assets/Question/195.png'),
+    '196.png': require('../../assets/Question/196.png'),
+    '197.png': require('../../assets/Question/197.png'),
+    '198.png': require('../../assets/Question/198.png'),
+    '199.png': require('../../assets/Question/199.png'),
+    '200.png': require('../../assets/Question/200.png'),
+  };
+
   const fetchData = useCallback(async () => {
     const { data, error } = await supabase
       .from('question')
-      .select('content, option')
-      .eq('typeQuestion', 2);
+      .select('content, option, image, tip')
+      .eq('typeQuestion', 5);
 
     if (error) {
       console.error('Error fetching data:', error);
@@ -83,6 +121,8 @@ const VanHoaDaoDucTab = ({ navigation }) => {
     });
     setIsChecked(true);
   }, [currentIndex, data]);
+
+
 
   const handleNext = useCallback(() => {
     setCurrentIndex(prevIndex => {
@@ -170,15 +210,6 @@ const VanHoaDaoDucTab = ({ navigation }) => {
     setIsQuizFinished(true);
   }, [questionStates, data]);
 
-  const handleTabPress = useCallback((index) => {
-    setCurrentIndex(index);
-    const selectedState = questionStates[index];
-    setSelectedOption(selectedState?.selectedOption);
-    setIsChecked(selectedState?.isChecked);
-    setIsAnswered(selectedState?.isAnswered);
-    setExplanations(selectedState?.explanations || '');
-  }, [questionStates]);
-
 
 
   const handleRestart = useCallback(() => {
@@ -203,6 +234,38 @@ const VanHoaDaoDucTab = ({ navigation }) => {
     return 'poor';
   };
 
+  const renderTab = ({ item, index }) => {
+    const isActive = index === currentIndex;
+    const isCorrect = questionStates[index]?.isCorrect;
+
+    let backgroundColor = '#BBB'; // Màu mặc định
+    if (isCorrect === true) {
+      backgroundColor = '#00CD00';
+    } else if (isCorrect === false) {
+      backgroundColor = '#FF3030';
+    }
+
+    return (
+      <TouchableOpacity
+        style={[styles.tab, isActive && styles.activeTab, { backgroundColor }]}
+        onPress={() => handleTabPress(index)}
+      >
+        <Text style={[styles.tabText, isActive && styles.activeTabText]}>
+          Câu {index + 1}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const handleTabPress = useCallback((index) => {
+    setCurrentIndex(index);
+    const selectedState = questionStates[index];
+    setSelectedOption(selectedState?.selectedOption);
+    setIsChecked(selectedState?.isChecked);
+    setIsAnswered(selectedState?.isAnswered);
+    setExplanations(selectedState?.explanations || '');
+  }, [questionStates]);
+
   const renderOption = ({ item }) => {
     const currentState = questionStates[currentIndex];
     const isCorrect = item.correct === "1";
@@ -223,29 +286,6 @@ const VanHoaDaoDucTab = ({ navigation }) => {
         <View style={styles.optionContent}>
           <Text style={styles.label}>{item.label}: {item.topic}</Text>
         </View>
-      </TouchableOpacity>
-    );
-  };
-
-  const renderTab = ({ item, index }) => {
-    const isActive = index === currentIndex;
-    const isCorrect = questionStates[index]?.isCorrect;
-
-    let backgroundColor = '#BBB'; // Màu mặc định
-    if (isCorrect === true) {
-      backgroundColor = '#00CD00';
-    } else if (isCorrect === false) {
-      backgroundColor = '#FF3030';
-    }
-
-    return (
-      <TouchableOpacity
-        style={[styles.tab, isActive && styles.activeTab, { backgroundColor }]}
-        onPress={() => handleTabPress(index)}
-      >
-        <Text style={[styles.tabText, isActive && styles.activeTabText]}>
-          Câu {index + 1}
-        </Text>
       </TouchableOpacity>
     );
   };
@@ -297,6 +337,7 @@ const VanHoaDaoDucTab = ({ navigation }) => {
     return <Text style={{ textAlign: 'center' }}>Loading...</Text>;
   }
 
+  const imageSource = currentQuestion.image ? imageMap[currentQuestion.image] : null;
 
   return (
     <View style={styles.container}>
@@ -325,6 +366,13 @@ const VanHoaDaoDucTab = ({ navigation }) => {
         </View>
         <Text style={styles.numberQuestion}>Câu {currentIndex + 1} :</Text>
         <Text style={styles.titleQuestion}>{currentQuestion.content}</Text>
+        {imageSource ? (
+          <Image
+            source={imageSource}
+            style={{ width: 300, height: 300, marginBottom: 5, alignSelf: 'center' }}
+            resizeMode="contain"
+          />
+        ) : null}
         <FlatList
           data={currentQuestion.option.options}
           renderItem={renderOption}
@@ -361,14 +409,14 @@ const VanHoaDaoDucTab = ({ navigation }) => {
   );
 };
 
-const VanHoaDaoDucStack = ({ navigation }) => {
+const SaHinhStack = ({ navigation }) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="VanHoaDaoDucTab"
-        component={VanHoaDaoDucTab}
+        name="SaHinhTab"
+        component={SaHinhTab}
         options={({ navigation }) => ({
-          headerTitle: 'Văn Hóa và Đạo Đức',
+          headerTitle: 'Sa Hình',
           headerTitleAlign: 'center',
           headerStyle: { backgroundColor: '#2F95DC' },
           headerTintColor: '#FFFFFF',
@@ -387,7 +435,7 @@ const VanHoaDaoDucStack = ({ navigation }) => {
   );
 };
 
-export default VanHoaDaoDucStack;
+export default SaHinhStack;
 
 const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
@@ -399,17 +447,18 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 10,
     paddingBottom: 50,
+
+  },
+  titleQuestion: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    marginBottom: 15,
   },
   numberQuestion: {
     marginTop: 5,
     fontSize: 17,
     fontWeight: 'bold',
     marginBottom: 5,
-  },
-  titleQuestion: {
-    fontSize: 17,
-    fontWeight: 'bold',
-    marginBottom: 15,
   },
   explanationContainer: {
     backgroundColor: '#00FF99',

@@ -15,12 +15,11 @@ from '../screens/LuatGiaoThong/LuatOto/index';
 import {HieulenhchidanK,ChuyenhuongK,DungxeK,ThietbiuutienK,TocdoK,VanchuyenK,TrangthietbiK,DuongcamK,NongdoconK,GiaytoxeK,KhacK,} 
 from '../screens/LuatGiaoThong/LuatKhac/index';
 import { Splash1, Splash2, Splash3 } from '../screens/SplashScreen/index';
+import {
+  BienBaoDuongBo, SaHinh, ToanBoCauHoi, VanHoaDaoDuc, KyThuatLaiXe, DeThiKhaiNiemQuyTac, OnTapTheoCauHoi
+} from '../screens/OnTapTheoCauHoi/index';
 import BoDeThi from '../screens/BoDe/BoDeThi';
-import OnTapTheoCauHoi from '../screens/OnTapTheoCauHoi/OnTapTheoCauHoi';
-import DeThiKhaiNiemQuyTac from '../screens/OnTapTheoCauHoi/DeThiKhaiNiemQuyTac';
-import VanHoaDaoDuc from '../screens/OnTapTheoCauHoi/VanHoaDaoDuc';
-import KyThuatLaiXe from '../screens/OnTapTheoCauHoi/KyThuatLaiXe';
-import BienBaoDuongBo from '../screens/OnTapTheoCauHoi/BienBaoDuongBo';
+
 
 const Stack = createStackNavigator();
 
@@ -86,6 +85,9 @@ function Navigation() {
          <Stack.Screen name="VanHoaDaoDuc" component={VanHoaDaoDuc} />
          <Stack.Screen name="KyThuatLaiXe" component={KyThuatLaiXe} />
          <Stack.Screen name="BienBaoDuongBo" component={BienBaoDuongBo} />
+         <Stack.Screen name="SaHinh" component={SaHinh} />
+         <Stack.Screen name="ToanBoCauHoi" component={ToanBoCauHoi} />
+
 
       </Stack.Navigator>
     </NavigationContainer>

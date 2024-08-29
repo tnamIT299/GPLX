@@ -6,6 +6,7 @@ import KyThuatLaiXe from './KyThuatLaiXe';
 import SaHinh from './SaHinh';
 import ToanBoCauHoi from './ToanBoCauHoi';
 import VanHoaDaoDuc from './VanHoaDaoDuc';
+import CauLiet from './CauLiet';
 
 export {
     OnTapTheoCauHoi,
@@ -15,4 +16,5 @@ export {
     SaHinh,
     ToanBoCauHoi,
     VanHoaDaoDuc,
+    CauLiet,
 };

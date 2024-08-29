@@ -26,6 +26,9 @@ const ManhinhChonOptionTab = ({navigation}) => {
             case '4':
                 navigation.navigate('OnTapTheoCauHoi');
                 break;
+            case '5':
+                navigation.navigate('CauLiet');
+                break;
             case '7':
                 navigation.navigate('Tracuu');
                 break;

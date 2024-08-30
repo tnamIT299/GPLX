@@ -268,36 +268,6 @@ const DeNgauNhienTab = ({ navigation }) => {
     });
   }, [questionStates]);
 
-  const deleteProgress = useCallback(() => {
-    Alert.alert(
-      'Xoá tiến trình',
-      'Bạn có chắc chắn muốn xoá tất cả tiến trình và làm lại?',
-      [
-        {
-          text: 'Huỷ',
-          style: 'cancel'
-        },
-        {
-          text: 'Xoá',
-          onPress: () => {
-            setCurrentIndex(0);
-            setScore(0);
-            setSelectedOption(null);
-            setIsQuizFinished(false);
-            setIsChecked(false);
-            setIsTimeUp(false);
-            setQuestionStates(data.map(() => ({
-              selectedOption: null,
-              isChecked: false,
-              isCorrect: null,
-              explanation: '',
-              isAnswered: false,
-            })));
-          }
-        }
-      ]
-    );
-  }, [data]);
 
   const handleChamdiem = useCallback(() => {
     let totalScore = 0;
@@ -458,7 +428,22 @@ const DeNgauNhienTab = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.tabSwitch}>
-      <CountdownCircleTimer
+        <FlatList
+          data={data}
+          horizontal
+          renderItem={renderTab}
+          keyExtractor={(item, index) => index.toString()}
+          style={styles.tabContainer}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          backgroundColor: '#fff',
+        }}>
+            <CountdownCircleTimer
           size={60}
           strokeWidth={6}
           isPlaying
@@ -476,26 +461,8 @@ const DeNgauNhienTab = ({ navigation }) => {
             </Text>
           )}
         </CountdownCircleTimer>
-        <FlatList
-          data={data}
-          horizontal
-          renderItem={renderTab}
-          keyExtractor={(item, index) => index.toString()}
-          style={styles.tabContainer}
-          showsHorizontalScrollIndicator={false}
-        />
-      </View>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          backgroundColor: '#fff',
-        }}>
           <TouchableOpacity style={styles.btnendExam} onPress={handleChamdiem}>
             <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'blue' }}>Chấm điểm</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.navButton} onPress={deleteProgress}>
-            <Ionicons name="trash" size={25} color="red" />
           </TouchableOpacity>
         </View>
         <Text style={styles.numberQuestion}>Câu {currentIndex + 1} :</Text>
@@ -653,6 +620,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ddd',
     borderRadius: 10,
     padding: 10,
+    maxHeight:45,
     justifyContent: 'center',
   },
   image: {

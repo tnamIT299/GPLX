@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Navigation from './navigation/navigation';
+import DeNgauNhien from './screens/OnTapTheoCauHoi/DeNgauNhien';
 
 export default function App() {
   return (

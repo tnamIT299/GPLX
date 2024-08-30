@@ -20,6 +20,9 @@ const items = [
 const ManhinhChonOptionTab = ({navigation}) => {
     const handleOption = (item) => {
         switch (item.id) {
+            case '1':
+                navigation.navigate('DeNgauNhien');
+                break;
             case '2':
                 navigation.navigate('BoDeThi');
                 break;

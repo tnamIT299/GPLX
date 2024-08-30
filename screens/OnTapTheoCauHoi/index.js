@@ -7,6 +7,7 @@ import SaHinh from './SaHinh';
 import ToanBoCauHoi from './ToanBoCauHoi';
 import VanHoaDaoDuc from './VanHoaDaoDuc';
 import CauLiet from './CauLiet';
+import DeNgauNhien from './DeNgauNhien';
 
 export {
     OnTapTheoCauHoi,
@@ -17,4 +18,5 @@ export {
     ToanBoCauHoi,
     VanHoaDaoDuc,
     CauLiet,
+    DeNgauNhien,
 };

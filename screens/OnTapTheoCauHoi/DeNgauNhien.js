@@ -18,6 +18,8 @@ const DeNgauNhienTab = ({ navigation }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [questionStates, setQuestionStates] = useState([]);
   const [isTimeUp, setIsTimeUp] = useState(false);
+  const [hasFailedByLethalQuestion, setHasFailedByLethalQuestion] = useState(false);
+  const [scoreLevel, setScoreLevel] = useState('');
   const [isAnswered, setIsAnswered] = useState(false);
   const [explanations, setExplanations] = useState([]);
 
@@ -271,17 +273,29 @@ const DeNgauNhienTab = ({ navigation }) => {
 
   const handleChamdiem = useCallback(() => {
     let totalScore = 0;
+    let hasFailedByLethalQuestion = false;
 
     questionStates.forEach((questionState, index) => {
       const question = data[index];
 
       if (questionState.selectedOption) {
         const isCorrect = questionState.selectedOption.correct === "1";
+
         if (isCorrect) {
-          totalScore += 1;  // Thay đổi điểm số nếu cần
+          totalScore += 1;  // Tăng điểm số
           questionState.isCorrect = true;
+
+          // Kiểm tra câu liệt (typeQuestion = 6)
+          if (question.typeQuestion === 6) {
+            hasFailedByLethalQuestion = false; // Trả lời đúng câu liệt
+          }
         } else {
           questionState.isCorrect = false;
+
+          // Đánh dấu là không đỗ nếu trả lời sai câu liệt
+          if (question.typeQuestion === 6) {
+            hasFailedByLethalQuestion = true;
+          }
         }
       } else {
         questionState.isCorrect = false; // Đánh dấu câu hỏi chưa được trả lời
@@ -292,9 +306,15 @@ const DeNgauNhienTab = ({ navigation }) => {
       questionState.explanation = question.tip || '';  // Thêm giải thích nếu có
     });
 
+    const scoreLevel = getScoreLevel(totalScore, data.length);
+
+    // Hiển thị kết quả
     setScore(totalScore);
+    setScoreLevel(scoreLevel);
+    setHasFailedByLethalQuestion(hasFailedByLethalQuestion);
     setIsQuizFinished(true);
-  }, [questionStates, data]);
+  }, [questionStates, data, getScoreLevel]);
+
 
 
 
@@ -314,8 +334,8 @@ const DeNgauNhienTab = ({ navigation }) => {
 
   const getScoreLevel = (score, total) => {
     const percentage = (score / total) * 100;
-    if (percentage >= 90) return 'excellent';
-    if (percentage >= 50) return 'good';
+    if (percentage >= 84) return 'excellent';
+    if (50 <= percentage <= 84) return 'good';
     if (0 <= percentage < 50) return 'bad';
     return 'poor';
   };
@@ -384,31 +404,27 @@ const DeNgauNhienTab = ({ navigation }) => {
   }, [isTimeUp]);
 
   if (isQuizFinished) {
-    const scoreLevel = getScoreLevel(score, data.length);
+    const passed = !hasFailedByLethalQuestion && score >= 21;
     return (
       <View style={styles.container}>
         <Text style={styles.finalScore}>
           {isTimeUp ? 'Hết giờ! ' : 'Hoàn Thành Bài Kiểm Tra'}
         </Text>
-        {scoreLevel === 'excellent' && (
+        {passed ? (
           <>
-            <Image source={require('../../assets/splash/doneExam.webp')} style={styles.image} />
-            <Text style={styles.finalScore}>Xuất sắc! Bạn đã làm rất tốt!</Text>
+            {scoreLevel === 'excellent' && (
+              <>
+                <Image source={require('../../assets/splash/doneExam.webp')} style={styles.image} />
+                <Text style={styles.finalScore}>Xuất sắc! Bạn đã đỗ bằng lái xe A1</Text>
+              </>
+            )}
           </>
-        )}
-        {scoreLevel === 'good' && (
-          <>
-            <Image source={require('../../assets/splash/tryagain.webp')} style={styles.image} />
-            <Text style={styles.finalScore}>Tốt! Bạn có thể làm tốt hơn nữa!</Text>
-          </>
-        )}
-        {scoreLevel === 'bad' && (
+        ) : (
           <>
             <Image source={require('../../assets/splash/sad.webp')} style={styles.image} />
-            <Text style={styles.finalScore}> Bạn cần ôn tập lại nhiều hơn!</Text>
+            <Text style={styles.finalScore}>Rất tiếc, bạn chưa đỗ. Hãy ôn tập lại!</Text>
           </>
         )}
-
         <Text style={styles.finalScore}>Điểm của bạn: {score} / {data.length}</Text>
 
         <TouchableOpacity style={styles.button} onPress={handleRestart}>
@@ -417,6 +433,7 @@ const DeNgauNhienTab = ({ navigation }) => {
       </View>
     );
   }
+
 
   const currentQuestion = data[currentIndex];
   if (!currentQuestion) {
@@ -443,30 +460,37 @@ const DeNgauNhienTab = ({ navigation }) => {
           justifyContent: 'space-between',
           backgroundColor: '#fff',
         }}>
-            <CountdownCircleTimer
-          size={60}
-          strokeWidth={6}
-          isPlaying
-          duration={1140}
-          colors={['#004777', '#F7B801', '#A30000', '#A30000']}
-          colorsTime={[7, 5, 2, 0]}
-          onComplete={() => {
-            setIsTimeUp(true); 
-            return { shouldRepeat: false, delay: 1 };
-          }}
-        >
-          {({ remainingTime }) => (
-            <Text style={{ fontSize: 15 }}>
-              {Math.floor(remainingTime / 60)}:{remainingTime % 60}
-            </Text>
-          )}
-        </CountdownCircleTimer>
+          <CountdownCircleTimer
+            size={60}
+            strokeWidth={6}
+            isPlaying
+            duration={1140}
+            colors={['#004777', '#F7B801', '#A30000', '#A30000']}
+            colorsTime={[7, 5, 2, 0]}
+            onComplete={() => {
+              setIsTimeUp(true);
+              return { shouldRepeat: false, delay: 1 };
+            }}
+          >
+            {({ remainingTime }) => (
+              <Text style={{ fontSize: 15 }}>
+                {Math.floor(remainingTime / 60)}:{remainingTime % 60}
+              </Text>
+            )}
+          </CountdownCircleTimer>
           <TouchableOpacity style={styles.btnendExam} onPress={handleChamdiem}>
-            <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'blue' }}>Chấm điểm</Text>
+            <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'blue' }}>Nộp bài</Text>
           </TouchableOpacity>
         </View>
         <Text style={styles.numberQuestion}>Câu {currentIndex + 1} :</Text>
-        <Text style={styles.titleQuestion}>{data[currentIndex].content}</Text>
+        <Text
+          style={[
+            styles.titleQuestion,
+            { color: data[currentIndex].typeQuestion === 6 ? 'red' : 'black' }
+          ]}
+        >
+          {data[currentIndex].content}
+        </Text>
         {imageSource ? (
           <Image
             source={imageSource}
@@ -620,7 +644,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ddd',
     borderRadius: 10,
     padding: 10,
-    maxHeight:45,
+    maxHeight: 45,
     justifyContent: 'center',
   },
   image: {
@@ -652,7 +676,7 @@ const styles = StyleSheet.create({
   },
   tabSwitch: {
     padding: 3,
-    flexDirection:'row',
+    flexDirection: 'row',
   },
   timerText: {
     fontSize: 20,

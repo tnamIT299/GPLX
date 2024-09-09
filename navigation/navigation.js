@@ -16,7 +16,7 @@ import {HieulenhchidanK,ChuyenhuongK,DungxeK,ThietbiuutienK,TocdoK,VanchuyenK,Tr
 from '../screens/LuatGiaoThong/LuatKhac/index';
 import { Splash1, Splash2, Splash3 } from '../screens/SplashScreen/index';
 import {
-  BienBaoDuongBo, SaHinh, ToanBoCauHoi, VanHoaDaoDuc, KyThuatLaiXe, DeThiKhaiNiemQuyTac, OnTapTheoCauHoi,CauLiet,DeNgauNhien
+  BienBaoDuongBo, SaHinh, ToanBoCauHoi, VanHoaDaoDuc, KyThuatLaiXe, DeThiKhaiNiemQuyTac, OnTapTheoCauHoi,CauLiet,DeNgauNhien,CacCauBiSai
 } from '../screens/OnTapTheoCauHoi/index';
 import BoDeThi from '../screens/BoDe/BoDeThi';
 
@@ -89,6 +89,7 @@ function Navigation() {
          <Stack.Screen name="ToanBoCauHoi" component={ToanBoCauHoi} />
          <Stack.Screen name="CauLiet" component={CauLiet} />
          <Stack.Screen name="DeNgauNhien" component={DeNgauNhien} />
+         <Stack.Screen name="CacCauBiSai" component={CacCauBiSai} />
 
 
       </Stack.Navigator>

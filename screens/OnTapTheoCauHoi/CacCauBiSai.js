@@ -5,10 +5,11 @@ import { supabase } from '../../data/supabaseClient';
 import { Ionicons } from '@expo/vector-icons';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { createStackNavigator } from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Stack = createStackNavigator();
 
-const DeNgauNhienTab = ({ navigation }) => {
+const CacCauBiSaiTab = ({ navigation }) => {
   const [data, setData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -17,8 +18,6 @@ const DeNgauNhienTab = ({ navigation }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [questionStates, setQuestionStates] = useState([]);
   const [isTimeUp, setIsTimeUp] = useState(false);
-  const [hasFailedByLethalQuestion, setHasFailedByLethalQuestion] = useState(false);
-  const [scoreLevel, setScoreLevel] = useState('');
   const [isAnswered, setIsAnswered] = useState(false);
   const [explanations, setExplanations] = useState([]);
 
@@ -131,27 +130,44 @@ const DeNgauNhienTab = ({ navigation }) => {
     '200.png': require('../../assets/Question/200.png'),
   };
 
-
   const fetchData = useCallback(async () => {
-    const { data, error } = await supabase
-      .from('question')
-      .select('id, content, option, image, tip, typeQuestion');
-
-    if (error) {
-      console.error('Error fetching data:', error);
+    // Lấy danh sách idQuestion từ bảng WrongQuestion
+    const { data: wrongQuestions, error: wrongQuestionError } = await supabase
+      .from('WrongQuestion')
+      .select('idQuestion');
+  
+    if (wrongQuestionError) {
+      console.error('Error fetching wrong questions:', wrongQuestionError);
       return [];
     }
-
-    return data;
+  
+    if (wrongQuestions.length === 0) {
+      return [];
+    }
+  
+    const questionIds = wrongQuestions.map(wq => wq.idQuestion);
+  
+    // Lấy thông tin chi tiết các câu hỏi từ bảng Question
+    const { data: questions, error: questionError } = await supabase
+      .from('question')
+      .select('id, content, option, typeQuestion, tip, image')
+      .in('id', questionIds); // Dùng .in để lấy danh sách các id
+  
+    if (questionError) {
+      console.error('Error fetching questions:', questionError);
+      return [];
+    }
+  
+    return questions;
   }, []);
+  
+  
 
   useEffect(() => {
-    const getQuestions = async () => {
-      const questions = await fetchData();
-      const groupedQuestions = groupQuestionsByType(questions);
-      const randomQuestions = selectSpecificQuestions(groupedQuestions);
-      setData(randomQuestions);
-      setQuestionStates(randomQuestions.map(() => ({
+    const loadData = async () => {
+      const fetchedData = await fetchData();
+      setData(fetchedData);
+      setQuestionStates(fetchedData.map(() => ({
         selectedOption: null,
         isChecked: false,
         isCorrect: null,
@@ -159,52 +175,9 @@ const DeNgauNhienTab = ({ navigation }) => {
       })));
     };
 
-    getQuestions();
+    loadData();
   }, [fetchData]);
 
-  const groupQuestionsByType = (questions) => {
-    return questions.reduce((acc, question) => {
-      if (!acc[question.typeQuestion]) {
-        acc[question.typeQuestion] = [];
-      }
-      acc[question.typeQuestion].push(question);
-      return acc;
-    }, {});
-  };
-
-  const getRandomQuestionsFromGroup = (group, count) => {
-    const shuffled = group.sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count);
-  };
-
-  const selectSpecificQuestions = (groupedQuestions) => {
-    const selectionCriteria = {
-      1: 8,
-      2: 1,
-      3: 1,
-      4: 7,
-      5: 7,
-      6: 1
-    };
-
-    let selected = [];
-    const selectedIds = new Set();
-
-    for (const type in selectionCriteria) {
-      const count = selectionCriteria[type];
-      if (groupedQuestions[type]) {
-        const randomQuestions = getRandomQuestionsFromGroup(groupedQuestions[type], count);
-        randomQuestions.forEach((question) => {
-          if (!selectedIds.has(question.id)) {
-            selected.push(question);
-            selectedIds.add(question.id);
-          }
-        });
-      }
-    }
-
-    return selected;
-  };
   const handleOptionSelect = useCallback((option) => {
     setQuestionStates(prevStates => {
       const updatedStates = [...prevStates];
@@ -219,47 +192,15 @@ const DeNgauNhienTab = ({ navigation }) => {
   const handleCheckAnswer = useCallback(async () => {
     setQuestionStates(prevStates => {
       const updatedStates = [...prevStates];
-      
-      // Kiểm tra nếu `currentIndex` vượt quá giới hạn của mảng
-      if (currentIndex < 0 || currentIndex >= updatedStates.length) {
-        console.error('Invalid index:', currentIndex);
-        return updatedStates;
-      }
-  
       const currentState = updatedStates[currentIndex];
   
-      // Kiểm tra nếu `currentState` tồn tại
-      if (!currentState) {
-        console.error('Current state is undefined for index:', currentIndex);
-        return updatedStates;
-      }
-  
-      // Kiểm tra nếu `selectedOption` tồn tại
       if (currentState.selectedOption && currentState.selectedOption.correct === "1") {
         setScore(prevScore => prevScore + 1);
         currentState.isCorrect = true;
+        // Gọi hàm xóa câu hỏi khỏi bảng WrongQuestion
+        deleteQuestionFromWrongQuestion(data[currentIndex].id);
       } else {
         currentState.isCorrect = false;
-  
-        // Lưu câu hỏi sai vào bảng WrongQuestion
-        const question = data[currentIndex];
-  
-        // Chuyển việc lưu dữ liệu ra ngoài setQuestionStates để tránh lỗi async
-        (async () => {
-          try {
-            const { error } = await supabase
-              .from('WrongQuestion')
-              .insert([{ idQuestion: question.id }]);
-              
-            if (error) {
-              console.error('Error inserting wrong question:', error);
-            } else {
-              console.log('Wrong question saved successfully.');
-            }
-          } catch (err) {
-            console.error('Unexpected error:', err);
-          }
-        })();
       }
   
       currentState.isChecked = true;
@@ -270,14 +211,22 @@ const DeNgauNhienTab = ({ navigation }) => {
   
       return updatedStates;
     });
-  
     setIsChecked(true);
   }, [currentIndex, data]);
-  
-  
-  
 
-
+  const deleteQuestionFromWrongQuestion = async (questionId) => {
+    const { error } = await supabase
+      .from('WrongQuestion')
+      .delete()
+      .eq('idQuestion', questionId);
+  
+    if (error) {
+      console.error('Error deleting question from WrongQuestion:', error);
+    } else {
+      console.log('Question successfully deleted from WrongQuestion');
+    }
+  };
+  
 
   const handleNext = useCallback(() => {
     setCurrentIndex(prevIndex => {
@@ -307,32 +256,50 @@ const DeNgauNhienTab = ({ navigation }) => {
     });
   }, [questionStates]);
 
+  const deleteProgress = useCallback(() => {
+    Alert.alert(
+      'Xoá tiến trình',
+      'Bạn có chắc chắn muốn xoá tất cả tiến trình và làm lại?',
+      [
+        {
+          text: 'Huỷ',
+          style: 'cancel'
+        },
+        {
+          text: 'Xoá',
+          onPress: () => {
+            setCurrentIndex(0);
+            setScore(0);
+            setSelectedOption(null);
+            setIsQuizFinished(false);
+            setIsChecked(false);
+            setIsTimeUp(false);
+            setQuestionStates(data.map(() => ({
+              selectedOption: null,
+              isChecked: false,
+              isCorrect: null,
+              explanation: '',
+              isAnswered: false,
+            })));
+          }
+        }
+      ]
+    );
+  }, [data]);
 
   const handleChamdiem = useCallback(() => {
     let totalScore = 0;
-    let hasFailedByLethalQuestion = false;
 
     questionStates.forEach((questionState, index) => {
       const question = data[index];
 
       if (questionState.selectedOption) {
         const isCorrect = questionState.selectedOption.correct === "1";
-
         if (isCorrect) {
-          totalScore += 1;  // Tăng điểm số
+          totalScore += 1;  // Thay đổi điểm số nếu cần
           questionState.isCorrect = true;
-
-          // Kiểm tra câu liệt (typeQuestion = 6)
-          if (question.typeQuestion === 6) {
-            hasFailedByLethalQuestion = false; // Trả lời đúng câu liệt
-          }
         } else {
           questionState.isCorrect = false;
-
-          // Đánh dấu là không đỗ nếu trả lời sai câu liệt
-          if (question.typeQuestion === 6) {
-            hasFailedByLethalQuestion = true;
-          }
         }
       } else {
         questionState.isCorrect = false; // Đánh dấu câu hỏi chưa được trả lời
@@ -343,14 +310,11 @@ const DeNgauNhienTab = ({ navigation }) => {
       questionState.explanation = question.tip || '';  // Thêm giải thích nếu có
     });
 
-    const scoreLevel = getScoreLevel(totalScore, data.length);
-
-    // Hiển thị kết quả
     setScore(totalScore);
-    setScoreLevel(scoreLevel);
-    setHasFailedByLethalQuestion(hasFailedByLethalQuestion);
     setIsQuizFinished(true);
-  }, [questionStates, data, getScoreLevel]);
+  }, [questionStates, data]);
+
+
 
   const handleRestart = useCallback(() => {
     setCurrentIndex(0);
@@ -368,8 +332,8 @@ const DeNgauNhienTab = ({ navigation }) => {
 
   const getScoreLevel = (score, total) => {
     const percentage = (score / total) * 100;
-    if (percentage >= 84) return 'excellent';
-    if (50 <= percentage <= 84) return 'good';
+    if (percentage >= 90) return 'excellent';
+    if (percentage >= 50) return 'good';
     if (0 <= percentage < 50) return 'bad';
     return 'poor';
   };
@@ -378,7 +342,7 @@ const DeNgauNhienTab = ({ navigation }) => {
     const isActive = index === currentIndex;
     const isCorrect = questionStates[index]?.isCorrect;
 
-    let backgroundColor = '#BBB';
+    let backgroundColor = '#BBB'; // Màu mặc định
     if (isCorrect === true) {
       backgroundColor = '#00CD00';
     } else if (isCorrect === false) {
@@ -438,27 +402,31 @@ const DeNgauNhienTab = ({ navigation }) => {
   }, [isTimeUp]);
 
   if (isQuizFinished) {
-    const passed = !hasFailedByLethalQuestion && score >= 21;
+    const scoreLevel = getScoreLevel(score, data.length);
     return (
       <View style={styles.container}>
         <Text style={styles.finalScore}>
           {isTimeUp ? 'Hết giờ! ' : 'Hoàn Thành Bài Kiểm Tra'}
         </Text>
-        {passed ? (
+        {scoreLevel === 'excellent' && (
           <>
-            {scoreLevel === 'excellent' && (
-              <>
-                <Image source={require('../../assets/splash/doneExam.webp')} style={styles.image} />
-                <Text style={styles.finalScore}>Xuất sắc! Bạn đã đỗ bằng lái xe A1</Text>
-              </>
-            )}
-          </>
-        ) : (
-          <>
-            <Image source={require('../../assets/splash/sad.webp')} style={styles.image} />
-            <Text style={styles.finalScore}>Rất tiếc, bạn chưa đỗ. Hãy ôn tập lại!</Text>
+            <Image source={require('../../assets/splash/doneExam.webp')} style={styles.image} />
+            <Text style={styles.finalScore}>Xuất sắc! Bạn đã làm rất tốt!</Text>
           </>
         )}
+        {scoreLevel === 'good' && (
+          <>
+            <Image source={require('../../assets/splash/tryagain.webp')} style={styles.image} />
+            <Text style={styles.finalScore}>Tốt! Bạn có thể làm tốt hơn nữa!</Text>
+          </>
+        )}
+        {scoreLevel === 'bad' && (
+          <>
+            <Image source={require('../../assets/splash/sad.webp')} style={styles.image} />
+            <Text style={styles.finalScore}> Bạn cần ôn tập lại nhiều hơn!</Text>
+          </>
+        )}
+
         <Text style={styles.finalScore}>Điểm của bạn: {score} / {data.length}</Text>
 
         <TouchableOpacity style={styles.button} onPress={handleRestart}>
@@ -467,7 +435,6 @@ const DeNgauNhienTab = ({ navigation }) => {
       </View>
     );
   }
-
 
   const currentQuestion = data[currentIndex];
   if (!currentQuestion) {
@@ -494,37 +461,15 @@ const DeNgauNhienTab = ({ navigation }) => {
           justifyContent: 'space-between',
           backgroundColor: '#fff',
         }}>
-          <CountdownCircleTimer
-            size={60}
-            strokeWidth={6}
-            isPlaying
-            duration={1140}
-            colors={['#004777', '#F7B801', '#A30000', '#A30000']}
-            colorsTime={[7, 5, 2, 0]}
-            onComplete={() => {
-              setIsTimeUp(true);
-              return { shouldRepeat: false, delay: 1 };
-            }}
-          >
-            {({ remainingTime }) => (
-              <Text style={{ fontSize: 15 }}>
-                {Math.floor(remainingTime / 60)}:{remainingTime % 60}
-              </Text>
-            )}
-          </CountdownCircleTimer>
           <TouchableOpacity style={styles.btnendExam} onPress={handleChamdiem}>
-            <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'blue' }}>Nộp bài</Text>
+            <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'blue' }}>Chấm điểm</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navButton} onPress={deleteProgress}>
+            <Ionicons name="trash" size={25} color="red" />
           </TouchableOpacity>
         </View>
         <Text style={styles.numberQuestion}>Câu {currentIndex + 1} :</Text>
-        <Text
-          style={[
-            styles.titleQuestion,
-            { color: data[currentIndex].typeQuestion === 6 ? 'red' : 'black' }
-          ]}
-        >
-          {data[currentIndex].content}
-        </Text>
+        <Text style={styles.titleQuestion}>{currentQuestion.content}</Text>
         {imageSource ? (
           <Image
             source={imageSource}
@@ -538,7 +483,6 @@ const DeNgauNhienTab = ({ navigation }) => {
           keyExtractor={(optionItem, index) => index.toString()}
           scrollEnabled={false}
         />
-
         {isChecked && explanations ? (
           <View style={styles.explanationContainer}>
             <View style={{ flexDirection: 'row' }}>
@@ -569,25 +513,33 @@ const DeNgauNhienTab = ({ navigation }) => {
   );
 };
 
-const DeNgauNhienStack = ({ navigation }) => {
+const CacCauBiSaiStack = ({ navigation }) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="DeNgauNhienTab"
-        component={DeNgauNhienTab}
+        name="CacCauBiSaiTab"
+        component={CacCauBiSaiTab}
         options={({ navigation }) => ({
-          headerTitle: 'Bài Thi',
+          headerTitle: 'Các câu bị sai',
           headerTitleAlign: 'center',
           headerStyle: { backgroundColor: '#2F95DC' },
           headerTintColor: '#FFFFFF',
           headerTitleStyle: { fontWeight: 'bold' },
+          headerLeft: () => (
+            <Icon
+              name="chevron-left"
+              size={15}
+              onPress={() => navigation.goBack()}
+              style={{ color: '#FFFFFF', marginLeft: 10 }}
+            >Back</Icon>
+          ),
         })}
       />
     </Stack.Navigator>
   );
 };
 
-export default DeNgauNhienStack;
+export default CacCauBiSaiStack;
 
 const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
@@ -678,7 +630,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#ddd',
     borderRadius: 10,
     padding: 10,
-    maxHeight: 45,
     justifyContent: 'center',
   },
   image: {
@@ -689,7 +640,7 @@ const styles = StyleSheet.create({
   },
   tabContainer: {
     backgroundColor: '#f2f2f2',
-    paddingVertical: 15,
+    paddingVertical: 10,
   },
   tab: {
     paddingVertical: 5,
@@ -709,11 +660,6 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   tabSwitch: {
-    padding: 3,
-    flexDirection: 'row',
-  },
-  timerText: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    padding: 3
   },
 });

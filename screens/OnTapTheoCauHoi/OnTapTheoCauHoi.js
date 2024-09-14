@@ -50,13 +50,16 @@ const OnTapTheoCauHoiTab = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.searchContainer}>
-                <Icon style={styles.icon} size={30} name='search' onPress={handleSearch}/>
+                <Icon style={styles.icon} size={30} name='search'/>
                 <TextInput
                     onChangeText={(text) => setSearchText(text)}
                     autoCorrect={false}
                     style={styles.textInput}
                     placeholder="Search"
+                    returnKeyType='search'
                     value={searchText}
+                    onSubmitEditing={handleSearch}
+                    keyboardType="default"
                 />
             </View>
             <View style={{ marginBottom: 70 }}>

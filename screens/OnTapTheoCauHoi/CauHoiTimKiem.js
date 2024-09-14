@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Stack = createStackNavigator();
 
-const CauHoiTimKiemTab = ({ navigation,route }) => {
+const CauHoiTimKiemTab = ({ navigation, route }) => {
   const { searchText } = route.params;
   const [data, setData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -21,6 +21,8 @@ const CauHoiTimKiemTab = ({ navigation,route }) => {
   const [isTimeUp, setIsTimeUp] = useState(false);
   const [isAnswered, setIsAnswered] = useState(false);
   const [explanations, setExplanations] = useState([]);
+  const [noResultsFound, setNoResultsFound] = useState(false);
+
 
   const imageMap = {
     '39.png': require('../../assets/Question/39.png'),
@@ -130,7 +132,7 @@ const CauHoiTimKiemTab = ({ navigation,route }) => {
     '199.png': require('../../assets/Question/199.png'),
     '200.png': require('../../assets/Question/200.png'),
   };
- 
+
   const fetchData = useCallback(async (searchText) => {
     // Log searchText to ensure it's valid
     console.log(`Searching for: ${searchText}`);
@@ -153,20 +155,30 @@ const CauHoiTimKiemTab = ({ navigation,route }) => {
 
 
   useEffect(() => {
-    const loadData = async () => {
-      const fetchedData = await fetchData(searchText); 
-      setData(fetchedData);
-      setQuestionStates(fetchedData.map(() => ({
-        selectedOption: null,
-        isChecked: false,
-        isCorrect: null,
-        explanations: ''
-      })));
-    };
-  
-    loadData();
-  }, [fetchData, searchText]);
-  
+  const loadData = async () => {
+    const fetchedData = await fetchData(searchText); 
+
+    if (fetchedData.length === 0) {
+      Alert.alert(
+        'Thông báo', 
+        'Không tìm thấy câu hỏi nào chứa từ khóa',
+        [
+          { text: 'OK', onPress: () => navigation.goBack() }
+        ]
+      );
+    }
+    setData(fetchedData);
+    setQuestionStates(fetchedData.map(() => ({
+      selectedOption: null,
+      isChecked: false,
+      isCorrect: null,
+      explanations: ''
+    })));
+  };
+
+  loadData();
+}, [fetchData, searchText]);
+
 
   const handleOptionSelect = useCallback((option) => {
     setQuestionStates(prevStates => {
@@ -417,6 +429,9 @@ const CauHoiTimKiemTab = ({ navigation,route }) => {
     return <Text style={{ textAlign: 'center' }}>Loading...</Text>;
   }
 
+  
+
+
   const imageSource = currentQuestion.image ? imageMap[currentQuestion.image] : null;
 
   return (
@@ -639,5 +654,12 @@ const styles = StyleSheet.create({
   },
   tabSwitch: {
     padding: 3
+  },
+  noResultsText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 20,
+    color: '#333',
   },
 });

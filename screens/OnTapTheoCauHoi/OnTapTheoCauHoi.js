@@ -43,10 +43,14 @@ const OnTapTheoCauHoiTab = ({ navigation }) => {
         }
     };
 
+    const handleSearch = () => {
+        navigation.navigate('CauHoiTimKiem', { searchText });
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.searchContainer}>
-                <Icon style={styles.icon} size={30} name='search' />
+                <Icon style={styles.icon} size={30} name='search' onPress={handleSearch}/>
                 <TextInput
                     onChangeText={(text) => setSearchText(text)}
                     autoCorrect={false}

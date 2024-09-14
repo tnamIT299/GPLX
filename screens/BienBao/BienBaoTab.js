@@ -1,15 +1,14 @@
-import React from 'react';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { View, Text } from 'react-native';
-import BienBaoCam from '../BienBao/BienBaoCam';
-import BienBaoHieuLenh from '../BienBao/BienBaoHieuLenh';
-import BienBaoNguyHiem from '../BienBao/BienBaoNguyHiem';
-import BienBaoChiDan from '../BienBao/BienBaoChiDan';
-import BienBaoPhu from '../BienBao/BienBaoPhu';
-import VachKeDuong from '../BienBao/VachKeDuong';
-
+import React from "react";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+import Icon from "react-native-vector-icons/FontAwesome";
+import { View, Text } from "react-native";
+import BienBaoCam from "../BienBao/BienBaoCam";
+import BienBaoHieuLenh from "../BienBao/BienBaoHieuLenh";
+import BienBaoNguyHiem from "../BienBao/BienBaoNguyHiem";
+import BienBaoChiDan from "../BienBao/BienBaoChiDan";
+import BienBaoPhu from "../BienBao/BienBaoPhu";
+import VachKeDuong from "../BienBao/VachKeDuong";
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
@@ -18,11 +17,11 @@ const BienBaoTab = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarLabelStyle: { fontSize: 8, fontWeight: 'bold' },
-        tabBarStyle: { backgroundColor: '#FFFFFF' }, 
-        tabBarActiveTintColor: '#2F95DC',
-        tabBarInactiveTintColor: '#666666', 
-        tabBarIndicatorStyle: { backgroundColor: '#FFFFFF' },
+        tabBarLabelStyle: { fontSize: 8, fontWeight: "bold" },
+        tabBarStyle: { backgroundColor: "#FFFFFF" },
+        tabBarActiveTintColor: "#2F95DC",
+        tabBarInactiveTintColor: "#666666",
+        tabBarIndicatorStyle: { backgroundColor: "#FFFFFF" },
         tabBarScrollEnabled: true,
       }}
     >
@@ -42,16 +41,17 @@ const BienBaoStack = () => {
         name="BienBao"
         component={BienBaoTab}
         options={({ navigation }) => ({
-          title: 'Biển báo đường bộ',
-          headerTitleAlign: 'center',
-          headerStyle: { backgroundColor: '#2F95DC' },
-          headerTintColor: '#FFFFFF',
-          headerTitleStyle: { fontWeight: 'bold' },
+          title: "Biển báo đường bộ",
+          headerTitleAlign: "center",
+          headerStyle: { backgroundColor: "#2F95DC" },
+          headerTintColor: "#FFFFFF",
+          headerTitleStyle: { fontWeight: "bold" },
           headerLeft: () => (
-            <Icon name="chevron-left"
-            size={15}
+            <Icon
+              name="chevron-left"
+              size={15}
               onPress={() => navigation.goBack()}
-              style={{ color: '#FFFFFF', marginLeft: 10 }}
+              style={{ color: "#FFFFFF", marginLeft: 10 }}
             >
               Back
             </Icon>

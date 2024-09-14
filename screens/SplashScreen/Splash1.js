@@ -1,13 +1,16 @@
-import React from 'react';
-import { View, Text, Button, StyleSheet, Image } from 'react-native';
+import React from "react";
+import { View, Text, Button, StyleSheet, Image } from "react-native";
 
 const Splash1 = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Image source={require('../../assets/splash/traffic-light.webp')} style={styles.image} />
+      <Image
+        source={require("../../assets/splash/traffic-light.webp")}
+        style={styles.image}
+      />
       <Text style={styles.text}>Học GPLX An Toàn</Text>
       <View style={styles.buttonContainer}>
-        <Button title="Next" onPress={() => navigation.navigate('Splash2')} />
+        <Button title="Next" onPress={() => navigation.navigate("Splash2")} />
       </View>
     </View>
   );
@@ -16,25 +19,25 @@ const Splash1 = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f8f8ff',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f8f8ff",
   },
   image: {
-    width: 350, 
+    width: 350,
     height: 400,
-    resizeMode:'contain',
+    resizeMode: "contain",
     marginBottom: 20,
   },
   text: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
     marginTop: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   buttonContainer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 30,
     right: 30,
   },

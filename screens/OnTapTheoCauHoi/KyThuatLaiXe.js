@@ -1,11 +1,21 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import 'react-native-url-polyfill/auto';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Dimensions, Alert, ScrollView, Image } from 'react-native';
-import { supabase } from '../../data/supabaseClient';
-import { Ionicons } from '@expo/vector-icons';
-import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
-import { createStackNavigator } from '@react-navigation/stack';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React, { useState, useEffect, useCallback } from "react";
+import "react-native-url-polyfill/auto";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  Alert,
+  ScrollView,
+  Image,
+} from "react-native";
+import { supabase } from "../../data/supabaseClient";
+import { Ionicons } from "@expo/vector-icons";
+import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
+import { createStackNavigator } from "@react-navigation/stack";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const Stack = createStackNavigator();
 
@@ -21,15 +31,14 @@ const KyThuatLaiXeTab = ({ navigation }) => {
   const [isAnswered, setIsAnswered] = useState(false);
   const [explanations, setExplanations] = useState([]);
 
-
   const fetchData = useCallback(async () => {
     const { data, error } = await supabase
-      .from('question')
-      .select('content, option, image, tip')
-      .eq('typeQuestion', 3);
+      .from("question")
+      .select("content, option, image, tip")
+      .eq("typeQuestion", 3);
 
     if (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
       return [];
     }
 
@@ -40,35 +49,43 @@ const KyThuatLaiXeTab = ({ navigation }) => {
     const loadData = async () => {
       const fetchedData = await fetchData();
       setData(fetchedData);
-      setQuestionStates(fetchedData.map(() => ({
-        selectedOption: null,
-        isChecked: false,
-        isCorrect: null,
-        explanations: ''
-      })));
+      setQuestionStates(
+        fetchedData.map(() => ({
+          selectedOption: null,
+          isChecked: false,
+          isCorrect: null,
+          explanations: "",
+        }))
+      );
     };
 
     loadData();
   }, [fetchData]);
 
-  const handleOptionSelect = useCallback((option) => {
-    setQuestionStates(prevStates => {
-      const updatedStates = [...prevStates];
-      updatedStates[currentIndex].selectedOption = option;
-      return updatedStates;
-    });
-    setSelectedOption(option);
-    setIsChecked(false);
-    setIsAnswered(false);
-  }, [currentIndex]);
+  const handleOptionSelect = useCallback(
+    (option) => {
+      setQuestionStates((prevStates) => {
+        const updatedStates = [...prevStates];
+        updatedStates[currentIndex].selectedOption = option;
+        return updatedStates;
+      });
+      setSelectedOption(option);
+      setIsChecked(false);
+      setIsAnswered(false);
+    },
+    [currentIndex]
+  );
 
   const handleCheckAnswer = useCallback(() => {
-    setQuestionStates(prevStates => {
+    setQuestionStates((prevStates) => {
       const updatedStates = [...prevStates];
       const currentState = updatedStates[currentIndex];
 
-      if (currentState.selectedOption && currentState.selectedOption.correct === "1") {
-        setScore(prevScore => prevScore + 1);
+      if (
+        currentState.selectedOption &&
+        currentState.selectedOption.correct === "1"
+      ) {
+        setScore((prevScore) => prevScore + 1);
         currentState.isCorrect = true;
       } else {
         currentState.isCorrect = false;
@@ -76,7 +93,7 @@ const KyThuatLaiXeTab = ({ navigation }) => {
 
       currentState.isChecked = true;
       currentState.isAnswered = true;
-      currentState.explanations = data[currentIndex]?.tip || '';  // Lưu giải thích vào trạng thái
+      currentState.explanations = data[currentIndex]?.tip || ""; // Lưu giải thích vào trạng thái
       setIsAnswered(true);
       setExplanations(currentState.explanations);
 
@@ -85,16 +102,14 @@ const KyThuatLaiXeTab = ({ navigation }) => {
     setIsChecked(true);
   }, [currentIndex, data]);
 
-
-
   const handleNext = useCallback(() => {
-    setCurrentIndex(prevIndex => {
+    setCurrentIndex((prevIndex) => {
       const newIndex = Math.min(prevIndex + 1, data.length);
       const nextState = questionStates[newIndex];
       setSelectedOption(nextState?.selectedOption);
       setIsChecked(nextState?.isChecked);
       setIsAnswered(nextState?.isAnswered);
-      setExplanations(nextState?.explanations || '');
+      setExplanations(nextState?.explanations || "");
 
       if (newIndex === data.length) {
         setIsQuizFinished(true);
@@ -104,28 +119,28 @@ const KyThuatLaiXeTab = ({ navigation }) => {
   }, [data.length, questionStates]);
 
   const handlePrev = useCallback(() => {
-    setCurrentIndex(prevIndex => {
+    setCurrentIndex((prevIndex) => {
       const newIndex = Math.max(prevIndex - 1, 0);
       const prevState = questionStates[newIndex];
       setSelectedOption(prevState?.selectedOption);
       setIsChecked(prevState?.isChecked);
       setIsAnswered(prevState?.isAnswered);
-      setExplanations(prevState?.explanations || '');
+      setExplanations(prevState?.explanations || "");
       return newIndex;
     });
   }, [questionStates]);
 
   const deleteProgress = useCallback(() => {
     Alert.alert(
-      'Xoá tiến trình',
-      'Bạn có chắc chắn muốn xoá tất cả tiến trình và làm lại?',
+      "Xoá tiến trình",
+      "Bạn có chắc chắn muốn xoá tất cả tiến trình và làm lại?",
       [
         {
-          text: 'Huỷ',
-          style: 'cancel'
+          text: "Huỷ",
+          style: "cancel",
         },
         {
-          text: 'Xoá',
+          text: "Xoá",
           onPress: () => {
             setCurrentIndex(0);
             setScore(0);
@@ -133,15 +148,17 @@ const KyThuatLaiXeTab = ({ navigation }) => {
             setIsQuizFinished(false);
             setIsChecked(false);
             setIsTimeUp(false);
-            setQuestionStates(data.map(() => ({
-              selectedOption: null,
-              isChecked: false,
-              isCorrect: null,
-              explanation: '',
-              isAnswered: false,
-            })));
-          }
-        }
+            setQuestionStates(
+              data.map(() => ({
+                selectedOption: null,
+                isChecked: false,
+                isCorrect: null,
+                explanation: "",
+                isAnswered: false,
+              }))
+            );
+          },
+        },
       ]
     );
   }, [data]);
@@ -155,7 +172,7 @@ const KyThuatLaiXeTab = ({ navigation }) => {
       if (questionState.selectedOption) {
         const isCorrect = questionState.selectedOption.correct === "1";
         if (isCorrect) {
-          totalScore += 1;  // Thay đổi điểm số nếu cần
+          totalScore += 1; // Thay đổi điểm số nếu cần
           questionState.isCorrect = true;
         } else {
           questionState.isCorrect = false;
@@ -166,14 +183,12 @@ const KyThuatLaiXeTab = ({ navigation }) => {
 
       questionState.isChecked = true;
       questionState.isAnswered = true;
-      questionState.explanation = question.tip || '';  // Thêm giải thích nếu có
+      questionState.explanation = question.tip || ""; // Thêm giải thích nếu có
     });
 
     setScore(totalScore);
     setIsQuizFinished(true);
   }, [questionStates, data]);
-
-
 
   const handleRestart = useCallback(() => {
     setCurrentIndex(0);
@@ -182,29 +197,31 @@ const KyThuatLaiXeTab = ({ navigation }) => {
     setIsQuizFinished(false);
     setIsChecked(false);
     setIsTimeUp(false);
-    setQuestionStates(data.map(() => ({
-      selectedOption: null,
-      isChecked: false,
-      isCorrect: null
-    })));
+    setQuestionStates(
+      data.map(() => ({
+        selectedOption: null,
+        isChecked: false,
+        isCorrect: null,
+      }))
+    );
   }, [data]);
 
   const getScoreLevel = (score, total) => {
     const percentage = (score / total) * 100;
-    if (percentage >= 90) return 'excellent';
-    if (percentage >= 50) return 'good';
-    if (0 <= percentage < 50) return 'bad';
-    return 'poor';
+    if (percentage >= 90) return "excellent";
+    if (percentage >= 50) return "good";
+    if (0 <= percentage < 50) return "bad";
+    return "poor";
   };
   const renderTab = ({ item, index }) => {
     const isActive = index === currentIndex;
     const isCorrect = questionStates[index]?.isCorrect;
 
-    let backgroundColor = '#BBB'; // Màu mặc định
+    let backgroundColor = "#BBB"; // Màu mặc định
     if (isCorrect === true) {
-      backgroundColor = '#00CD00';
+      backgroundColor = "#00CD00";
     } else if (isCorrect === false) {
-      backgroundColor = '#FF3030';
+      backgroundColor = "#FF3030";
     }
 
     return (
@@ -218,14 +235,17 @@ const KyThuatLaiXeTab = ({ navigation }) => {
       </TouchableOpacity>
     );
   };
-  const handleTabPress = useCallback((index) => {
-    setCurrentIndex(index);
-    const selectedState = questionStates[index];
-    setSelectedOption(selectedState?.selectedOption);
-    setIsChecked(selectedState?.isChecked);
-    setIsAnswered(selectedState?.isAnswered);
-    setExplanations(selectedState?.explanations || '');
-  }, [questionStates]);
+  const handleTabPress = useCallback(
+    (index) => {
+      setCurrentIndex(index);
+      const selectedState = questionStates[index];
+      setSelectedOption(selectedState?.selectedOption);
+      setIsChecked(selectedState?.isChecked);
+      setIsAnswered(selectedState?.isAnswered);
+      setExplanations(selectedState?.explanations || "");
+    },
+    [questionStates]
+  );
 
   const renderOption = ({ item }) => {
     const currentState = questionStates[currentIndex];
@@ -236,16 +256,23 @@ const KyThuatLaiXeTab = ({ navigation }) => {
       <TouchableOpacity
         style={[
           styles.optionContainer,
-          isSelected && { borderColor: '#333' },
-          isSelected && isChecked && { borderColor: isCorrect ? 'green' : 'red' },
-          isChecked && !isCorrect && item === currentState.selectedOption && { borderColor: 'red' },
-          isChecked && isCorrect && item !== currentState.selectedOption && { borderColor: 'green' },
+          isSelected && { borderColor: "#333" },
+          isSelected &&
+            isChecked && { borderColor: isCorrect ? "green" : "red" },
+          isChecked &&
+            !isCorrect &&
+            item === currentState.selectedOption && { borderColor: "red" },
+          isChecked &&
+            isCorrect &&
+            item !== currentState.selectedOption && { borderColor: "green" },
         ]}
         onPress={() => handleOptionSelect(item)}
         disabled={isChecked}
       >
         <View style={styles.optionContent}>
-          <Text style={styles.label}>{item.label}: {item.topic}</Text>
+          <Text style={styles.label}>
+            {item.label}: {item.topic}
+          </Text>
         </View>
       </TouchableOpacity>
     );
@@ -253,7 +280,7 @@ const KyThuatLaiXeTab = ({ navigation }) => {
 
   useEffect(() => {
     if (isTimeUp) {
-      Alert.alert('Hết giờ', 'Nộp bài để chấm điểm');
+      Alert.alert("Hết giờ", "Nộp bài để chấm điểm");
       setIsQuizFinished(true);
     }
   }, [isTimeUp]);
@@ -263,28 +290,44 @@ const KyThuatLaiXeTab = ({ navigation }) => {
     return (
       <View style={styles.container}>
         <Text style={styles.finalScore}>
-          {isTimeUp ? 'Hết giờ! ' : 'Hoàn Thành Bài Kiểm Tra'}
+          {isTimeUp ? "Hết giờ! " : "Hoàn Thành Bài Kiểm Tra"}
         </Text>
-        {scoreLevel === 'excellent' && (
+        {scoreLevel === "excellent" && (
           <>
-            <Image source={require('../../assets/splash/doneExam.webp')} style={styles.image} />
+            <Image
+              source={require("../../assets/splash/doneExam.webp")}
+              style={styles.image}
+            />
             <Text style={styles.finalScore}>Xuất sắc! Bạn đã làm rất tốt!</Text>
           </>
         )}
-        {scoreLevel === 'good' && (
+        {scoreLevel === "good" && (
           <>
-            <Image source={require('../../assets/splash/tryagain.webp')} style={styles.image} />
-            <Text style={styles.finalScore}>Tốt! Bạn có thể làm tốt hơn nữa!</Text>
+            <Image
+              source={require("../../assets/splash/tryagain.webp")}
+              style={styles.image}
+            />
+            <Text style={styles.finalScore}>
+              Tốt! Bạn có thể làm tốt hơn nữa!
+            </Text>
           </>
         )}
-        {scoreLevel === 'bad' && (
+        {scoreLevel === "bad" && (
           <>
-            <Image source={require('../../assets/splash/sad.webp')} style={styles.image} />
-            <Text style={styles.finalScore}> Bạn cần ôn tập lại nhiều hơn!</Text>
+            <Image
+              source={require("../../assets/splash/sad.webp")}
+              style={styles.image}
+            />
+            <Text style={styles.finalScore}>
+              {" "}
+              Bạn cần ôn tập lại nhiều hơn!
+            </Text>
           </>
         )}
 
-        <Text style={styles.finalScore}>Điểm của bạn: {score} / {data.length}</Text>
+        <Text style={styles.finalScore}>
+          Điểm của bạn: {score} / {data.length}
+        </Text>
 
         <TouchableOpacity style={styles.button} onPress={handleRestart}>
           <Text style={styles.buttonText}>Làm lại</Text>
@@ -295,9 +338,8 @@ const KyThuatLaiXeTab = ({ navigation }) => {
 
   const currentQuestion = data[currentIndex];
   if (!currentQuestion) {
-    return <Text style={{ textAlign: 'center' }}>Loading...</Text>;
+    return <Text style={{ textAlign: "center" }}>Loading...</Text>;
   }
-
 
   return (
     <View style={styles.container}>
@@ -312,13 +354,17 @@ const KyThuatLaiXeTab = ({ navigation }) => {
         />
       </View>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          backgroundColor: '#fff',
-        }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            backgroundColor: "#fff",
+          }}
+        >
           <TouchableOpacity style={styles.btnendExam} onPress={handleChamdiem}>
-            <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'blue' }}>Chấm điểm</Text>
+            <Text style={{ fontSize: 15, fontWeight: "bold", color: "blue" }}>
+              Chấm điểm
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.navButton} onPress={deleteProgress}>
             <Ionicons name="trash" size={25} color="red" />
@@ -334,7 +380,7 @@ const KyThuatLaiXeTab = ({ navigation }) => {
         />
         {isChecked && explanations ? (
           <View style={styles.explanationContainer}>
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: "row" }}>
               <Ionicons name="pricetags" size={20} color="#333" />
               <Text style={styles.explanationText}>Giải thích đáp án:</Text>
             </View>
@@ -349,7 +395,10 @@ const KyThuatLaiXeTab = ({ navigation }) => {
         </TouchableOpacity>
 
         {selectedOption && (
-          <TouchableOpacity style={styles.checkButton} onPress={handleCheckAnswer}>
+          <TouchableOpacity
+            style={styles.checkButton}
+            onPress={handleCheckAnswer}
+          >
             <Ionicons name="checkmark-circle-outline" size={35} />
           </TouchableOpacity>
         )}
@@ -369,18 +418,20 @@ const KyThuatLaiXeStack = ({ navigation }) => {
         name="KyThuatLaiXeTab"
         component={KyThuatLaiXeTab}
         options={({ navigation }) => ({
-          headerTitle: 'Kỹ thuật lái xe',
-          headerTitleAlign: 'center',
-          headerStyle: { backgroundColor: '#2F95DC' },
-          headerTintColor: '#FFFFFF',
-          headerTitleStyle: { fontWeight: 'bold' },
+          headerTitle: "Kỹ thuật lái xe",
+          headerTitleAlign: "center",
+          headerStyle: { backgroundColor: "#2F95DC" },
+          headerTintColor: "#FFFFFF",
+          headerTitleStyle: { fontWeight: "bold" },
           headerLeft: () => (
             <Icon
               name="chevron-left"
               size={15}
               onPress={() => navigation.goBack()}
-              style={{ color: '#FFFFFF', marginLeft: 10 }}
-            >Back</Icon>
+              style={{ color: "#FFFFFF", marginLeft: 10 }}
+            >
+              Back
+            </Icon>
           ),
         })}
       />
@@ -390,31 +441,30 @@ const KyThuatLaiXeStack = ({ navigation }) => {
 
 export default KyThuatLaiXeStack;
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   scrollContainer: {
     flexGrow: 1,
     padding: 10,
     paddingBottom: 50,
-
   },
   numberQuestion: {
     marginTop: 5,
     fontSize: 17,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 5,
   },
   titleQuestion: {
     fontSize: 17,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 15,
   },
   explanationContainer: {
-    backgroundColor: '#00FF99',
+    backgroundColor: "#00FF99",
     padding: 10,
     borderRadius: 8,
     marginTop: 15,
@@ -426,69 +476,69 @@ const styles = StyleSheet.create({
   },
   optionContainer: {
     borderWidth: 2,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     borderRadius: 8,
     marginBottom: 10,
     padding: 10,
   },
   optionContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   label: {
     fontSize: 16,
   },
   footer: {
-    flexDirection: 'row',
-    width: '100%',
+    flexDirection: "row",
+    width: "100%",
     paddingVertical: 5,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     paddingHorizontal: 15,
-    backgroundColor: '#2F95DC',
+    backgroundColor: "#2F95DC",
   },
   checkButton: {
-    backgroundColor: '#33FF33',
+    backgroundColor: "#33FF33",
     padding: 10,
     borderRadius: 50,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
   },
   navButton: {
     padding: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   finalScore: {
     fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
     marginBottom: 20,
   },
   button: {
-    backgroundColor: '#2F95DC',
+    backgroundColor: "#2F95DC",
     padding: 10,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
     marginHorizontal: 40,
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   btnendExam: {
-    backgroundColor: '#ddd',
+    backgroundColor: "#ddd",
     borderRadius: 10,
     padding: 10,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   image: {
-    resizeMode: 'contain',
+    resizeMode: "contain",
     width: 150,
     height: 150,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   tabContainer: {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: "#f2f2f2",
     paddingVertical: 10,
   },
   tab: {
@@ -496,19 +546,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 20,
     marginHorizontal: 5,
-    backgroundColor: '#ddd',
+    backgroundColor: "#ddd",
   },
   activeTab: {
-    backgroundColor: '#2F95DC',
+    backgroundColor: "#2F95DC",
   },
   tabText: {
-    color: '#000',
+    color: "#000",
     fontSize: 15,
   },
   activeTabText: {
-    color: '#fff',
+    color: "#fff",
   },
   tabSwitch: {
-    padding: 3
+    padding: 3,
   },
 });

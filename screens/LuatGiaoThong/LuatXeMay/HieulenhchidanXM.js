@@ -1,20 +1,26 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, ScrollView, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { fullViolations } from '../../../data/full-laws'
-import { createStackNavigator } from '@react-navigation/stack';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
+import { fullViolations } from "../../../data/full-laws";
+import { createStackNavigator } from "@react-navigation/stack";
 const Stack = createStackNavigator();
 
-const HieulenhchidanXMTab = ({navigation}) => {
-  const [searchText, setSearchText] = useState('');
+const HieulenhchidanXMTab = ({ navigation }) => {
+  const [searchText, setSearchText] = useState("");
 
-  const filteredViolations = fullViolations.filter(item =>
-    item.topicCode === 1 &&
-    item.entities.includes('xe mô tô')
+  const filteredViolations = fullViolations.filter(
+    (item) => item.topicCode === 1 && item.entities.includes("xe mô tô")
   );
 
   const filterData = () => {
-    return filteredViolations.filter(item =>
+    return filteredViolations.filter((item) =>
       item.violation.toLowerCase().includes(searchText.toLowerCase())
     );
   };
@@ -22,7 +28,7 @@ const HieulenhchidanXMTab = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.searchContainer}>
-        <Icon style={styles.icon} size={30} name='search' />
+        <Icon style={styles.icon} size={30} name="search" />
         <TextInput
           onChangeText={(text) => setSearchText(text)}
           autoCorrect={false}
@@ -31,7 +37,7 @@ const HieulenhchidanXMTab = ({navigation}) => {
           value={searchText}
         />
       </View>
-      <View  style={{ marginBottom:90}}>
+      <View style={{ marginBottom: 90 }}>
         {filterData().length > 0 ? (
           <ScrollView>
             {filterData().map((item, index) => (
@@ -56,57 +62,58 @@ const HieulenhchidanXMTab = ({navigation}) => {
 const HieulenhchidanXMStack = () => {
   return (
     <Stack.Navigator>
-    <Stack.Screen
-      name="HieulenhchidanXMTab"
-      component={HieulenhchidanXMTab}
-      options={({ navigation }) => ({
-        title: 'Hiệu lệnh, chỉ dẫn',
-        headerTitleAlign: 'center',
-        headerStyle: { backgroundColor: '#2F95DC' },
-        headerTintColor: '#FFFFFF',
-        headerTitleStyle: { fontWeight: 'bold' },
-        headerLeft: () => (
-          <Icon name="chevron-left"
-          size={15}
-            onPress={() => navigation.goBack()}
-            style={{ color: '#FFFFFF', marginLeft: 10 }}
-          >
-            Back
-          </Icon>
-        ),
-      })}
-    />
-  </Stack.Navigator>
+      <Stack.Screen
+        name="HieulenhchidanXMTab"
+        component={HieulenhchidanXMTab}
+        options={({ navigation }) => ({
+          title: "Hiệu lệnh, chỉ dẫn",
+          headerTitleAlign: "center",
+          headerStyle: { backgroundColor: "#2F95DC" },
+          headerTintColor: "#FFFFFF",
+          headerTitleStyle: { fontWeight: "bold" },
+          headerLeft: () => (
+            <Icon
+              name="chevron-left"
+              size={15}
+              onPress={() => navigation.goBack()}
+              style={{ color: "#FFFFFF", marginLeft: 10 }}
+            >
+              Back
+            </Icon>
+          ),
+        })}
+      />
+    </Stack.Navigator>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   searchContainer: {
     height: 60,
-    flexDirection: 'row',
+    flexDirection: "row",
     marginHorizontal: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   violationContainer: {
     padding: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: "#ccc",
   },
   violationText: {
-    color: '#0066cc',
+    color: "#0066cc",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   finesText: {
-    color: 'red',
+    color: "red",
     fontSize: 14,
   },
   detailText: {
-    color: '#0066cc',
+    color: "#0066cc",
     fontSize: 14,
     marginTop: 5,
   },
@@ -119,25 +126,25 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 20,
     paddingStart: 20,
-    justifyContent: 'center',
-    backgroundColor: '#DDDDDD',
+    justifyContent: "center",
+    backgroundColor: "#DDDDDD",
   },
   icon: {
-    position: 'absolute',
+    position: "absolute",
     width: 30,
     height: 30,
     top: 10,
     left: 5,
   },
   notFoundContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   notFoundText: {
-    textAlign: 'center',
+    textAlign: "center",
     top: 100,
     fontSize: 15,
-    width: '80%',
+    width: "80%",
   },
 });
 

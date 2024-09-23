@@ -104,7 +104,7 @@ const VanHoaDaoDucTab = ({ navigation }) => {
 
   const handleNext = useCallback(() => {
     setCurrentIndex((prevIndex) => {
-      const newIndex = Math.min(prevIndex + 1, data.length);
+      const newIndex = Math.min(prevIndex + 1, data.length-1);
       const nextState = questionStates[newIndex];
       setSelectedOption(nextState?.selectedOption);
       setIsChecked(nextState?.isChecked);

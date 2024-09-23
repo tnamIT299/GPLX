@@ -8,6 +8,7 @@ import LuatGiaoThongTab from '../screens/LuatGiaoThong/LuatGiaoThongTab';
 import Meoghinho from '../screens/Meoghinho';
 import Tracuu from '../screens/Tracuu';
 import Sahinh from '../screens/Sahinh';
+import History from '../screens/History';
 import {HieulenhchidanXM,ChuyenhuongXM,DungxeXM,ThietbiuutienXM,TocdoXM,VanchuyenXM,TrangthietbiXM,DuongcamXM,NongdoconXM,GiaytoxeXM,KhacXM,} 
 from '../screens/LuatGiaoThong/LuatXeMay/index';
 import {HieulenhchidanOT,ChuyenhuongOT,DungxeOT,ThietbiuutienOT,TocdoOT,VanchuyenOT,TrangthietbiOT,DuongcamOT,NongdoconOT,GiaytoxeOT,KhacOT,} 
@@ -18,7 +19,7 @@ import { Splash1, Splash2, Splash3 } from '../screens/SplashScreen/index';
 import {
   BienBaoDuongBo, SaHinh, ToanBoCauHoi, VanHoaDaoDuc, KyThuatLaiXe, DeThiKhaiNiemQuyTac, OnTapTheoCauHoi,CauLiet,DeNgauNhien,CacCauBiSai,CauHoiTimKiem
 } from '../screens/OnTapTheoCauHoi/index';
-import BoDeThi from '../screens/BoDe/BoDeThi';
+import { BoDeThi,BoDe1 } from '../screens/BoDe';
 
 
 const Stack = createStackNavigator();
@@ -39,6 +40,7 @@ function Navigation() {
         <Stack.Screen name="Meoghinho" component={Meoghinho} />
         <Stack.Screen name="Sahinh" component={Sahinh} />
         <Stack.Screen name="Tracuu" component={Tracuu} />
+        <Stack.Screen name="History" component={History} />
 
         {/*Screen Luật giao thông cho Xe máy*/}
         <Stack.Screen name="HieulenhchidanXM" component={HieulenhchidanXM} />
@@ -91,6 +93,9 @@ function Navigation() {
          <Stack.Screen name="DeNgauNhien" component={DeNgauNhien} />
          <Stack.Screen name="CacCauBiSai" component={CacCauBiSai} />
          <Stack.Screen name="CauHoiTimKiem" component={CauHoiTimKiem} />
+
+         {/*Screen Ôn Tập theo bộ đề*/}
+         <Stack.Screen name="BoDe1" component={BoDe1} />
 
 
       </Stack.Navigator>

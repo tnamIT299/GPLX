@@ -6,42 +6,42 @@ import Icon from "react-native-vector-icons/FontAwesome6";
 const Stack = createStackNavigator();
 
 const items = [
-  { id: "1", name: "Đề Thi Số 1", icon: "book-open", color: "#33CCFF" },
-  { id: "2", name: "Đề Thi Số 2", icon: "book-open", color: "#33CCFF" },
-  { id: "3", name: "Đề Thi Số 3", icon: "book-open", color: "#33CCFF" },
-  { id: "4", name: "Đề Thi Số 4", icon: "book-open", color: "#33CCFF" },
-  { id: "5", name: "Đề Thi Số 5", icon: "book-open", color: "#33CCFF" },
-  { id: "6", name: "Đề Thi Số 6", icon: "book-open", color: "#33CCFF" },
-  { id: "7", name: "Đề Thi Số 7", icon: "book-open", color: "#33CCFF" },
-  { id: "8", name: "Đề Thi Số 8", icon: "book-open", color: "#33CCFF" },
+  { id: "1", name: "Đề Thi Số 1", icon: "book-open", color: "#66CCCC" },
+  { id: "2", name: "Đề Thi Số 2", icon: "book-open", color: "#66CCCC" },
+  { id: "3", name: "Đề Thi Số 3", icon: "book-open", color: "#66CCCC" },
+  { id: "4", name: "Đề Thi Số 4", icon: "book-open", color: "#66CCCC" },
+  { id: "5", name: "Đề Thi Số 5", icon: "book-open", color: "#66CCCC" },
+  { id: "6", name: "Đề Thi Số 6", icon: "book-open", color: "#66CCCC" },
+  { id: "7", name: "Đề Thi Số 7", icon: "book-open", color: "#66CCCC" },
+  { id: "8", name: "Đề Thi Số 8", icon: "book-open", color: "#66CCCC" },
 ];
 
 const BoDeThiTab = ({ navigation }) => {
   const handleOption = (item) => {
     switch (item.id) {
       case "1":
-        alert("Đề thi số 1");
+        navigation.navigate("BoDe1");
         break;
       case "2":
-        alert("Đề thi số 1");
+        alert("Đề thi số 2");
         break;
       case "3":
-        alert("Đề thi số 1");
+        alert("Đề thi số 3");
         break;
       case "4":
-        alert("Đề thi số 1");
+        alert("Đề thi số 4");
         break;
       case "5":
-        alert("Đề thi số 1");
+        alert("Đề thi số 5");
         break;
       case "6":
-        alert("Đề thi số 1");
+        alert("Đề thi số 6");
         break;
       case "7":
-        alert("Đề thi số 1");
+        alert("Đề thi số 7");
         break;
       case "8":
-        alert("Đề thi số 1");
+        alert("Đề thi số 8");
         break;
       default:
         Alert.alert("Thông báo", "Tính năng này đang được phát triển!");
@@ -77,14 +77,6 @@ const BoDeThiStack = () => {
           headerTitleAlign: "center",
           headerStyle: { backgroundColor: "#2F95DC" },
           headerTintColor: "#FFFFFF",
-          headerRight: () => (
-            <Icon
-              name="trash"
-              size={25}
-              onPress={() => navigation.goBack()}
-              style={{ color: "#FFFFFF", marginRight: 20 }}
-            ></Icon>
-          ),
         }}
       />
     </Stack.Navigator>

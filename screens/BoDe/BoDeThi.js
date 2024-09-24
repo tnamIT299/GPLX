@@ -23,25 +23,25 @@ const BoDeThiTab = ({ navigation }) => {
         navigation.navigate("BoDe1");
         break;
       case "2":
-        alert("Đề thi số 2");
+        navigation.navigate("BoDe2");
         break;
       case "3":
-        alert("Đề thi số 3");
+        navigation.navigate("BoDe3");
         break;
       case "4":
-        alert("Đề thi số 4");
+        navigation.navigate("BoDe4");
         break;
       case "5":
-        alert("Đề thi số 5");
+        navigation.navigate("BoDe5");
         break;
       case "6":
-        alert("Đề thi số 6");
+        navigation.navigate("BoDe6");
         break;
       case "7":
-        alert("Đề thi số 7");
+        navigation.navigate("BoDe7");
         break;
       case "8":
-        alert("Đề thi số 8");
+        navigation.navigate("BoDe8");
         break;
       default:
         Alert.alert("Thông báo", "Tính năng này đang được phát triển!");

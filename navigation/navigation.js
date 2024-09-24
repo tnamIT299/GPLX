@@ -19,7 +19,7 @@ import { Splash1, Splash2, Splash3 } from '../screens/SplashScreen/index';
 import {
   BienBaoDuongBo, SaHinh, ToanBoCauHoi, VanHoaDaoDuc, KyThuatLaiXe, DeThiKhaiNiemQuyTac, OnTapTheoCauHoi,CauLiet,DeNgauNhien,CacCauBiSai,CauHoiTimKiem
 } from '../screens/OnTapTheoCauHoi/index';
-import { BoDeThi,BoDe1 } from '../screens/BoDe';
+import { BoDeThi,BoDe1,BoDe2,BoDe3,BoDe4,BoDe5,BoDe6,BoDe7,BoDe8 } from '../screens/BoDe';
 
 
 const Stack = createStackNavigator();
@@ -96,6 +96,13 @@ function Navigation() {
 
          {/*Screen Ôn Tập theo bộ đề*/}
          <Stack.Screen name="BoDe1" component={BoDe1} />
+         <Stack.Screen name="BoDe2" component={BoDe2} />
+         <Stack.Screen name="BoDe3" component={BoDe3} />
+         <Stack.Screen name="BoDe4" component={BoDe4} />
+         <Stack.Screen name="BoDe5" component={BoDe5} />
+         <Stack.Screen name="BoDe6" component={BoDe6} />
+         <Stack.Screen name="BoDe7" component={BoDe7} />
+         <Stack.Screen name="BoDe8" component={BoDe8} />
 
 
       </Stack.Navigator>

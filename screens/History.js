@@ -102,7 +102,7 @@ const HistoryTab = ({ navigation }) => {
     return (
       <View style={styles.itemContainer}>
         <Text style={styles.title}>{item.examName}</Text>
-        <Text style={{fontSize:15}}>Điểm: {item.score}</Text>
+        <Text style={{fontSize:15}}>Điểm: {item.score} / 25</Text>
         <Text style={{fontSize:15}}>Thời gian: {item.formattedTimestamp}</Text>
         <Text style={{ color: resultColor, fontWeight:'bold', fontSize:15 }}>Kết quả: {item.result}</Text>
       </View>

@@ -537,7 +537,7 @@ const DeNgauNhienTab = ({ navigation }) => {
           }}
         >
           <CountdownCircleTimer
-            size={60}
+            size={70}
             strokeWidth={6}
             isPlaying
             duration={1140}

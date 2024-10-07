@@ -19,7 +19,6 @@ const items = [
   },
   { id: "6", name: "Lịch sử thi", icon: "history", color: "#00C5CD" },
   { id: "7", name: "Tra cứu", icon: "search", color: "#FF6633" },
-  { id: "8", name: "Địa điểm thi", icon: "map-marked-alt", color: "#CD853F" },
 ];
 
 const ManhinhChonOptionTab = ({ navigation }) => {

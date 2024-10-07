@@ -14,6 +14,7 @@ const items = [
   { id: "6", name: "Đề Thi Số 6", icon: "book-open", color: "#66CCCC" },
   { id: "7", name: "Đề Thi Số 7", icon: "book-open", color: "#66CCCC" },
   { id: "8", name: "Đề Thi Số 8", icon: "book-open", color: "#66CCCC" },
+
 ];
 
 const BoDeThiTab = ({ navigation }) => {

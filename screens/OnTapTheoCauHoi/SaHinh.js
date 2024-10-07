@@ -13,9 +13,10 @@ import {
 } from "react-native";
 import { supabase } from "../../data/supabaseClient";
 import { Ionicons } from "@expo/vector-icons";
-import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { createStackNavigator } from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/FontAwesome";
+import styles from "./styles";
+import { imageMap } from "../BoDe/importImage";
 
 const Stack = createStackNavigator();
 
@@ -31,43 +32,7 @@ const SaHinhTab = ({ navigation }) => {
   const [isAnswered, setIsAnswered] = useState(false);
   const [explanations, setExplanations] = useState([]);
 
-  const imageMap = {
-    "166.png": require("../../assets/Question/166.png"),
-    "167.png": require("../../assets/Question/167.png"),
-    "168.png": require("../../assets/Question/168.png"),
-    "169.png": require("../../assets/Question/169.png"),
-    "170.png": require("../../assets/Question/170.png"),
-    "171.png": require("../../assets/Question/171.png"),
-    "172.png": require("../../assets/Question/172.png"),
-    "173.png": require("../../assets/Question/173.png"),
-    "174.png": require("../../assets/Question/174.png"),
-    "175.png": require("../../assets/Question/175.png"),
-    "176.png": require("../../assets/Question/176.png"),
-    "177.png": require("../../assets/Question/177.png"),
-    "178.png": require("../../assets/Question/178.png"),
-    "179.png": require("../../assets/Question/179.png"),
-    "180.png": require("../../assets/Question/180.png"),
-    "181.png": require("../../assets/Question/181.png"),
-    "182.png": require("../../assets/Question/182.png"),
-    "183.png": require("../../assets/Question/183.png"),
-    "184.png": require("../../assets/Question/184.png"),
-    "185.png": require("../../assets/Question/185.png"),
-    "186.png": require("../../assets/Question/186.png"),
-    "187.png": require("../../assets/Question/187.png"),
-    "188.png": require("../../assets/Question/188.png"),
-    "189.png": require("../../assets/Question/189.png"),
-    "190.png": require("../../assets/Question/190.png"),
-    "191.png": require("../../assets/Question/191.png"),
-    "192.png": require("../../assets/Question/192.png"),
-    "193.png": require("../../assets/Question/193.png"),
-    "194.png": require("../../assets/Question/194.png"),
-    "195.png": require("../../assets/Question/195.png"),
-    "196.png": require("../../assets/Question/196.png"),
-    "197.png": require("../../assets/Question/197.png"),
-    "198.png": require("../../assets/Question/198.png"),
-    "199.png": require("../../assets/Question/199.png"),
-    "200.png": require("../../assets/Question/200.png"),
-  };
+  
 
   const fetchData = useCallback(async () => {
     const { data, error } = await supabase
@@ -498,123 +463,4 @@ const SaHinhStack = ({ navigation }) => {
 export default SaHinhStack;
 
 const { width } = Dimensions.get("window");
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  scrollContainer: {
-    flexGrow: 1,
-    padding: 10,
-    paddingBottom: 50,
-  },
-  titleQuestion: {
-    fontSize: 17,
-    fontWeight: "bold",
-    marginBottom: 15,
-  },
-  numberQuestion: {
-    marginTop: 5,
-    fontSize: 17,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  explanationContainer: {
-    backgroundColor: "#00FF99",
-    padding: 10,
-    borderRadius: 8,
-    marginTop: 15,
-  },
-  explanationText: {
-    fontSize: 16,
-    marginLeft: 5,
-    marginBottom: 10,
-  },
-  optionContainer: {
-    borderWidth: 2,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    marginBottom: 10,
-    padding: 10,
-  },
-  optionContent: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  label: {
-    fontSize: 16,
-  },
-  footer: {
-    flexDirection: "row",
-    width: "100%",
-    paddingVertical: 5,
-    justifyContent: "space-between",
-    paddingHorizontal: 15,
-    backgroundColor: "#2F95DC",
-  },
-  checkButton: {
-    backgroundColor: "#33FF33",
-    padding: 10,
-    borderRadius: 50,
-    borderWidth: 1,
-    borderColor: "#ddd",
-  },
-  navButton: {
-    padding: 10,
-    alignItems: "center",
-  },
-  finalScore: {
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 20,
-  },
-  button: {
-    backgroundColor: "#2F95DC",
-    padding: 10,
-    borderRadius: 8,
-    alignItems: "center",
-    marginHorizontal: 40,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  btnendExam: {
-    backgroundColor: "#ddd",
-    borderRadius: 10,
-    padding: 10,
-    justifyContent: "center",
-  },
-  image: {
-    resizeMode: "contain",
-    width: 150,
-    height: 150,
-    alignSelf: "center",
-  },
-  tabContainer: {
-    backgroundColor: "#f2f2f2",
-    paddingVertical: 10,
-  },
-  tab: {
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    borderRadius: 20,
-    marginHorizontal: 5,
-    backgroundColor: "#ddd",
-  },
-  activeTab: {
-    backgroundColor: "#2F95DC",
-  },
-  tabText: {
-    color: "#000",
-    fontSize: 15,
-  },
-  activeTabText: {
-    color: "#fff",
-  },
-  tabSwitch: {
-    padding: 3,
-  },
-});
+

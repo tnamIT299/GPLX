@@ -460,5 +460,3 @@ const ToanBoCauHoiStack = ({ navigation }) => {
 
 export default ToanBoCauHoiStack;
 
-const { width } = Dimensions.get("window");
-

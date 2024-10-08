@@ -4,23 +4,19 @@ import {
   View,
   Text,
   FlatList,
-  StyleSheet,
   TouchableOpacity,
-  Dimensions,
   Alert,
   ScrollView,
   Image,
 } from "react-native";
-import { supabase } from "../../data/supabaseClient";
 import { Ionicons } from "@expo/vector-icons";
 import { createStackNavigator } from "@react-navigation/stack";
-import Icon from "react-native-vector-icons/FontAwesome";
 import { imageMap } from "../BoDe/importImage";
 import styles from "./styles";
 
 const Stack = createStackNavigator();
 
-const BienBaoDuongBoTab = ({ navigation }) => {
+const BoCauHoiTab = ({ fetchData,navigation }) => {
   const [data, setData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -31,20 +27,6 @@ const BienBaoDuongBoTab = ({ navigation }) => {
   const [isTimeUp, setIsTimeUp] = useState(false);
   const [isAnswered, setIsAnswered] = useState(false);
   const [explanations, setExplanations] = useState([]);
-
-  const fetchData = useCallback(async () => {
-    const { data, error } = await supabase
-      .from("question")
-      .select("content, option, image, tip")
-      .eq("typeQuestion", 4);
-
-    if (error) {
-      console.error("Error fetching data:", error);
-      return [];
-    }
-
-    return data;
-  }, []);
 
   useEffect(() => {
     const loadData = async () => {
@@ -430,34 +412,4 @@ const BienBaoDuongBoTab = ({ navigation }) => {
   );
 };
 
-const BienBaoDuongBoStack = ({ navigation }) => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="BienBaoDuongBoTab"
-        component={BienBaoDuongBoTab}
-        options={({ navigation }) => ({
-          headerTitle: "Biển báo đường bộ",
-          headerTitleAlign: "center",
-          headerStyle: { backgroundColor: "#2F95DC" },
-          headerTintColor: "#FFFFFF",
-          headerTitleStyle: { fontWeight: "bold" },
-          headerLeft: () => (
-            <Icon
-              name="chevron-left"
-              size={15}
-              onPress={() => navigation.goBack()}
-              style={{ color: "#FFFFFF", marginLeft: 10 }}
-            >
-              Back
-            </Icon>
-          ),
-        })}
-      />
-    </Stack.Navigator>
-  );
-};
-
-export default BienBaoDuongBoStack;
-
-const { width } = Dimensions.get("window");
+export default BoCauHoiTab;

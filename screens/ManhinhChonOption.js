@@ -8,8 +8,8 @@ const Stack = createStackNavigator();
 
 const items = [
   { id: "1", name: "Đề ngẫu nhiên", icon: "random", color: "#FFB74D" },
-  { id: "2", name: "Thi theo bộ đề", icon: "book", color: "#FF3333" },
-  { id: "3", name: "Các câu bị sai", icon: "times-circle", color: "#81C784" },
+  { id: "2", name: "Thi theo bộ đề", icon: "book", color: "#81C784" },
+  { id: "3", name: "Các câu bị sai", icon: "times-circle", color: "#FF3333" },
   { id: "4", name: "Ôn tập câu hỏi", icon: "book-reader", color: "#4FC3F7" },
   {
     id: "5",

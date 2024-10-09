@@ -73,7 +73,7 @@ const OnTapTheoCauHoiTab = ({ navigation }) => {
           onChangeText={(text) => setSearchText(text)}
           autoCorrect={false}
           style={styles.textInput}
-          placeholder="Search"
+          placeholder="Nhập từ khoá câu hỏi cần tìm..."
           returnKeyType="search"
           value={searchText}
           onSubmitEditing={handleSearch}

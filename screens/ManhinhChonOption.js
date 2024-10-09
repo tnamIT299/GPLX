@@ -1,24 +1,24 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Alert, Image } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 const Stack = createStackNavigator();
 
 const items = [
-  { id: "1", name: "Đề ngẫu nhiên", icon: "random", color: "#FFB74D" },
-  { id: "2", name: "Thi theo bộ đề", icon: "book", color: "#81C784" },
-  { id: "3", name: "Các câu bị sai", icon: "times-circle", color: "#FF3333" },
-  { id: "4", name: "Ôn tập câu hỏi", icon: "book-reader", color: "#4FC3F7" },
+  { id: "1", name: "Đề ngẫu nhiên", icon: require("../assets/images/random.png"), color: "#FFB74D" },
+  { id: "2", name: "Thi theo bộ đề", icon: require("../assets/images/exam.png"), color: "#81C784" },
+  { id: "3", name: "Các câu bị sai", icon: require("../assets/images/wrong.png"), color: "#FF3333" },
+  { id: "4", name: "Ôn tập câu hỏi", icon: require("../assets/images/revise.png"), color: "#4FC3F7" },
   {
     id: "5",
     name: "20 câu điểm liệt",
-    icon: "exclamation-triangle",
+    icon: require("../assets/images/warning.png"),
     color: "#8D6E63",
   },
-  { id: "6", name: "Lịch sử thi", icon: "history", color: "#00C5CD" },
-  { id: "7", name: "Tra cứu", icon: "search", color: "#FF6633" },
+  { id: "6", name: "Lịch sử thi", icon: require("../assets/images/history.png"), color: "#00C5CD" },
+  { id: "7", name: "Tra cứu", icon: require("../assets/images/search.png"), color: "#FF6633" },
 ];
 
 const ManhinhChonOptionTab = ({ navigation }) => {
@@ -59,7 +59,7 @@ const ManhinhChonOptionTab = ({ navigation }) => {
             style={[styles.item, { backgroundColor: item.color }]}
             onPress={() => handleOption(item)}
           >
-            <Icon name={item.icon} size={30} color="#FFF" />
+            <Image source={item.icon} style={styles.icon}/>
             <Text style={styles.itemText}>{item.name}</Text>
           </TouchableOpacity>
         ))}
@@ -117,9 +117,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   icon: {
-    marginLeft: "auto",
-    marginTop: 10,
-    color: "#fff",
+    width: 55,
+    height: 55,
+    resizeMode: "contain",
   },
   content: {
     flex: 1,

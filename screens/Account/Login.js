@@ -22,7 +22,6 @@ const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  // State để kiểm soát chế độ hiển thị mật khẩu
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   let [fontsLoaded] = useFonts({
@@ -33,37 +32,30 @@ const Login = ({ navigation }) => {
     return <Text>Loading...</Text>;
   }
   const generateToken = () => {
-    return uuidv4(); // Tạo token UUID ngẫu nhiên
+    return uuidv4(); 
   };
   const handleLogin = async () => {
-    // Regex để kiểm tra định dạng email
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-
-    // Kiểm tra điều kiện email
     if (!emailRegex.test(email)) {
       setError("Email không hợp lệ");
       return;
     }
-
-    // Tạo token ngẫu nhiên cho currentDevice
     const currentDevice = generateToken();
 
     try {
-      // Đăng nhập bằng email và mật khẩu
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) {
-        console.log("Login Error:", error); // Log lỗi ra console
+        console.log("Login Error:", error); 
         setError(error.message);
       } else {
         setError("");
         const { user } = data;
 
         if (user) {
-          // Lấy thông tin currentDevice của người dùng từ bảng User
           const { data: userData, error: userError } = await supabase
             .from("User")
             .select("currentDevice")
@@ -76,11 +68,11 @@ const Login = ({ navigation }) => {
             return;
           }
 
-          // Kiểm tra nếu `currentDevice` là null thì lưu token mới vào
+  
           if (!userData.currentDevice) {
             const { error: updateError } = await supabase
               .from("User")
-              .update({ currentDevice: currentDevice }) // Cập nhật với token mới
+              .update({ currentDevice: currentDevice }) 
               .eq("uid", user.id);
 
             if (updateError) {
@@ -88,35 +80,29 @@ const Login = ({ navigation }) => {
               setError("Có lỗi khi cập nhật thiết bị.");
               return;
             }
-
-            // Lưu thông tin người dùng vào AsyncStorage
             await saveUserData(user.id);
-
-            // Điều hướng đến màn hình chính
             Alert.alert("Thông báo", "Đăng nhập thành công!");
             navigation.navigate("ManhinhChinh");
           }
-          // Nếu `currentDevice` không phải là null và khác với token hiện tại, từ chối đăng nhập
+          
           else if (userData.currentDevice !== currentDevice) {
             setError("Tài khoản đang đăng nhập ở thiết bị khác.");
             return;
           }
-
-          // Nếu thiết bị đã đăng nhập trước đó và trùng với currentDevice, cho phép tiếp tục
           else {
             navigation.navigate("ManhinhChinh");
           }
         }
       }
     } catch (error) {
-      console.error("Unexpected Error:", error); // Log lỗi bất ngờ ra console
+      console.error("Unexpected Error:", error); 
       setError("Có lỗi xảy ra, vui lòng thử lại.");
     }
   };
 
   return (
     <ImageBackground
-      source={require("../../assets/images/background/appbackground19.webp")} // Link ảnh nền
+      source={require("../../assets/images/background/appbackground19.webp")}
       style={styles.background}
     >
       <KeyboardAvoidingView

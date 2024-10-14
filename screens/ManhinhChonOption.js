@@ -59,7 +59,6 @@ const ManhinhChonOptionTab = ({ navigation }) => {
           text: "Đăng xuất",
           onPress: async () => {
             try {
-              // Lấy thông tin người dùng hiện tại từ Supabase
               const {
                 data: { user },
                 error: fetchUserError,
@@ -71,7 +70,6 @@ const ManhinhChonOptionTab = ({ navigation }) => {
               }
   
               if (user) {
-                // Xóa giá trị currentDevice trong bảng User
                 const { error: updateError } = await supabase
                   .from('User')
                   .update({ currentDevice: null })
@@ -82,11 +80,8 @@ const ManhinhChonOptionTab = ({ navigation }) => {
                   return;
                 }
   
-                // Gọi phương thức signOut từ Supabase để đăng xuất người dùng
                 await supabase.auth.signOut();
                 Alert.alert("Đăng xuất thành công");
-  
-                // Điều hướng về màn hình đăng nhập
                 navigation.navigate('Login');
               }
             } catch (error) {

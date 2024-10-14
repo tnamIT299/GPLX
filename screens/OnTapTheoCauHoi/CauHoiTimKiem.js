@@ -36,13 +36,11 @@ const CauHoiTimKiemTab = ({ navigation, route }) => {
 
 
   const fetchData = useCallback(async (searchText) => {
-    // Log searchText to ensure it's valid
     console.log(`Searching for: ${searchText}`);
     if (!searchText || searchText.trim() === "") {
       console.warn("Empty searchText provided. No query executed.");
       return [];
     }
-    // Execute the query with ilike
     const { data, error } = await supabase
       .from("question")
       .select("content, option, image, tip")
@@ -111,7 +109,7 @@ const CauHoiTimKiemTab = ({ navigation, route }) => {
 
       currentState.isChecked = true;
       currentState.isAnswered = true;
-      currentState.explanations = data[currentIndex]?.tip || ""; // Lưu giải thích vào trạng thái
+      currentState.explanations = data[currentIndex]?.tip || "";
       setIsAnswered(true);
       setExplanations(currentState.explanations);
 
@@ -190,18 +188,18 @@ const CauHoiTimKiemTab = ({ navigation, route }) => {
       if (questionState.selectedOption) {
         const isCorrect = questionState.selectedOption.correct === "1";
         if (isCorrect) {
-          totalScore += 1; // Thay đổi điểm số nếu cần
+          totalScore += 1;
           questionState.isCorrect = true;
         } else {
           questionState.isCorrect = false;
         }
       } else {
-        questionState.isCorrect = false; // Đánh dấu câu hỏi chưa được trả lời
+        questionState.isCorrect = false; 
       }
 
       questionState.isChecked = true;
       questionState.isAnswered = true;
-      questionState.explanation = question.tip || ""; // Thêm giải thích nếu có
+      questionState.explanation = question.tip || ""; 
     });
 
     setScore(totalScore);
@@ -236,7 +234,7 @@ const CauHoiTimKiemTab = ({ navigation, route }) => {
     const isActive = index === currentIndex;
     const isCorrect = questionStates[index]?.isCorrect;
 
-    let backgroundColor = "#BBB"; // Màu mặc định
+    let backgroundColor = "#BBB"; 
     if (isCorrect === true) {
       backgroundColor = "#00CD00";
     } else if (isCorrect === false) {

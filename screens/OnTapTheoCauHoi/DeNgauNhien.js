@@ -131,8 +131,6 @@ const DeNgauNhienTab = ({ navigation }) => {
   const handleCheckAnswer = useCallback(async () => {
     setQuestionStates((prevStates) => {
       const updatedStates = [...prevStates];
-
-      // Kiểm tra nếu `currentIndex` vượt quá giới hạn của mảng
       if (currentIndex < 0 || currentIndex >= updatedStates.length) {
         console.error("Invalid index:", currentIndex);
         return updatedStates;
@@ -140,13 +138,11 @@ const DeNgauNhienTab = ({ navigation }) => {
 
       const currentState = updatedStates[currentIndex];
 
-      // Kiểm tra nếu `currentState` tồn tại
       if (!currentState) {
         console.error("Current state is undefined for index:", currentIndex);
         return updatedStates;
       }
 
-      // Kiểm tra nếu `selectedOption` tồn tại
       if (
         currentState.selectedOption &&
         currentState.selectedOption.correct === "1"
@@ -155,11 +151,8 @@ const DeNgauNhienTab = ({ navigation }) => {
         currentState.isCorrect = true;
       } else {
         currentState.isCorrect = false;
-
-        // Lưu câu hỏi sai vào bảng WrongQuestion
         const question = data[currentIndex];
 
-        // Chuyển việc lưu dữ liệu ra ngoài setQuestionStates để tránh lỗi async
         (async () => {
           try {
             const { error } = await supabase
@@ -179,7 +172,7 @@ const DeNgauNhienTab = ({ navigation }) => {
 
       currentState.isChecked = true;
       currentState.isAnswered = true;
-      currentState.explanations = data[currentIndex]?.tip || ""; // Lưu giải thích vào trạng thái
+      currentState.explanations = data[currentIndex]?.tip || ""; 
       setIsAnswered(true);
       setExplanations(currentState.explanations);
 
@@ -228,33 +221,31 @@ const DeNgauNhienTab = ({ navigation }) => {
         const isCorrect = questionState.selectedOption.correct === "1";
 
         if (isCorrect) {
-          totalScore += 1; // Tăng điểm số
+          totalScore += 1; 
           questionState.isCorrect = true;
 
-          // Kiểm tra câu liệt (typeQuestion = 6)
+       
           if (question.typeQuestion === 6) {
-            hasFailedByLethalQuestion = false; // Trả lời đúng câu liệt
+            hasFailedByLethalQuestion = false; 
           }
         } else {
           questionState.isCorrect = false;
 
-          // Đánh dấu là không đỗ nếu trả lời sai câu liệt
+          
           if (question.typeQuestion === 6) {
             hasFailedByLethalQuestion = true;
           }
         }
       } else {
-        questionState.isCorrect = false; // Đánh dấu câu hỏi chưa được trả lời
+        questionState.isCorrect = false; 
       }
 
       questionState.isChecked = true;
       questionState.isAnswered = true;
-      questionState.explanation = question.tip || ""; // Thêm giải thích nếu có
+      questionState.explanation = question.tip || ""; 
     });
 
     const scoreLevel = getScoreLevel(totalScore, data.length);
-
-    // Hiển thị kết quả
     setScore(totalScore);
     setScoreLevel(scoreLevel);
     setHasFailedByLethalQuestion(hasFailedByLethalQuestion);

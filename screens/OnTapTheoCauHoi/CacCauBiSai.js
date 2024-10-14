@@ -32,7 +32,6 @@ const CacCauBiSaiTab = ({ navigation }) => {
   const [explanations, setExplanations] = useState([]);
 
   const fetchData = useCallback(async () => {
-    // Lấy danh sách idQuestion từ bảng WrongQuestion
     const { data: wrongQuestions, error: wrongQuestionError } = await supabase
       .from("WrongQuestion")
       .select("idQuestion");
@@ -48,11 +47,10 @@ const CacCauBiSaiTab = ({ navigation }) => {
 
     const questionIds = wrongQuestions.map((wq) => wq.idQuestion);
 
-    // Lấy thông tin chi tiết các câu hỏi từ bảng Question
     const { data: questions, error: questionError } = await supabase
       .from("question")
       .select("id, content, option, typeQuestion, tip, image")
-      .in("id", questionIds); // Dùng .in để lấy danh sách các id
+      .in("id", questionIds);
 
     if (questionError) {
       console.error("Error fetching questions:", questionError);
@@ -104,7 +102,6 @@ const CacCauBiSaiTab = ({ navigation }) => {
       ) {
         setScore((prevScore) => prevScore + 1);
         currentState.isCorrect = true;
-        // Gọi hàm xóa câu hỏi khỏi bảng WrongQuestion
         deleteQuestionFromWrongQuestion(data[currentIndex].id);
       } else {
         currentState.isCorrect = false;
@@ -112,7 +109,7 @@ const CacCauBiSaiTab = ({ navigation }) => {
 
       currentState.isChecked = true;
       currentState.isAnswered = true;
-      currentState.explanations = data[currentIndex]?.tip || ""; // Lưu giải thích vào trạng thái
+      currentState.explanations = data[currentIndex]?.tip || "";
       setIsAnswered(true);
       setExplanations(currentState.explanations);
 
@@ -204,18 +201,18 @@ const CacCauBiSaiTab = ({ navigation }) => {
       if (questionState.selectedOption) {
         const isCorrect = questionState.selectedOption.correct === "1";
         if (isCorrect) {
-          totalScore += 1; // Thay đổi điểm số nếu cần
+          totalScore += 1; 
           questionState.isCorrect = true;
         } else {
           questionState.isCorrect = false;
         }
       } else {
-        questionState.isCorrect = false; // Đánh dấu câu hỏi chưa được trả lời
+        questionState.isCorrect = false; 
       }
 
       questionState.isChecked = true;
       questionState.isAnswered = true;
-      questionState.explanation = question.tip || ""; // Thêm giải thích nếu có
+      questionState.explanation = question.tip || ""; 
     });
 
     setScore(totalScore);
@@ -250,7 +247,7 @@ const CacCauBiSaiTab = ({ navigation }) => {
     const isActive = index === currentIndex;
     const isCorrect = questionStates[index]?.isCorrect;
 
-    let backgroundColor = "#BBB"; // Màu mặc định
+    let backgroundColor = "#BBB";
     if (isCorrect === true) {
       backgroundColor = "#00CD00";
     } else if (isCorrect === false) {

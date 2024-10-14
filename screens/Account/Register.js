@@ -21,7 +21,6 @@ const SignUp = ({ navigation }) => {
   const [ConfirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  // State để kiểm soát chế độ hiển thị mật khẩu
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [passwordConfirmVisible, setPasswordConfirmVisible] = useState(false);
 
@@ -34,10 +33,8 @@ const SignUp = ({ navigation }) => {
   }
 
   const handleSignup = async () => {
-    // Regex để kiểm tra định dạng email
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-    // Kiểm tra điều kiện email
     if (!emailRegex.test(email)) {
       setError("Email không hợp lệ");
       return;
@@ -50,8 +47,6 @@ const SignUp = ({ navigation }) => {
 
     try {
       setLoading(true);
-
-      // Đăng ký tài khoản
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -60,16 +55,13 @@ const SignUp = ({ navigation }) => {
       if (error) {
         setError(error.message);
       } else {
-        // Lấy UID của tài khoản đã đăng ký
         const { data: userData, error: userError } =
           await supabase.auth.getUser();
         if (userError) {
           setError(userError.message);
         } else {
           const uid = userData?.user?.id;
-          console.log("UID:", uid); // In ra UID
-
-          // Thêm thông tin vào bảng user
+          console.log("UID:", uid);
           const { error: insertError } = await supabase
             .from("User")
             .insert([{ uid, name, email }]);
@@ -91,7 +83,7 @@ const SignUp = ({ navigation }) => {
 
   return (
     <ImageBackground
-      source={require("../../assets/images/background/appbackground19.webp")} // Link ảnh nền
+      source={require("../../assets/images/background/appbackground19.webp")} 
       style={styles.background}
     >
       <KeyboardAvoidingView

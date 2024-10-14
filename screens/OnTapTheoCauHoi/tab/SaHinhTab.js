@@ -5,7 +5,7 @@ import BoCauHoiTab from "../BoCauHoiTab";
 const fetchSaHinh = async () => {
     const { data, error } = await supabase
     .from("question")
-    .select("content, option, image, tip)")
+    .select("content, option, image, tip")
     .eq("typeQuestion", 5);
 
   if (error) {

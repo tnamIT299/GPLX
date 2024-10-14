@@ -36,7 +36,6 @@ const RecoverPassword = ({ navigation }) => {
       Alert.alert("Thông báo", "Mật khẩu không khớp");
       return;
     }
-    // Gửi yêu cầu thay đổi mật khẩu
     const { data, error: resetError } =
       await supabase.auth.resetPasswordForEmail(email);
 
@@ -45,7 +44,6 @@ const RecoverPassword = ({ navigation }) => {
       return;
     }
 
-    // Cập nhật mật khẩu mới sau khi xác thực
     const { error: updateError } = await supabase.auth.updateUser({
       password: newPassword,
     });
@@ -62,7 +60,7 @@ const RecoverPassword = ({ navigation }) => {
 
   return (
     <ImageBackground
-      source={require("../../assets/images/background/appbackground19.webp")} // Link ảnh nền
+      source={require("../../assets/images/background/appbackground19.webp")}
       style={styles.background}
     >
       <KeyboardAvoidingView

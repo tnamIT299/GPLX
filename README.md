@@ -1,4 +1,6 @@
 # Ứng dụng thi bằng lái xe máy hạng A1 🏍️
+<img src="https://www.svgrepo.com/show/452092/react.svg" alt="React Native" width="50" height="40"/> <img src="https://www.vectorlogo.zone/logos/supabase/supabase-ar21.svg" alt="Supabase" width="40" height="40"/><img src="https://www.vectorlogo.zone/logos/expoio/expoio-ar21.svg" alt="expo" width="40" height="40"/> <img src="https://www.vectorlogo.zone/logos/javascript/javascript-ar21.svg" alt="javascript" width="40" height="40"/>
+
 Ứng dụng thi bằng lái xe máy A1 với nhiều chức năng khác nhau giúp người luyện thi nắm chắc kiến thức 
 ## Chức năng
 - Đăng ký, đăng nhập, đăng xuất, khôi phục mật khẩu 

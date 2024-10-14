@@ -20,6 +20,7 @@ import {
   BienBaoDuongBo, SaHinh, ToanBoCauHoi, VanHoaDaoDuc, KyThuatLaiXe, DeThiKhaiNiemQuyTac, OnTapTheoCauHoi,CauLiet,DeNgauNhien,CacCauBiSai,CauHoiTimKiem
 } from '../screens/OnTapTheoCauHoi/index';
 import { BoDeThi,BoDe1,BoDe2,BoDe3,BoDe4,BoDe5,BoDe6,BoDe7,BoDe8 } from '../screens/BoDe';
+import {Login, Register, RecoverPassword} from '../screens/Account';
 
 
 
@@ -32,6 +33,9 @@ function Navigation() {
         <Stack.Screen name="Splash1" component={Splash1} />
         <Stack.Screen name="Splash2" component={Splash2} />
         <Stack.Screen name="Splash3" component={Splash3} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="RecoverPassword" component={RecoverPassword} />
         <Stack.Screen name="ManhinhChinh" component={ManhinhChinh} />
         <Stack.Screen name="ManhinhChonOption" component={ManhinhChonOption} />
         <Stack.Screen name="BoDeThi" component={BoDeThi} />

@@ -12,7 +12,7 @@ const Splash3 = ({ navigation }) => {
       <View style={styles.buttonContainer}>
         <Button
           title="Next"
-          onPress={() => navigation.navigate("ManhinhChinh")}
+          onPress={() => navigation.navigate("Login")}
         />
       </View>
     </View>

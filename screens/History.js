@@ -14,6 +14,7 @@ import dayjs from "dayjs";
 import { useFocusEffect } from "@react-navigation/native";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/vi"; // Import ngôn ngữ tiếng Việt
+import { getUserId } from "../data/getUser";
 
 dayjs.extend(relativeTime);
 dayjs.locale("vi");
@@ -21,8 +22,18 @@ dayjs.locale("vi");
 const Stack = createStackNavigator();
 
 const HistoryTab = ({ navigation }) => {
+  const [uid, setUserUid] = useState("");
   const [historyData, setHistoryData] = useState([]);
   const [noHistoryMessage, setNoHistoryMessage] = useState("");
+
+  useEffect(() => {
+    const fetchUserId = async () => {
+      const uid = await getUserId();
+      setUserUid(uid);
+      console.log("UID:", uid);
+    };
+    fetchUserId();
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
@@ -30,26 +41,35 @@ const HistoryTab = ({ navigation }) => {
     }, [])
   );
 
+  useEffect(() => {
+    fetchHistory();
+  }, [uid]);
+  
+
   const fetchHistory = async () => {
+    if (!uid) {
+      // If uid is not yet set, skip fetching history
+      return;
+    }
+  
     const { data, error } = await supabase
       .from("HistoryExam")
       .select("*, Exam(name)")
+      .eq("uid", uid)
       .order("timestamp", { ascending: false });
-
+  
     if (error) {
       console.error(error);
     } else {
       if (data.length === 0) {
         setNoHistoryMessage("Chưa có lịch sử thi");
       } else {
-        setNoHistoryMessage(""); // Xóa thông báo nếu có dữ liệu
+        setNoHistoryMessage(""); // Clear message if data is available
         setHistoryData(
           data.map((item) => ({
             ...item,
             examName: item.Exam.name,
-            formattedTimestamp: dayjs(item.timestamp).format(
-              "DD/MM/YYYY HH:mm"
-            ),
+            formattedTimestamp: dayjs(item.timestamp).format("DD/MM/YYYY HH:mm"),
           }))
         );
       }
@@ -70,7 +90,8 @@ const HistoryTab = ({ navigation }) => {
           onPress: async () => {
             const { data, error: fetchError } = await supabase
               .from("HistoryExam")
-              .select("id");
+              .select("id")
+              .eq("uid", uid);
 
             if (fetchError) {
               console.error("Error fetching history IDs:", fetchError);

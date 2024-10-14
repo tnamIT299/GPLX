@@ -14,6 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import styles from "./styles";
 import { imageMap } from "./importImage";
+import { getUserId } from "../../data/getUser";
 
 const BoDeTab = ({ fetchData, idExam, examTitle, navigation }) => {
   const [data, setData] = useState([]);
@@ -208,6 +209,7 @@ const BoDeTab = ({ fetchData, idExam, examTitle, navigation }) => {
     const { error } = await supabase
       .from('HistoryExam')
       .insert({
+        uid:await getUserId(),
         idExam,
         timestamp: formattedDate, 
         score: score,

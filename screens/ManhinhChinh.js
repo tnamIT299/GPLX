@@ -178,16 +178,7 @@ const ManhinhChinhStack = () => {
           headerStyle: { backgroundColor: "#2F95DC" },
           headerTintColor: "#FFFFFF",
           headerTitleStyle: { fontWeight: "bold" },
-          headerLeft: () => (
-            <Icon
-              name="chevron-left"
-              size={15}
-              onPress={() => navigation.goBack()}
-              style={{ color: "#FFFFFF", marginLeft: 10 }}
-            >
-              Back
-            </Icon>
-          ),
+          headerLeft:null,
         })}
       />
     </Stack.Navigator>

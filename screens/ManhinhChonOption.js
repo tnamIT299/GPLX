@@ -22,7 +22,8 @@ const items = [
   },
   { id: "6", name: "Lịch sử thi", icon: require("../assets/images/history.png"), color: "#00C5CD" },
   { id: "7", name: "Tra cứu", icon: require("../assets/images/search.png"), color: "#FF6633" },
-  { id: "8", name: "Thoát Ứng dụng", icon: require("../assets/images/logout.png"), color: "#CCCCCC" },
+  { id: "8", name: "Tài khoản", icon: require("../assets/images/account.png"), color: "#DDC488" },
+  { id: "9", name: "Thoát Ứng dụng", icon: require("../assets/images/logout.png"), color: "#CCCCCC" },
 ];
 
 
@@ -117,6 +118,9 @@ const ManhinhChonOptionTab = ({ navigation }) => {
         navigation.navigate("Tracuu");
         break;
       case "8":
+        navigation.navigate("Account");
+        break;
+      case "9":
         handleSignOut();
         break;
       default:

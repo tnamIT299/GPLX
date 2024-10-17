@@ -1,12 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {TextDecoder,TextEncoder} from 'text-encoding'; // Import the polyfill
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import Navigation from './navigation/navigation';
-import DeNgauNhien from './screens/OnTapTheoCauHoi/DeNgauNhien';
+
+// Khởi tạo polyfill
+if (typeof TextEncoder === 'undefined') {
+  global.TextEncoder = require('text-encoding').TextEncoder;
+}
+if (typeof TextDecoder === 'undefined') {
+  global.TextDecoder = require('text-encoding').TextDecoder;
+}
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Navigation/>
+      <Navigation />
     </View>
   );
 }

@@ -33,30 +33,35 @@ const SignUp = ({ navigation }) => {
   }
 
   const handleSignup = async () => {
+    if (!name || !email || !password || !ConfirmPassword) {
+      Alert.alert("Thông báo", "Vui lòng nhập đầy đủ thông tin.");
+      return;
+    }
+  
+    // Regular expression to validate email format
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-
+  
     if (!emailRegex.test(email)) {
       setError("Email không hợp lệ");
       return;
     }
-
+  
     if (password !== ConfirmPassword) {
       Alert.alert("Thông báo", "Mật khẩu không khớp");
       return;
     }
-
+  
     try {
       setLoading(true);
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
       });
-
+  
       if (error) {
         setError(error.message);
       } else {
-        const { data: userData, error: userError } =
-          await supabase.auth.getUser();
+        const { data: userData, error: userError } = await supabase.auth.getUser();
         if (userError) {
           setError(userError.message);
         } else {
@@ -65,7 +70,7 @@ const SignUp = ({ navigation }) => {
           const { error: insertError } = await supabase
             .from("User")
             .insert([{ uid, name, email }]);
-
+  
           if (insertError) {
             setError(insertError.message);
           } else {
@@ -80,6 +85,7 @@ const SignUp = ({ navigation }) => {
       setLoading(false);
     }
   };
+  
 
   return (
     <ImageBackground
@@ -133,7 +139,6 @@ const SignUp = ({ navigation }) => {
               />
             </TouchableOpacity>
           </View>
-          {error ? <Text style={styles.error}>{error}</Text> : null}
 
           <View style={styles.passwordContainer}>
             <TextInput
@@ -152,6 +157,8 @@ const SignUp = ({ navigation }) => {
               />
             </TouchableOpacity>
           </View>
+
+          {error ? <Text style={styles.error}>{error}</Text> : null}
 
           <TouchableOpacity style={styles.signInButton} onPress={handleSignup}>
             <Text style={styles.signInButtonText}>Đăng ký</Text>

@@ -12,17 +12,8 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome6";
 import { useFonts } from "expo-font";
-import { sendEmail } from "../Account/mail/MailConfig"; // Custom email sending function
-import { TextEncoder, TextDecoder } from "text-encoding";
 import { supabase } from "../../data/supabaseClient";
-
-// Khởi tạo polyfill
-if (typeof TextEncoder === "undefined") {
-  global.TextEncoder = TextEncoder;
-}
-if (typeof TextDecoder === "undefined") {
-  global.TextDecoder = TextDecoder;
-}
+import { sendotp,confirmotp  } from "./mail/OtpConfig";
 
 const RecoverPassword = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -33,7 +24,7 @@ const RecoverPassword = ({ navigation }) => {
   const [confirmNewPasswordVisible, setConfirmNewPasswordVisible] =
     useState(false);
   const [isCodeSent, setIsCodeSent] = useState(false);
-  const [generatedCode, setGeneratedCode] = useState("");
+  const [otp, setOtp] = useState(false);
 
   let [fontsLoaded] = useFonts({
     "Montserrat-Regular": require("../../assets/font/Montserrat-Regular.ttf"),
@@ -43,91 +34,37 @@ const RecoverPassword = ({ navigation }) => {
     return <Text>Loading...</Text>;
   }
 
-  const sendotp = async () => {
-    const { data, error } = await supabase.auth.signInWithOtp({
-      email: "tronghuy0077@gmail.com",
-      options: {
-        shouldCreateUser: false,
-      },
-    });
-
-    setIsCodeSent(true);
+  const handleSendOtp = () => {
+    sendotp(email, setIsCodeSent);
   };
 
-  const confirmotp = async (token) => {
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.verifyOtp({
-      email,
-      token: `${token}`,
-      type: "email",
-    });
-    console.log(session);
+  const handleConfirmOtp = () => {
+    confirmotp(email, recoveryCode, setOtp);
   };
 
-  const handleSendRecoveryCode = async () => {
-    const generatedCode = Math.floor(
-      100000 + Math.random() * 900000
-    ).toString(); // Tạo mã OTP 6 chữ số
-
-    try {
-      // Tạo nội dung email chứa mã OTP
-      const subject = "Mã khôi phục mật khẩu";
-      const message = `Mã khôi phục của bạn là: ${generatedCode}. Vui lòng nhập mã này để thay đổi mật khẩu của bạn.`;
-
-      await sendEmail(email, subject, message); // Gửi email chứa mã OTP
-      setGeneratedCode(generatedCode); // Lưu mã OTP để xác minh
-      Alert.alert("Thông báo", "Mã khôi phục đã được gửi đến email của bạn.");
-      setIsCodeSent(true);
-    } catch (error) {
-      console.error(error);
-      Alert.alert("Error", "Không thể gửi mã khôi phục. Vui lòng thử lại sau.");
-    }
-  };
-
-  const handleResetPassword = async () => {
-    if (newPassword !== confirmNewPassword) {
-      Alert.alert("Thông báo", "Mật khẩu không khớp");
+  const changePass = async () => {
+    if (!newPassword ||!confirmNewPassword) {
+      Alert.alert("Thông báo", "Vui lòng điền đầy đủ thông tin mật khẩu mới.");
       return;
     }
 
-    // Xác minh mã OTP trước khi đặt lại mật khẩu
-    if (recoveryCode !== generatedCode) {
-      Alert.alert("Thông báo", "Mã khôi phục không chính xác");
+    if (newPassword!== confirmNewPassword) {
+      Alert.alert("Thông báo", "Mật khẩu không khớp.");
       return;
     }
+    const { user, error_1 } = await supabase.auth.updateUser({
+      password: newPassword,
+    });
 
-    try {
-      // Nếu mã OTP khớp, gọi resetPasswordForEmail để yêu cầu đặt lại mật khẩu
-      const { error: resetError } = await supabase.auth.resetPasswordForEmail(
-        email
-      );
-
-      if (resetError) {
-        console.error(resetError);
-        Alert.alert("Error", resetError.message);
-        return;
-      }
-
-      // Cập nhật mật khẩu trực tiếp sau khi gửi yêu cầu đặt lại mật khẩu
-      const { error: updateError } = await supabase.auth.updateUser({
-        password: newPassword,
-      });
-
-      if (updateError) {
-        console.error(updateError);
-        Alert.alert("Error", updateError.message);
-      } else {
-        Alert.alert(
-          "Thông báo",
-          "Mật khẩu của bạn đã được cập nhật thành công!"
-        );
-        navigation.navigate("Login");
-      }
-    } catch (error) {
-      console.error(error);
-      Alert.alert("Error", "Có lỗi xảy ra. Vui lòng thử lại sau.");
+    if (error_1) {
+      Alert.alert("Error", error_1.message);
+    } else {
+      Alert.alert("Thông báo", "Thay đổi mật khẩu thành công!");
+      setEmail("");
+      setRecoveryCode("");
+      setNewPassword("");
+      setConfirmNewPassword("");
+      navigation.navigate("Login");
     }
   };
 
@@ -166,55 +103,68 @@ const RecoverPassword = ({ navigation }) => {
                 />
               </View>
 
-              {/* <View style={styles.passwordContainer}>
-                <TextInput
-                  placeholder="Mật khẩu mới"
-                  value={newPassword}
-                  onChangeText={setNewPassword}
-                  secureTextEntry={!passwordVisible}
-                  style={styles.input}
-                />
-                <TouchableOpacity
-                  onPress={() => setPasswordVisible(!passwordVisible)}
-                >
-                  <Icon
-                    name={passwordVisible ? "eye-slash" : "eye"}
-                    size={20}
-                    style={styles.icon}
-                  />
-                </TouchableOpacity>
-              </View>
+              {otp === true ? (
+                <View style={{alignItems:'center', width:"100%"}}>
+                  <View style={styles.passwordContainer}>
+                    <TextInput
+                      placeholder="Mật khẩu mới"
+                      value={newPassword}
+                      onChangeText={setNewPassword}
+                      secureTextEntry={!passwordVisible}
+                      style={styles.input}
+                    />
+                    <TouchableOpacity
+                      onPress={() => setPasswordVisible(!passwordVisible)}
+                    >
+                      <Icon
+                        name={passwordVisible ? "eye-slash" : "eye"}
+                        size={20}
+                        style={styles.icon}
+                      />
+                    </TouchableOpacity>
+                  </View>
 
-              <View style={styles.passwordContainer}>
-                <TextInput
-                  placeholder="Xác thực mật khẩu mới"
-                  value={confirmNewPassword}
-                  onChangeText={setConfirmNewPassword}
-                  secureTextEntry={!confirmNewPasswordVisible}
-                  style={styles.input}
-                />
-                <TouchableOpacity
-                  onPress={() =>
-                    setConfirmNewPasswordVisible(!confirmNewPasswordVisible)
-                  }
-                >
-                  <Icon
-                    name={confirmNewPasswordVisible ? "eye-slash" : "eye"}
-                    size={20}
-                    style={styles.icon}
-                  />
-                </TouchableOpacity>
-              </View> */}
+                  <View style={styles.passwordContainer}>
+                    <TextInput
+                      placeholder="Xác thực mật khẩu mới"
+                      value={confirmNewPassword}
+                      onChangeText={setConfirmNewPassword}
+                      secureTextEntry={!confirmNewPasswordVisible}
+                      style={styles.input}
+                    />
+                    <TouchableOpacity
+                      onPress={() =>
+                        setConfirmNewPasswordVisible(!confirmNewPasswordVisible)
+                      }
+                    >
+                      <Icon
+                        name={confirmNewPasswordVisible ? "eye-slash" : "eye"}
+                        size={20}
+                        style={styles.icon}
+                      />
+                    </TouchableOpacity>
+                  </View>
 
-              <TouchableOpacity
-                style={styles.submitButton}
-                onPress={() => confirmotp(recoveryCode)}
-              >
-                <Text style={styles.submitButtonText}>Khôi Phục</Text>
-              </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.submitButton}
+                    onPress={() => changePass()}
+                  >
+                    <Text style={styles.submitButtonText}>Đổi mật khẩu</Text>
+                  </TouchableOpacity>
+                </View>
+              ) : null}
+
+              {otp === true ? null : (
+                <TouchableOpacity
+                  style={styles.submitButton}
+                  onPress={handleConfirmOtp}
+                >
+                  <Text style={styles.submitButtonText}>Khôi Phục</Text>
+                </TouchableOpacity>
+              )}
             </>
           ) : (
-            <TouchableOpacity style={styles.submitButton} onPress={sendotp}>
+            <TouchableOpacity style={styles.submitButton} onPress={handleSendOtp}>
               <Text style={styles.submitButtonText}>Gửi mã khôi phục</Text>
             </TouchableOpacity>
           )}

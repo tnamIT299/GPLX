@@ -36,6 +36,12 @@ const Login = ({ navigation }) => {
   };
   const handleLogin = async () => {
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+    if ( !email || !password ) {
+      Alert.alert("Thông báo", "Vui lòng nhập đầy đủ thông tin.");
+      return;
+    }
+
     if (!emailRegex.test(email)) {
       setError("Email không hợp lệ");
       return;

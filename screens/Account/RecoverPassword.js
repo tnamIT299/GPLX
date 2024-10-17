@@ -13,7 +13,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome6";
 import { useFonts } from "expo-font";
 import { supabase } from "../../data/supabaseClient";
-import { sendotp,confirmotp  } from "./mail/OtpConfig";
+import { sendotp, confirmotp } from "./mail/OtpConfig";
 
 const RecoverPassword = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -43,12 +43,12 @@ const RecoverPassword = ({ navigation }) => {
   };
 
   const changePass = async () => {
-    if (!newPassword ||!confirmNewPassword) {
+    if (!newPassword || !confirmNewPassword) {
       Alert.alert("Thông báo", "Vui lòng điền đầy đủ thông tin mật khẩu mới.");
       return;
     }
 
-    if (newPassword!== confirmNewPassword) {
+    if (newPassword !== confirmNewPassword) {
       Alert.alert("Thông báo", "Mật khẩu không khớp.");
       return;
     }
@@ -104,7 +104,7 @@ const RecoverPassword = ({ navigation }) => {
               </View>
 
               {otp === true ? (
-                <View style={{alignItems:'center', width:"100%"}}>
+                <View style={{ alignItems: "center", width: "100%" }}>
                   <View style={styles.passwordContainer}>
                     <TextInput
                       placeholder="Mật khẩu mới"
@@ -164,7 +164,10 @@ const RecoverPassword = ({ navigation }) => {
               )}
             </>
           ) : (
-            <TouchableOpacity style={styles.submitButton} onPress={handleSendOtp}>
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={handleSendOtp}
+            >
               <Text style={styles.submitButtonText}>Gửi mã khôi phục</Text>
             </TouchableOpacity>
           )}

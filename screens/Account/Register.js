@@ -37,31 +37,32 @@ const SignUp = ({ navigation }) => {
       Alert.alert("Thông báo", "Vui lòng nhập đầy đủ thông tin.");
       return;
     }
-  
+
     // Regular expression to validate email format
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-  
+
     if (!emailRegex.test(email)) {
       setError("Email không hợp lệ");
       return;
     }
-  
+
     if (password !== ConfirmPassword) {
       Alert.alert("Thông báo", "Mật khẩu không khớp");
       return;
     }
-  
+
     try {
       setLoading(true);
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
       });
-  
+
       if (error) {
         setError(error.message);
       } else {
-        const { data: userData, error: userError } = await supabase.auth.getUser();
+        const { data: userData, error: userError } =
+          await supabase.auth.getUser();
         if (userError) {
           setError(userError.message);
         } else {
@@ -70,7 +71,7 @@ const SignUp = ({ navigation }) => {
           const { error: insertError } = await supabase
             .from("User")
             .insert([{ uid, name, email }]);
-  
+
           if (insertError) {
             setError(insertError.message);
           } else {
@@ -85,11 +86,10 @@ const SignUp = ({ navigation }) => {
       setLoading(false);
     }
   };
-  
 
   return (
     <ImageBackground
-      source={require("../../assets/images/background/appbackground19.webp")} 
+      source={require("../../assets/images/background/appbackground19.webp")}
       style={styles.background}
     >
       <KeyboardAvoidingView
@@ -116,6 +116,7 @@ const SignUp = ({ navigation }) => {
               value={email}
               onChangeText={setEmail}
               style={styles.input}
+              inputMode="email"
               keyboardType="email-address"
               autoCapitalize="none"
             />

@@ -32,12 +32,12 @@ const Login = ({ navigation }) => {
     return <Text>Loading...</Text>;
   }
   const generateToken = () => {
-    return uuidv4(); 
+    return uuidv4();
   };
   const handleLogin = async () => {
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-    if ( !email || !password ) {
+    if (!email || !password) {
       Alert.alert("Thông báo", "Vui lòng nhập đầy đủ thông tin.");
       return;
     }
@@ -55,7 +55,7 @@ const Login = ({ navigation }) => {
       });
 
       if (error) {
-        console.log("Login Error:", error); 
+        console.log("Login Error:", error);
         setError(error.message);
       } else {
         setError("");
@@ -74,11 +74,10 @@ const Login = ({ navigation }) => {
             return;
           }
 
-  
           if (!userData.currentDevice) {
             const { error: updateError } = await supabase
               .from("User")
-              .update({ currentDevice: currentDevice }) 
+              .update({ currentDevice: currentDevice })
               .eq("uid", user.id);
 
             if (updateError) {
@@ -89,19 +88,16 @@ const Login = ({ navigation }) => {
             await saveUserData(user.id);
             Alert.alert("Thông báo", "Đăng nhập thành công!");
             navigation.navigate("ManhinhChinh");
-          }
-          
-          else if (userData.currentDevice !== currentDevice) {
+          } else if (userData.currentDevice !== currentDevice) {
             setError("Tài khoản đang đăng nhập ở thiết bị khác.");
             return;
-          }
-          else {
+          } else {
             navigation.navigate("ManhinhChinh");
           }
         }
       }
     } catch (error) {
-      console.error("Unexpected Error:", error); 
+      console.error("Unexpected Error:", error);
       setError("Có lỗi xảy ra, vui lòng thử lại.");
     }
   };
@@ -125,6 +121,7 @@ const Login = ({ navigation }) => {
               value={email}
               onChangeText={setEmail}
               style={styles.input}
+              inputMode="email"
               keyboardType="email-address"
               autoCapitalize="none"
             />

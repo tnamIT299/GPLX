@@ -19,7 +19,6 @@ const AccountTab = ({ navigation }) => {
           />
           <Text style={styles.buttonText}>Thay đổi mật khẩu</Text>
         </TouchableOpacity>
-
       </ScrollView>
     </View>
   );

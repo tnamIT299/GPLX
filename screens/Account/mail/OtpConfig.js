@@ -30,30 +30,30 @@ export const sendotp = async (email, setIsCodeSent) => {
 };
 
 export const confirmotp = async (email, recoveryCode, setOtp) => {
-    if (!recoveryCode) {
-      Alert.alert("Thông báo", "Vui lòng nhập mã OTP");
-      return;
-    }
-  
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.verifyOtp({
-      email,
-      token: `${recoveryCode}`,
-      type: "email",
+  if (!recoveryCode) {
+    Alert.alert("Thông báo", "Vui lòng nhập mã OTP");
+    return;
+  }
+
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.verifyOtp({
+    email,
+    token: `${recoveryCode}`,
+    type: "email",
+  });
+
+  if (error) {
+    Alert.alert("Thông báo", "Mã khôi phục không đúng");
+    return;
+  }
+
+  if (session && session.access_token) {
+    setOtp(true);
+    await supabase.auth.setSession({
+      access_token: session.access_token,
+      refresh_token: session.refresh_token, // có thể cần refresh token tùy vào cấu hình
     });
-  
-    if (error) {
-      Alert.alert("Thông báo", "Mã khôi phục không đúng");
-      return;
-    }
-  
-    if (session && session.access_token) {
-      setOtp(true);
-      await supabase.auth.setSession({
-        access_token: session.access_token,
-        refresh_token: session.refresh_token, // có thể cần refresh token tùy vào cấu hình
-      });
-    }
-  };
+  }
+};

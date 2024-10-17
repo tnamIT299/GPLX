@@ -69,6 +69,8 @@ const ChangePasswordTab = () => {
           <TextInput
             placeholder="Email"
             onChangeText={setEmail}
+            inputMode="email"
+            keyboardType="email-address"
             value={email}
             style={styles.input}
           />

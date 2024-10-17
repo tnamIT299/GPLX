@@ -12,15 +12,15 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome6";
 import { useFonts } from "expo-font";
-import {sendEmail} from "../Account/mail/MailConfig"; // Custom email sending function
-import { TextEncoder, TextDecoder } from 'text-encoding';
+import { sendEmail } from "../Account/mail/MailConfig"; // Custom email sending function
+import { TextEncoder, TextDecoder } from "text-encoding";
 import { supabase } from "../../data/supabaseClient";
 
 // Khởi tạo polyfill
-if (typeof TextEncoder === 'undefined') {
+if (typeof TextEncoder === "undefined") {
   global.TextEncoder = TextEncoder;
 }
-if (typeof TextDecoder === 'undefined') {
+if (typeof TextDecoder === "undefined") {
   global.TextDecoder = TextDecoder;
 }
 
@@ -30,9 +30,10 @@ const RecoverPassword = ({ navigation }) => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [confirmNewPasswordVisible, setConfirmNewPasswordVisible] = useState(false);
+  const [confirmNewPasswordVisible, setConfirmNewPasswordVisible] =
+    useState(false);
   const [isCodeSent, setIsCodeSent] = useState(false);
-  const [generatedCode,setGeneratedCode] = useState("");
+  const [generatedCode, setGeneratedCode] = useState("");
 
   let [fontsLoaded] = useFonts({
     "Montserrat-Regular": require("../../assets/font/Montserrat-Regular.ttf"),
@@ -42,14 +43,39 @@ const RecoverPassword = ({ navigation }) => {
     return <Text>Loading...</Text>;
   }
 
+  const sendotp = async () => {
+    const { data, error } = await supabase.auth.signInWithOtp({
+      email: "tronghuy0077@gmail.com",
+      options: {
+        shouldCreateUser: false,
+      },
+    });
+
+    setIsCodeSent(true);
+  };
+
+  const confirmotp = async (token) => {
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.verifyOtp({
+      email,
+      token: `${token}`,
+      type: "email",
+    });
+    console.log(session);
+  };
+
   const handleSendRecoveryCode = async () => {
-    const generatedCode = Math.floor(100000 + Math.random() * 900000).toString(); // Tạo mã OTP 6 chữ số
-  
+    const generatedCode = Math.floor(
+      100000 + Math.random() * 900000
+    ).toString(); // Tạo mã OTP 6 chữ số
+
     try {
       // Tạo nội dung email chứa mã OTP
-      const subject = 'Mã khôi phục mật khẩu';
+      const subject = "Mã khôi phục mật khẩu";
       const message = `Mã khôi phục của bạn là: ${generatedCode}. Vui lòng nhập mã này để thay đổi mật khẩu của bạn.`;
-      
+
       await sendEmail(email, subject, message); // Gửi email chứa mã OTP
       setGeneratedCode(generatedCode); // Lưu mã OTP để xác minh
       Alert.alert("Thông báo", "Mã khôi phục đã được gửi đến email của bạn.");
@@ -60,39 +86,43 @@ const RecoverPassword = ({ navigation }) => {
     }
   };
 
-
   const handleResetPassword = async () => {
     if (newPassword !== confirmNewPassword) {
       Alert.alert("Thông báo", "Mật khẩu không khớp");
       return;
     }
-  
+
     // Xác minh mã OTP trước khi đặt lại mật khẩu
     if (recoveryCode !== generatedCode) {
       Alert.alert("Thông báo", "Mã khôi phục không chính xác");
       return;
     }
-  
+
     try {
       // Nếu mã OTP khớp, gọi resetPasswordForEmail để yêu cầu đặt lại mật khẩu
-      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email);
-  
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(
+        email
+      );
+
       if (resetError) {
         console.error(resetError);
         Alert.alert("Error", resetError.message);
         return;
       }
-  
+
       // Cập nhật mật khẩu trực tiếp sau khi gửi yêu cầu đặt lại mật khẩu
       const { error: updateError } = await supabase.auth.updateUser({
         password: newPassword,
       });
-  
+
       if (updateError) {
         console.error(updateError);
         Alert.alert("Error", updateError.message);
       } else {
-        Alert.alert("Thông báo", "Mật khẩu của bạn đã được cập nhật thành công!");
+        Alert.alert(
+          "Thông báo",
+          "Mật khẩu của bạn đã được cập nhật thành công!"
+        );
         navigation.navigate("Login");
       }
     } catch (error) {
@@ -100,9 +130,6 @@ const RecoverPassword = ({ navigation }) => {
       Alert.alert("Error", "Có lỗi xảy ra. Vui lòng thử lại sau.");
     }
   };
-  
-  
-  
 
   return (
     <ImageBackground
@@ -139,7 +166,7 @@ const RecoverPassword = ({ navigation }) => {
                 />
               </View>
 
-              <View style={styles.passwordContainer}>
+              {/* <View style={styles.passwordContainer}>
                 <TextInput
                   placeholder="Mật khẩu mới"
                   value={newPassword}
@@ -177,20 +204,17 @@ const RecoverPassword = ({ navigation }) => {
                     style={styles.icon}
                   />
                 </TouchableOpacity>
-              </View>
+              </View> */}
 
               <TouchableOpacity
                 style={styles.submitButton}
-                onPress={handleResetPassword}
+                onPress={() => confirmotp(recoveryCode)}
               >
                 <Text style={styles.submitButtonText}>Khôi Phục</Text>
               </TouchableOpacity>
             </>
           ) : (
-            <TouchableOpacity
-              style={styles.submitButton}
-              onPress={handleSendRecoveryCode}
-            >
+            <TouchableOpacity style={styles.submitButton} onPress={sendotp}>
               <Text style={styles.submitButtonText}>Gửi mã khôi phục</Text>
             </TouchableOpacity>
           )}
@@ -266,7 +290,6 @@ const styles = StyleSheet.create({
 });
 
 export default RecoverPassword;
-
 
 //trinhthanhnam2003@gmail.com
 //mk hiện tại : 123456

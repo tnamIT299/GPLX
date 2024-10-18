@@ -59,7 +59,7 @@ const RecoverPassword = ({ navigation }) => {
     if (error_1) {
       Alert.alert("Error", error_1.message);
     } else {
-      Alert.alert("Thông báo", "Thay đổi mật khẩu thành công!");
+      Alert.alert("Thông báo", "Khôi phục mật khẩu thành công!");
       setEmail("");
       setRecoveryCode("");
       setNewPassword("");

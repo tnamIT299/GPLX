@@ -15,6 +15,17 @@ export const sendotp = async (email, setIsCodeSent) => {
     return;
   }
 
+  const { data: user, error: userError } = await supabase
+    .from('User')
+    .select('email')
+    .eq('email', email)
+    .single();
+
+  if (userError || !user) {
+    Alert.alert("Thông báo", "Email không tồn tại trong hệ thống");
+    return;
+  }
+
   const { data, error } = await supabase.auth.signInWithOtp({
     email: email,
     options: {
@@ -53,7 +64,7 @@ export const confirmotp = async (email, recoveryCode, setOtp) => {
     setOtp(true);
     await supabase.auth.setSession({
       access_token: session.access_token,
-      refresh_token: session.refresh_token, // có thể cần refresh token tùy vào cấu hình
+      refresh_token: session.refresh_token,
     });
   }
 };

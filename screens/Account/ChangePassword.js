@@ -16,47 +16,35 @@ import Icon from "react-native-vector-icons/FontAwesome";
 const Stack = createStackNavigator();
 
 const ChangePasswordTab = () => {
-  const [email, setEmail] = useState("");
-  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [CurrentpasswordVisible, setCurrentPasswordVisible] = useState(false);
   const [NewpasswordVisible, setNewPasswordVisible] = useState(false);
   const [passwordConfirmVisible, setPasswordConfirmVisible] = useState(false);
 
   const handleChangePassword = async () => {
-    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-
-    if (!emailRegex.test(email)) {
-      Alert.alert("Thông báo", "Email không hợp lệ");
+    if(!newPassword || !confirmPassword) {
+      Alert.alert("Thông báo", "Vui lòng nhập đầy đủ thông tin");
       return;
     }
+    
     if (newPassword !== confirmPassword) {
       Alert.alert("Thông báo", "Mật khẩu không khớp");
       return;
     }
-    const { data, error: resetError } =
-      await supabase.auth.resetPasswordForEmail(email);
-
-    if (resetError) {
-      Alert.alert("Error", resetError.message);
-      return;
-    }
-
+  
     const { error: updateError } = await supabase.auth.updateUser({
       password: newPassword,
     });
-
+  
     if (updateError) {
       Alert.alert("Error", updateError.message);
     } else {
       Alert.alert("Thông báo", "Thay đổi mật khẩu thành công!");
-      setEmail("");
-      setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
     }
   };
+  
 
   return (
     <View style={styles.container}>
@@ -65,35 +53,6 @@ const ChangePasswordTab = () => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={10}
       >
-        <View style={styles.passwordContainer}>
-          <TextInput
-            placeholder="Email"
-            onChangeText={setEmail}
-            inputMode="email"
-            keyboardType="email-address"
-            value={email}
-            style={styles.input}
-          />
-        </View>
-
-        <View style={styles.passwordContainer}>
-          <TextInput
-            placeholder="Mật khẩu hiện tại"
-            onChangeText={setCurrentPassword}
-            value={currentPassword}
-            secureTextEntry={!CurrentpasswordVisible}
-            style={styles.input}
-          />
-          <TouchableOpacity
-            onPress={() => setCurrentPasswordVisible(!CurrentpasswordVisible)}
-          >
-            <Icon
-              name={CurrentpasswordVisible ? "eye-slash" : "eye"}
-              size={20}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-        </View>
 
         <View style={styles.passwordContainer}>
           <TextInput

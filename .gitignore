@@ -34,3 +34,6 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 data/supabaseClient.js
+app.json
+eas.json
+%ProgramData%/Microsoft/Windows/UUS/State/_active.uusver

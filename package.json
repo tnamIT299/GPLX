@@ -24,7 +24,8 @@
     "react-dom": "18.2.0",
     "react-native": "0.74.5",
     "react-native-countdown-circle-timer": "^3.2.1",
-    "react-native-get-random-values": "^1.11.0",
+    "react-native-gesture-handler": "~2.16.1",
+    "react-native-get-random-values": "~1.11.0",
     "react-native-modals": "^0.22.3",
     "react-native-pager-view": "6.3.0",
     "react-native-paper": "^5.12.5",
@@ -39,7 +40,7 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.24.0"
   },
   "private": true
 }

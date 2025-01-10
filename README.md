@@ -15,8 +15,8 @@
 Ứng dụng GPLX là ứng dụng được viết bằng Javascript và sử dụng Supabase làm database và một số thư viện hỗ trợ UI
 
 ## Một vài hình ảnh demo
-![Ứng dụng chính](/image_demo/Trang_chủ.png)
-![Bài thi](/image_demo/Bài_thi.png)
+![Ứng dụng chính](/image_demo/Trang%20chủ.png)
+![Bài thi](/image_demo/Bài%20thi.png)
 
 ## Hướng dẫn chạy trên máy ảo
 1. **Cài đặt Visual Studio Code**: [Tải xuống Visual Studio Code](https://code.visualstudio.com/)

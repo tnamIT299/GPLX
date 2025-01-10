@@ -19,6 +19,10 @@
 <div style="display: flex; justify-content: space-around;">
   <img src="image_demo/Trang chủ.png" width="200" style="margin-right: 20px;" />
   <img src="image_demo/Bài thi.png" width="200" />
+   <img src="image_demo/Ôn tập câu hỏi.png" width="200" />
+    <img src="image_demo/Tra cứu biển báo.png" width="200" />
+     <img src="image_demo/Tra cứu luật.png" width="200" />
+  
 </div>
 
 ## Hướng dẫn chạy trên máy ảo
